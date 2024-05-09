@@ -19,7 +19,98 @@ from models.category import Category
 
 class Home(Resource):
     def get(self):
-        return make_response({"message": "Online Community Shopping"})
+        return make_response({"message": "Shopcrawl API"})
+
+
+api.add_resource(Home, "/")
+
+
+class Signup(Resource):
+    def post(self):
+        try:
+            username = request.get_json()["username"]
+            email = request.get_json()["email"]
+            password = request.get_json()["password"]
+        except KeyError:
+            return make_response({"error": "User details not provided"}, 400)
+
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            return {"message": "User Already Exists"}, 400
+
+        if username and email and password:
+            new_user = User(username=username, email=email)
+            new_user.password_hash = password
+
+            db.session.add(new_user)
+            db.session.commit()
+
+            access_token = create_access_token(identity=new_user.id)
+
+            return {
+                "message": "User Registration Success",
+                "access_token": access_token,
+            }, 201
+
+        return make_response({"error": "422 Unprocessable Entity"}, 422)
+
+
+api.add_resource(Signup, "/signup")
+
+
+class Login(Resource):
+    def post(self):
+        try:
+            email = request.get_json()["email"]
+            password = request.get_json()["password"]
+        except KeyError:
+            return make_response({"error": "Email or password not provided"}, 400)
+
+        user = User.query.filter(User.email == email).first()
+        if user and user.authenticate(password):
+            access_token = create_access_token(identity=user.id)
+            return {"message": "User Login Success", "access_token": access_token}, 200
+
+        else:
+            return make_response({"error": "Invalid username or password"}, 401)
+
+
+api.add_resource(Login, "/login")
+
+
+class Users(Resource):
+    def get(self):
+        try:
+            users = []
+            for user in User.query.all():
+                users.append(user.to_dict(rules=["-blogs", "-_password_hash"]))
+            return make_response({"users": users}, 200)
+        except Exception as e:
+            return make_response({"error": str(e)}, 500)
+
+
+api.add_resource(Users, "/users")
+
+
+class UserByID(Resource):
+    def get(self, id):
+        user = User.query.filter(User.id == id).first()
+
+        if user:
+            return make_response(user.to_dict())
+        return make_response({"error": "User not found"})
+
+    def delete(self, id):
+        user = User.query.filter(User.id == id).first()
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return make_response({"message": "User deleted successfully"})
+        return make_response({"Error": "User not found"})
+
+
+api.add_resource(UserByID, "/user/<int:id>")
 
 
 class Search_history(Resource):
@@ -63,61 +154,59 @@ class Search_history(Resource):
     #     return {"message": "Search history added to the database"}, 200
 
 
-@app.route("/search")
-def search():
-    product_name = request.args.get("q")
+class Search(Resource):
+    def get(self):
+        product_name = request.args.get("q")
 
-    if product_name:
-        # Save search history to database
-        search_entry = SearchHistory(query=product_name)
-        db.session.add(search_entry)
+        if product_name:
+            # Save search history to database
+            search_entry = SearchHistory(query=product_name)
+            db.session.add(search_entry)
 
-        # Fetch and save products from Alibaba
-        alibaba_data = search_alibaba(product_name)
-        for product in alibaba_data:
-            category_name = categorize_product(product["product_name"])
-            category = Category.query.filter_by(name=category_name).first()
-            if not category:
-                category = Category(name=category_name)
-                db.session.add(category)
+            # Fetch and save products from Alibaba
+            alibaba_data = search_alibaba(product_name)
+            for product in alibaba_data:
+                category_name = categorize_product(product["product_name"])
+                category = Category.query.filter_by(name=category_name).first()
+                if not category:
+                    category = Category(name=category_name)
+                    db.session.add(category)
 
-            db_product = Product(
-                name=product["product_name"],
-                price=product["product_price"],
-                image_src=product["image_src"],
-                source="alibaba",
-                category=category,
-            )
-            db.session.add(db_product)
+                db_product = Product(
+                    name=product["product_name"],
+                    price=product["product_price"],
+                    image_src=product["image_src"],
+                    source="alibaba",
+                    category=category,
+                )
+                db.session.add(db_product)
 
-        # Fetch and save products from Amazon
-        amazon_data = search_amazon(product_name)
-        for product in amazon_data:
-            category_name = categorize_product(product["product_name"])
-            category = Category.query.filter_by(name=category_name).first()
-            if not category:
-                category = Category(name=category_name)
-                db.session.add(category)
+            # Fetch and save products from Amazon
+            amazon_data = search_amazon(product_name)
+            for product in amazon_data:
+                category_name = categorize_product(product["product_name"])
+                category = Category.query.filter_by(name=category_name).first()
+                if not category:
+                    category = Category(name=category_name)
+                    db.session.add(category)
 
-            db_product = Product(
-                name=product["product_name"],
-                price=product["product_price"],
-                image_src=product["image_src"],
-                source="amazon",
-                category=category,
-            )
-            db.session.add(db_product)
+                db_product = Product(
+                    name=product["product_name"],
+                    price=product["product_price"],
+                    image_src=product["image_src"],
+                    source="amazon",
+                    category=category,
+                )
+                db.session.add(db_product)
 
-        db.session.commit()
+            db.session.commit()
 
-        return jsonify({"alibaba": alibaba_data, "amazon": amazon_data})
-    else:
-        return jsonify({"error": "No query provided"}), 400
+            return jsonify({"alibaba": alibaba_data, "amazon": amazon_data})
+        else:
+            return jsonify({"error": "No query provided"}), 400
 
 
-api.add_resource(Search_history, "/search_history")
-
-api.add_resource(Home, "/")
+api.add_resource(Search, "/search")
 
 
 if __name__ == "__main__":
