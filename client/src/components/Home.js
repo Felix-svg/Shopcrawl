@@ -28,7 +28,7 @@ function Home() {
     ];
 
     return (
-        <div style={{ backgroundColor: '#90AEAD', minHeight: '90vh', padding: '20px' }}>
+        <div style={{ backgroundColor: '#90AEAD', minHeight: '150vh', padding: '20px' }}>
             {/* Navbar */}
             <nav style={{ color: 'black', padding: '10px 20px' }}>
                 <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -45,7 +45,7 @@ function Home() {
             </nav>
 
             {/* Slideshow */}
-            <div style={{ position: 'relative', width: '100%', height: '400px', overflow: 'hidden' }}>
+            <div style={{ position: 'relative', width: '100%', height: '600px', overflow: 'hidden' }}>
                 <Slide easing="ease" duration={2000} transitionDuration={500} infinite={true} indicators={true} arrows={false} autoplay={true}>
                     {images.map((each, index) => (
                         <div key={index} className="each-slide" style={{ position: 'relative', width: '100%', height: '600px', backgroundSize: 'cover', backgroundPosition: 'center', backgroundImage: `url(${each})` }}>
