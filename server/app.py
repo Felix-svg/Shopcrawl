@@ -12,6 +12,7 @@ from config import app, db, api
 #models imports
 from models.product import Product
 from models.user import User
+from models.category import Category
 from models.search_history import SearchHistory
 
 class Home(Resource):
@@ -56,17 +57,44 @@ class Search_history(Resource):
         db.session.commit()
 
         return {'message': 'Search history added to the database'}, 200 
+    
+class Categories(Resource):
+    def get(self):
+        categories = Category.query.all()
+        result = []
+        
+        for category in categories:
+            result.append({
+                'id': category.id,
+                'description': category.description
+            })
             
+        return {'categories': result}, 200
+    
+class CategoryByName(Resource):
+    def get(self):
+        search_query = request.args.get('name')
+        
+        if not search_query:
+            return{'message': 'Please provide a name parameter'}, 400
+        
+        category = Category.query.filter(Category.name.ilike(f'%{search_query}%')).first()
+        
+        if category:
+            return{
+                'name': category.name,
+                'description': category.description
+            }, 200
+        
+        else:
+            return {'message': 'category not found'}, 404
         
         
-
-
-
-
-
-api.add_resource(Search_history, '/search_history')
 
 api.add_resource(Home, "/")
+api.add_resource(Categories, '/categories')
+api.add_resource(CategoryByName, '/categories/search')
+api.add_resource(Search_history, '/search_history')
 
 
 if __name__ == "__main__":
