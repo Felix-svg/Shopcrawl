@@ -13,6 +13,7 @@ class Product(db.Model, SerializerMixin):
     source = db.Column(
         db.String(50)
     )  # Store the source of the product (e.g., 'alibaba', 'amazon')
+    rating = db.Column(db.String)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Define the foreign key relationship with Category

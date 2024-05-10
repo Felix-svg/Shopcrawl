@@ -30,6 +30,7 @@ class Search(Resource):
                     price=product["product_price"],
                     image_src=product["image_src"],
                     source="alibaba",
+                    rating=product["product_rating"],
                     category=category,
                 )
                 db.session.add(db_product)
@@ -48,6 +49,7 @@ class Search(Resource):
                     price=product["product_price"],
                     image_src=product["image_src"],
                     source="amazon",
+                    rating=product["product_rating"],
                     category=category,
                 )
                 db.session.add(db_product)
