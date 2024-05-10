@@ -13,8 +13,6 @@ class Products(Resource):
         return make_response({"products": products}, 200)
 
 
-
-
 class ProductByID(Resource):
     def get(self, id):
         product = Product.query.filter(Product.id == id).first()
@@ -22,5 +20,4 @@ class ProductByID(Resource):
         if product:
             product_dict = product.to_dict(rules=["-category"])
             return make_response({"product": product_dict}, 200)
-        return make_response({"error": "Product not found"})
-
+        return make_response({"error": "Product not found"}, 404)
