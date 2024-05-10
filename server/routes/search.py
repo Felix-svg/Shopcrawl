@@ -56,4 +56,4 @@ class Search(Resource):
 
             return jsonify({"alibaba": alibaba_data, "amazon": amazon_data})
         else:
-            return jsonify({"error": "No query provided"}), 400
+            return jsonify({"error": "No query provided"}, 400)

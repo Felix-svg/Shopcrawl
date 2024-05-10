@@ -3,4 +3,4 @@ from flask_restful import Resource
 
 class Home(Resource):
     def get(self):
-        return make_response({"message": "Shopcrawl API"})
+        return make_response({"message": "Shopcrawl API"}, 200)

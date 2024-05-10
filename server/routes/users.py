@@ -10,7 +10,7 @@ class Users(Resource):
         try:
             users = []
             for user in User.query.all():
-                users.append(user.to_dict(rules=["-blogs", "-_password_hash"]))
+                users.append(user.to_dict(rules=["-_password_hash"]))
             return make_response({"users": users}, 200)
         except Exception as e:
             return make_response({"error": str(e)}, 500)
@@ -22,8 +22,8 @@ class UserByID(Resource):
         user = User.query.filter(User.id == id).first()
 
         if user:
-            return make_response(user.to_dict())
-        return make_response({"error": "User not found"})
+            return make_response(user.to_dict(rules=["-_password_hash"]))
+        return make_response({"error": "User not found"}, 404)
 
     def delete(self, id):
         user = User.query.filter(User.id == id).first()
