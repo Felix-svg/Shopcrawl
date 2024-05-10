@@ -5,6 +5,8 @@ from datetime import datetime
 
 
 # class SearchHistory(db.Model, SerializerMixin):
+#      __table__ = "search_history"
+
 #     id = db.Column(db.Integer, primary_key=True)
 #     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 #     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
