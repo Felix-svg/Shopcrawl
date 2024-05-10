@@ -17,20 +17,23 @@ class Signup(Resource):
         user = User.query.filter_by(email=email).first()
 
         if user:
-            return {"message": "User Already Exists"}, 400
+            return make_response({"message": "User Already Exists"}, 400)
 
         if username and email and password:
-            new_user = User(username=username, email=email)
-            new_user.password_hash = password
+            try:
+                new_user = User(username=username, email=email)
+                new_user.password_hash = password
 
-            db.session.add(new_user)
-            db.session.commit()
+                db.session.add(new_user)
+                db.session.commit()
 
-            access_token = create_access_token(identity=new_user.id)
+                access_token = create_access_token(identity=new_user.id)
 
-            return {
-                "message": "User Registration Success",
-                "access_token": access_token,
-            }, 201
+                return make_response( {
+                    "message": "User Registration Success",
+                    "access_token": access_token,
+                }, 201)
+            except ValueError as e:
+                return make_response({"error": str(e)}, 400)
 
         return make_response({"error": "422 Unprocessable Entity"}, 422)
