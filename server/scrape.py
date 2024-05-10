@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+from convert_price import convert_price_to_float
 
 
 def search_amazon(product_name):
@@ -27,8 +28,11 @@ def search_amazon(product_name):
         image = card.find("img", {"class": "s-image"})
         img_src = image["src"] if image else "No Image Found"
 
-        title = card.find("span")
+        title = card.find("span", {"class":"a-size-medium a-color-base a-text-normal"})
         product_name = title.text if title else "No Title Found"
+
+        rating = card.find("i", {"class":"a-icon a-icon-star-small a-star-small-4-5 aok-align-bottom"})
+        product_rating= rating.text.strip() if rating else "No Rating Found"
 
         price = card.find("span", {"class": "a-price-whole"})
         product_price = price.text if price else "No Price Found"
@@ -38,12 +42,12 @@ def search_amazon(product_name):
                 "image_src": img_src,
                 "product_name": product_name,
                 "product_price": product_price,
+                "product_rating":product_rating
             }
         )
 
-        # # Print all products details
-        # for product in products:
-        #     print(product)
+      
+    products.sort(key=lambda x: convert_price_to_float(x["product_price"]))
     return products
 
 
@@ -80,6 +84,9 @@ def search_alibaba(product_name):
         title = card.find("h2", {"class": "search-card-e-title"})
         product_name = title.text.strip() if title else "No Title Found"
 
+        rating = card.find("span", {"class":"search-card-e-review"})
+        product_rating= rating.text.strip() if rating else "No Rating Found"
+
         price = card.find("div", {"class": "search-card-e-price-main"})
         product_price = price.text.strip() if price else "No Price Found"
 
@@ -88,9 +95,10 @@ def search_alibaba(product_name):
                 "image_src": img_src,
                 "product_name": product_name,
                 "product_price": product_price,
+                "product_rating": product_rating
             }
         )
-
+    products.sort(key=lambda x: convert_price_to_float(x["product_price"]))
     return products
 
 
