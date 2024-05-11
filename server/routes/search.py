@@ -5,6 +5,7 @@ from models.search_history import SearchHistory
 from models.category import Category
 from models.product import Product
 from scrape import search_alibaba, search_amazon, categorize_product
+from sqlalchemy.exc import IntegrityError
 
 
 class Search(Resource):
@@ -25,15 +26,21 @@ class Search(Resource):
                     category = Category(name=category_name)
                     db.session.add(category)
 
-                db_product = Product(
-                    name=product["product_name"],
-                    price=product["product_price"],
-                    image_src=product["image_src"],
-                    source="alibaba",
-                    rating=product["product_rating"],
-                    category=category,
-                )
-                db.session.add(db_product)
+                try:
+                    db_product = Product.query.filter_by(name=product["product_name"]).first()
+                    if not db_product:
+                        db_product = Product(
+                            name=product["product_name"],
+                            price=product["product_price"],
+                            image_src=product["image_src"],
+                            source="alibaba",
+                            rating=product["product_rating"],
+                            category=category,
+                        )
+                        db.session.add(db_product)
+                except IntegrityError:
+                    # Handle IntegrityError if a duplicate product is found
+                    db.session.rollback()
 
             # Fetch and save products from Amazon
             amazon_data = search_amazon(product_name)
@@ -44,18 +51,24 @@ class Search(Resource):
                     category = Category(name=category_name)
                     db.session.add(category)
 
-                db_product = Product(
-                    name=product["product_name"],
-                    price=product["product_price"],
-                    image_src=product["image_src"],
-                    source="amazon",
-                    rating=product["product_rating"],
-                    category=category,
-                )
-                db.session.add(db_product)
+                try:
+                    db_product = Product.query.filter_by(name=product["product_name"]).first()
+                    if not db_product:
+                        db_product = Product(
+                            name=product["product_name"],
+                            price=product["product_price"],
+                            image_src=product["image_src"],
+                            source="alibaba",
+                            rating=product["product_rating"],
+                            category=category,
+                        )
+                        db.session.add(db_product)
+                except IntegrityError:
+                    # Handle IntegrityError if a duplicate product is found
+                    db.session.rollback()
 
             db.session.commit()
 
             return jsonify({"alibaba": alibaba_data, "amazon": amazon_data})
         else:
-            return jsonify({"error": "No query provided"}, 400)
+            return jsonify({"error": "No query provided"}), 400
