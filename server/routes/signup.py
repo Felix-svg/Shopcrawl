@@ -14,10 +14,16 @@ class Signup(Resource):
         except KeyError:
             return make_response({"error": "User details not provided"}, 400)
 
-        user = User.query.filter_by(email=email).first()
+        # Check if the username already exists
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            return make_response({"error": "Username already taken"}, 400)
+        
+        # Check if the email already exists
+        existing_email = User.query.filter_by(email=email).first()
+        if existing_email:
+            return make_response({"error": "Email already taken"}, 400)
 
-        if user:
-            return make_response({"message": "User Already Exists"}, 400)
 
         if username and email and password:
             try:
