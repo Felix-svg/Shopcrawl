@@ -7,7 +7,7 @@ function Footer() {
     const footerStyle = {
         backgroundColor: 'black',
         color: 'white',
-        textAlign: 'left',  // Changed from 'center' to 'left'
+        textAlign: 'right',  // Changed from 'center' to 'left'
         padding: '10px',
         width: '100%'
     };
