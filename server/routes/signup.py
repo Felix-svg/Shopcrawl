@@ -14,23 +14,32 @@ class Signup(Resource):
         except KeyError:
             return make_response({"error": "User details not provided"}, 400)
 
-        user = User.query.filter_by(email=email).first()
+        # Check if the username already exists
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            return make_response({"error": "Username already taken"}, 400)
+        
+        # Check if the email already exists
+        existing_email = User.query.filter_by(email=email).first()
+        if existing_email:
+            return make_response({"error": "Email already taken"}, 400)
 
-        if user:
-            return {"message": "User Already Exists"}, 400
 
         if username and email and password:
-            new_user = User(username=username, email=email)
-            new_user.password_hash = password
+            try:
+                new_user = User(username=username, email=email)
+                new_user.password_hash = password
 
-            db.session.add(new_user)
-            db.session.commit()
+                db.session.add(new_user)
+                db.session.commit()
 
-            access_token = create_access_token(identity=new_user.id)
+                access_token = create_access_token(identity=new_user.id)
 
-            return {
-                "message": "User Registration Success",
-                "access_token": access_token,
-            }, 201
+                return make_response( {
+                    "message": "User Registration Success",
+                    "access_token": access_token,
+                }, 201)
+            except ValueError as e:
+                return make_response({"error": str(e)}, 400)
 
         return make_response({"error": "422 Unprocessable Entity"}, 422)
