@@ -1,0 +1,64 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #90AEAD;
+    /* margin: 0;  Ensure there's no default margin */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh;  Full viewport height */
+}
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.search-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: #8d8b8b;
+    width: 100%;
+    max-width: 600px;
+    margin-right: 10px;
+}
+
+.search-input input {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.search-btn button {
+    background-color: #0f0f0f;
+    color: #90AEAD;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;  /* Bold text */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.search-btn button ion-icon {
+    margin-right: 5px;
+}
+
+.search-btn button:hover {
+    background-color: white;
+}

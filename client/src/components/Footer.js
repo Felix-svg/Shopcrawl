@@ -1,50 +1,28 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGooglePlusG, faInstagram } from '@fortawesome/free-brands-svg-icons';
-import './Footer.css'; // Adjust the path according to your file structure
-
+import './Footer.css';
 
 const Footer = () => {
   return (
     <div className="footer">
       <div className="container">
         <div className="row">
-          <div className="col-lg-4 col-sm-4 col-xs-12">
-            <div className="single_footer">
-              <h4>Services</h4>
+          <div className="col-md-4 col-sm-4 col-xs-12">
+            <div className="single_footer single_footer_address">
+              <h4>Page Links</h4>
               <ul>
-                <li><a href="#">Lorem Ipsum</a></li>
-                <li><a href="#">Simply dummy text</a></li>
-                <li><a href="#">The printing and typesetting</a></li>
-                <li><a href="#">Standard dummy text</a></li>
-                <li><a href="#">Type specimen book</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
               </ul>
             </div>
           </div>
           <div className="col-md-4 col-sm-4 col-xs-12">
             <div className="single_footer single_footer_address">
-              <h4>Page Link</h4>
-              <ul>
-                <li><a href="#">Lorem Ipsum</a></li>
-                <li><a href="#">Simply dummy text</a></li>
-                <li><a href="#">The printing and typesetting</a></li>
-                <li><a href="#">Standard dummy text</a></li>
-                <li><a href="#">Type specimen book</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="col-md-4 col-sm-4 col-xs-12">
-            <div className="single_footer single_footer_address">
-              <h4>Subscribe today</h4>
-              <div className="signup_form">
-                <form action="#" className="subscribe">
-                  <input type="text" className="subscribe__input" placeholder="Enter Email Address" />
-                  <button type="button" className="subscribe__btn">
-                    <FontAwesomeIcon icon={faPaperPlane} />
-                  </button>
-                </form>
-              </div>
+              <h4>Follow Us</h4>
               <div className="social_profile">
                 <ul>
                   <li><a href="#"><FontAwesomeIcon icon={faFacebookF} /></a></li>
@@ -55,11 +33,19 @@ const Footer = () => {
               </div>
             </div>
           </div>
+          <div className="col-lg-4 col-sm-4 col-xs-12">
+            <div className="single_footer single_footer_about">
+              <h4>About Us</h4>
+              <p>
+                We are committed to providing the best services and products to our customers. Our mission is to deliver high-quality solutions that meet the needs of our diverse client base. Join us on our journey to excellence and discover the difference we can make together.
+              </p>
+            </div>
+          </div>
         </div>
         <div className="row">
           <div className="col-lg-12 col-sm-12 col-xs-12">
             <p className="copyright">
-              Copyright © 2024 <a href="#">Shopping premium</a>.
+              Copyright © 2024 <a href="#">S.premium</a>.
             </p>
           </div>
         </div>
