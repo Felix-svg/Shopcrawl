@@ -27,9 +27,7 @@ function Navbar() {
                 {/* Search Bar */}
                 <li style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', borderRadius: '20px', backgroundColor: 'white', padding: '0 10px', boxShadow: '0 2px 2px rgba(0,0,0,0.1)' }}>
                     <input type="text" placeholder="Search..." style={{ padding: '10px', border: 'none', outline: 'none', fontSize: '16px', width: '200px', height: '38px' }} />
-                    <button style={{ padding: '10px 15px', backgroundColor: '#E0E0E0', color: 'black', border: 'none', borderRadius: '10px', cursor: 'pointer', transition: 'background-color 0.3s ease', height: '38px' }}>
-                        Search
-                    </button>
+                    
                 </li>
             </ul>
         </nav>
