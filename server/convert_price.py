@@ -1,4 +1,9 @@
 def convert_price_to_float(price_str):
+     # Check if the price string is None
+    if price_str is None:
+        return None
+    
+    
     # Check if the price string contains a range
     if "-" in price_str:
         # Extract the numerical part of the range
