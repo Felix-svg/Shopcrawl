@@ -1,0 +1,106 @@
+.footer {
+    background-color: #111010;
+    color: #fff;
+    padding: 40px 0;
+  }
+  
+  .footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+  
+  .footer ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .footer ul li a {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.8;
+  }
+  
+  .footer ul li a:hover {
+    opacity: 1;
+  }
+  
+  .single_footer h4 {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #f8f9fa;
+  }
+  
+  .single_footer {
+    margin-bottom: 30px;
+  }
+  
+  .single_footer_address {
+    margin-top: 20px;
+  }
+  
+  .subscribe_form {
+    position: relative;
+    margin-top: 20px;
+  }
+  
+  .subscribe__input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-right: -45px;
+  }
+  
+  .subscribe__btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .social_profile ul {
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .social_profile ul li {
+    margin: 0 10px;
+  }
+  
+  .social_profile ul li a {
+    color: #fff;
+    font-size: 16px;
+  }
+  
+  .copyright {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  
+  @media (max-width: 767px) {
+    .footer {
+      text-align: center;
+    }
+    .footer .col-lg-4, .footer .col-md-4, .footer .col-sm-4, .footer .col-xs-12 {
+      margin-bottom: 20px;
+    }
+    .subscribe__input {
+      margin-right: 0;
+    }
+    .subscribe__btn {
+      width: 100%;
+      border-radius: 0 0 5px 5px;
+    }
+  }
+  
