@@ -29,21 +29,6 @@ function Home() {
 
     return (
         <div style={{ backgroundColor: '#90AEAD', minHeight: '150vh', padding: '20px' }}>
-            {/* Navbar */}
-            <nav style={{ color: 'black', padding: '10px 20px' }}>
-                <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <li style={{ marginRight: '50px' }}>Home</li>
-                    <li style={{ marginRight: '50px' }}>Products</li>
-                    <li style={{ marginRight: '50px' }}>About</li>
-                    <li style={{ marginRight: '50px' }}>Contact</li>
-                    {/* Search Bar */}
-                    <li style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
-                        <input type="text" placeholder="Search..." style={{ padding: '5px', borderRadius: '10px', border: '1px solid black', marginRight: '10px' }} />
-                        <button style={{ padding: '5px 10px', backgroundColor: 'black', color: '#90AEAD', border: '1px solid black', borderRadius: '5px', cursor: 'pointer' }}>Search</button>
-                    </li>
-                </ul>
-            </nav>
-
             {/* Slideshow */}
             <div style={{ position: 'relative', width: '100%', height: '600px', overflow: 'hidden' }}>
                 <Slide easing="ease" duration={2000} transitionDuration={500} infinite={true} indicators={true} arrows={false} autoplay={true}>
