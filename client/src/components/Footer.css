@@ -1,6 +1,6 @@
 .footer {
     background: #111111;
-    padding: 50px 0;
+    padding: 20px 0; /* Reduced padding to decrease the height */
     color: #fff;
   }
   
@@ -17,12 +17,12 @@
   }
   
   .single_footer {
-    margin-bottom: 30px;
+    margin-bottom: 20px; /* Adjusted margin to fit the new footer height */
   }
   
   .single_footer h4 {
     font-size: 18px;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Adjusted margin to fit the new footer height */
     font-weight: bold;
   }
   
@@ -70,7 +70,7 @@
   
   .copyright {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 20px; /* Adjusted margin to fit the new footer height */
     font-size: 14px;
   }
   
@@ -84,6 +84,6 @@
   }
   
   .single_footer_about {
-    margin-bottom: 50px;
+    margin-bottom: 30px; /* Adjusted margin to fit the new footer height */
   }
   

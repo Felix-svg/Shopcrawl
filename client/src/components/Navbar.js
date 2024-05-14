@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../components/images/logo-png.jpg';  // Adjust the path to match the new location
+import logo from '../components/images/logo-png.jpg';  // Ensure the path is correct
 
 function Navbar() {
     const handleMouseEnter = (e) => {
