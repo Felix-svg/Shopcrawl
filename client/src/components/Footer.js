@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="row">
           <div className="col-md-4 col-sm-4 col-xs-12">
             <div className="single_footer single_footer_address">
-              <h4>Page Links</h4>
+              <h4>Page Links.</h4>
               <ul>
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Products</a></li>
@@ -22,7 +22,7 @@ const Footer = () => {
           </div>
           <div className="col-md-4 col-sm-4 col-xs-12">
             <div className="single_footer single_footer_address">
-              <h4>Follow Us</h4>
+              <h4>Follow Us.</h4>
               <div className="social_profile">
                 <ul>
                   <li><a href="#"><FontAwesomeIcon icon={faFacebookF} /></a></li>
@@ -35,7 +35,7 @@ const Footer = () => {
           </div>
           <div className="col-lg-4 col-sm-4 col-xs-12">
             <div className="single_footer single_footer_about">
-              <h4>About Us</h4>
+              <h4>About Us.</h4>
               <p>
                 We are committed to providing the best services and products to our customers. Our mission is to deliver high-quality solutions that meet the needs of our diverse client base. Join us on our journey to excellence and discover the difference we can make together.
               </p>
