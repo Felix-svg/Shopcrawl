@@ -8,9 +8,9 @@ const Footer = () => {
     <div className="footer">
       <div className="container">
         <div className="row">
-          <div className="col-md-4 col-sm-4 col-xs-12">
+          <div className="col-md-3 col-sm-3 col-xs-12">
             <div className="single_footer single_footer_address">
-              <h4>Page Links.</h4>
+              <h4>Page Links</h4>
               <ul>
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Products</a></li>
@@ -20,9 +20,9 @@ const Footer = () => {
               </ul>
             </div>
           </div>
-          <div className="col-md-4 col-sm-4 col-xs-12">
+          <div className="col-md-3 col-sm-3 col-xs-12">
             <div className="single_footer single_footer_address">
-              <h4>Follow Us.</h4>
+              <h4>Follow Us</h4>
               <div className="social_profile">
                 <ul>
                   <li><a href="#"><FontAwesomeIcon icon={faFacebookF} /></a></li>
@@ -33,19 +33,29 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4 col-sm-4 col-xs-12">
+          <div className="col-lg-3 col-sm-3 col-xs-12">
             <div className="single_footer single_footer_about">
-              <h4>About Us.</h4>
+              <h4>About Us</h4>
               <p>
                 We are committed to providing the best services and products to our customers. Our mission is to deliver high-quality solutions that meet the needs of our diverse client base. Join us on our journey to excellence and discover the difference we can make together.
               </p>
+            </div>
+          </div>
+          <div className="col-lg-3 col-sm-3 col-xs-12">
+            <div className="single_footer single_footer_contact">
+              <h4>Contact Us</h4>
+              <ul>
+                <li>Email: info@shopcrawl.com</li>
+                <li>Phone: +123 456 7890</li>
+                <li>We do our Best to service our Clients.</li>
+              </ul>
             </div>
           </div>
         </div>
         <div className="row">
           <div className="col-lg-12 col-sm-12 col-xs-12">
             <p className="copyright">
-              Copyright © 2024 <a href="#">S.premium</a>.
+              Copyright © 2024 <a href="#">ShopCrawl</a>.
             </p>
           </div>
         </div>
