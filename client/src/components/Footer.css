@@ -1,6 +1,6 @@
 .footer {
     background: #111111;
-    padding: 20px 0; /* Reduced padding to decrease the height */
+    padding: 20px 0;
     color: #fff;
   }
   
@@ -14,15 +14,16 @@
     width: 100%;
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap; /* Add flex-wrap to handle responsiveness */
   }
   
   .single_footer {
-    margin-bottom: 20px; /* Adjusted margin to fit the new footer height */
+    margin-bottom: 30px;
   }
   
   .single_footer h4 {
     font-size: 18px;
-    margin-bottom: 15px; /* Adjusted margin to fit the new footer height */
+    margin-bottom: 20px;
     font-weight: bold;
   }
   
@@ -68,9 +69,19 @@
     color: #007bff;
   }
   
+  .single_footer_contact {
+    order: 1; /* Change the order to move it to the end */
+  }
+  
+  @media (max-width: 768px) {
+    .single_footer_contact {
+      order: 4; /* Reset order for mobile view */
+    }
+  }
+  
   .copyright {
     text-align: center;
-    margin-top: 20px; /* Adjusted margin to fit the new footer height */
+    margin-top: 20px;
     font-size: 14px;
   }
   
@@ -84,6 +95,11 @@
   }
   
   .single_footer_about {
-    margin-bottom: 30px; /* Adjusted margin to fit the new footer height */
+    margin-bottom: 30px;
+  }
+  
+  .single_footer_contact ul {
+    font-size: 14px;
+    line-height: 1.6;
   }
   

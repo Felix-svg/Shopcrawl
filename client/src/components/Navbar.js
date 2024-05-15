@@ -28,7 +28,7 @@ function Navbar() {
                 <img src={logo} alt="Logo" style={{ height: '60px', marginRight: '20px' }} />
             </div>
             <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: 0, flex: 1 }}>
-                {['Home', 'Products', 'About', 'Contact'].map((text) => (
+                {['Home', 'Products', 'About Us', 'Contact'].map((text) => (
                     <li key={text} style={{ margin: '0 30px', padding: '10px 20px', fontSize: '16px', fontWeight: 'bold', transition: 'background-color 0.3s ease, color 0.3s ease', borderRadius: '5px', textAlign: 'center' }}>
                         <a 
                             href="#" 
