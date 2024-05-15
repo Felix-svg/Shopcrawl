@@ -4,6 +4,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from datetime import datetime
 
+
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -12,7 +13,8 @@ class User(db.Model, SerializerMixin):
     _password_hash = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    search_history = db.relationship("SearchHistory", back_populates="user")  # Add this line
+    # Define the relationship with SearchHistory
+    search_history = db.relationship("SearchHistory", back_populates="user")
 
     @hybrid_property
     def password_hash(self):
@@ -31,14 +33,6 @@ class User(db.Model, SerializerMixin):
         if "@" not in email:
             raise ValueError("Email must include @")
         return email
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'username': self.username,
-            'email': self.email,
-            'created_at': self.created_at
-        }
 
     def __repr__(self):
         return f"<User {self.username}>"

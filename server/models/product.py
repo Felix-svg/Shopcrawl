@@ -21,11 +21,5 @@ class Product(db.Model, SerializerMixin):
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     category = db.relationship("Category", back_populates="products")
 
-    def get(self):
-        products = Product.query.all()
-        serialized_products = [product.to_dict() for product in products]
-        return jsonify(serialized_products)
-
-
     def __repr__(self):
         return f"<Product {self.name} {self.price} {self.source} {self.timestamp}>"

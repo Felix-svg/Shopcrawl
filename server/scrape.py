@@ -28,10 +28,10 @@ def search_amazon(product_name):
         image = card.find("img", {"class": "s-image"})
         img_src = image["src"] if image else "No Image Found"
 
-        title = card.find("span", {"class":"a-size-medium a-color-base a-text-normal"})
-        product_name = title.text if title else "No Title Found"
+        title = card.find("h2", {"class": "a-size-mini a-spacing-none a-color-base s-line-clamp-2"})
+        product_name = title.text.strip() if title else "No Title Found"
 
-        rating = card.find("i", {"class":"a-icon a-icon-star-small a-star-small-4-5 aok-align-bottom"})
+        rating = card.find("span", {"class": "a-icon-alt"})
         product_rating= rating.text.strip() if rating else "No Rating Found"
 
         price = card.find("span", {"class": "a-price-whole"})

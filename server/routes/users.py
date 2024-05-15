@@ -1,48 +1,35 @@
-# server/routes/users.py
-
-from flask import request
+from flask import session, jsonify, make_response, request
 from flask_restful import Resource
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt
+from config import db, api
 from models.user import User
-from config import db
+
 
 class Users(Resource):
     def get(self):
-        users = User.query.all()
-        return [user.to_dict() for user in users], 200
+        try:
+            users = []
+            for user in User.query.all():
+                users.append(user.to_dict(rules=["-_password_hash"]))
+            return make_response({"users": users}, 200)
+        except Exception as e:
+            return make_response({"error": str(e)}, 500)
 
-    def post(self):
-        data = request.get_json()
-        username = data.get('username')
-        email = data.get('email')
-        password = data.get('password')
 
-        if not username or not email or not password:
-            return {"error": "Missing required fields"}, 400
-
-        existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
-        if existing_user:
-            return {"error": "User already exists"}, 409
-
-        new_user = User(username=username, email=email)
-        new_user.password_hash = password
-
-        db.session.add(new_user)
-        db.session.commit()
-
-        return new_user.to_dict(), 201
 
 class UserByID(Resource):
     def get(self, id):
-        user = User.query.get(id)
-        if user is None:
-            return {"error": "User not found"}, 404
-        return user.to_dict(), 200
+        user = User.query.filter(User.id == id).first()
+
+        if user:
+            return make_response(user.to_dict(rules=["-_password_hash"]))
+        return make_response({"error": "User not found"}, 404)
 
     def delete(self, id):
-        user = User.query.get(id)
-        if user is None:
-            return {"error": "User not found"}, 404
+        user = User.query.filter(User.id == id).first()
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return make_response({"message": "User deleted successfully"})
+        return make_response({"Error": "User not found"})
 
-        db.session.delete(user)
-        db.session.commit()
-        return {"message": "User deleted"}, 200

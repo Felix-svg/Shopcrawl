@@ -1,12 +1,12 @@
-// components/Home.js
 import React from 'react';
+import SearchBar from './SearchBar'; 
 
-const Home = () => {
-  return (
-    <div>
-        <h2>Welcome to my site</h2>
-    </div>
-  );
-};
+function Home() {
+    return (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#90AEAD' }}>
+            <SearchBar />
+        </div>
+    );
+}
 
 export default Home;

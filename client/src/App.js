@@ -1,9 +1,9 @@
-// App.js
-
 import React, { useState } from 'react';
-import ProductList from './components/ProductList';
-import SearchBar from './components/SearchBar';
-import CategoryComponent from './components/CategoryComponent'; // Import CategoryComponent
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './components/Home';
+import Footer from './components/Footer';
+import ResultsPage from './components/ResultsPage'; // Make sure the path is correct
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -22,11 +22,14 @@ function App() {
   };
 
   return (
-    <div>
-      <SearchBar onSearch={searchProducts} />
-      <CategoryComponent /> {/* Render CategoryComponent */}
-      <ProductList products={products} />
-    </div>
+    <Router>
+        <Navbar /> {/* Navbar on every page */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/results" element={<ResultsPage />} />
+        </Routes>
+        <Footer /> {/* Footer on every page */}
+    </Router>
   );
 }
 
