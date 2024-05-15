@@ -42,13 +42,13 @@ def search_amazon(product_name):
             if match:
                 product_rating = float(match.group())
         
-        rating_count = card.find("span", {"class": "a-size-base"})
-        product_rating_count = rating_count.text.strip() if rating_count else None
+        # rating_count = card.find("span", {"class": "a-size-base"})
+        # product_rating_count = rating_count.text.strip() if rating_count else None
         
-        if product_rating:
-            product_rating = f"{product_rating} ({product_rating_count})" if product_rating_count else product_rating
-        else:
-            product_rating  = None     
+        # if product_rating:
+        #     product_rating = f"{product_rating} ({product_rating_count})" if product_rating_count else product_rating
+        # else:
+        #     product_rating  = None     
 
         price = card.find("span", {"class": "a-price-whole"})
         product_price = price.text if price else None
@@ -105,7 +105,14 @@ def search_alibaba(product_name):
         product_name = title.text.strip() if title else None
 
         rating = card.find("span", {"class":"search-card-e-review"})
-        product_rating= rating.text.strip() if rating else None
+        product_rating=None
+        if rating:
+            rating_text = rating.text.strip()
+            match = re.search(r'\d+\.\d+', rating_text)
+            
+            if match:
+                product_rating = float(match.group())
+                
 
         price = card.find("div", {"class": "search-card-e-price-main"})
         product_price = price.text.strip() if price else None

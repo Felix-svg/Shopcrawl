@@ -115,8 +115,8 @@ def display_ranked_products(ranked_products):
         score = product_info['score']
         
         print(f"Rank {rank}:")
-        print(f"Product 1: {product1['name']}, Price: {product1['price']}, Rating: {product1['rating']}")
-        print(f"Product 2: {product2['name']}, Price: {product2['price']}, Rating: {product2['rating']}")
+        print(f"Product 1: {product1['product_name']}, Price: {product1['product_price']}, Rating: {product1['product_rating']}")
+        print(f"Product 2: {product2['product_name']}, Price: {product2['product_price']}, Rating: {product2['product_rating']}")
         print(f"Score: {score}")
         print()
  
