@@ -1,12 +1,13 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -40,6 +41,10 @@ const Login = () => {
         console.error(error);
         setMessage("Login failed. Please try again.");
       });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -82,16 +87,25 @@ const Login = () => {
                     <label htmlFor="password" className="form-label">
                       Password
                     </label>
-                    <input
-                      type="password"
-                      name="password"
-                      id="password"
-                      placeholder="••••••••"
-                      className="form-control"
-                      required
-                      value={password}
-                      onChange={handlePasswordChange}
-                    />
+                    <div className="input-group">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        id="password"
+                        placeholder="••••••••"
+                        className="form-control"
+                        required
+                        value={password}
+                        onChange={handlePasswordChange}
+                      />
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                      >
+                        {showPassword ? <IoMdEyeOff /> : <IoMdEye />}
+                      </button>
+                    </div>
                   </div>
                   <button type="submit" className="btn btn-primary w-100">
                     Sign in
@@ -113,4 +127,3 @@ const Login = () => {
 };
 
 export default Login;
-

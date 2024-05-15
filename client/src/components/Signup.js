@@ -1,24 +1,29 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = (e) => {
@@ -95,15 +100,24 @@ const Signup = () => {
                   </div>
                   <div className="form-group">
                     <label htmlFor="password">Password</label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="password"
-                      placeholder="••••••••"
-                      required
-                      value={password}
-                      onChange={handlePasswordChange}
-                    />
+                    <div className="input-group">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className="form-control"
+                        id="password"
+                        placeholder="••••••••"
+                        required
+                        value={password}
+                        onChange={handlePasswordChange}
+                      />
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                      >
+                        {showPassword ? <IoMdEyeOff /> : <IoMdEye />}
+                      </button>
+                    </div>
                   </div>
                   <button type="submit" className="btn btn-primary btn-block">
                     Sign up
@@ -122,4 +136,3 @@ const Signup = () => {
 };
 
 export default Signup;
-
