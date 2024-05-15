@@ -50,6 +50,7 @@ def search_amazon(product_name):
         # else:
         #     product_rating  = None     
 
+
         price = card.find("span", {"class": "a-price-whole"})
         product_price = price.text if price else None
 
