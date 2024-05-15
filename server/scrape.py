@@ -30,6 +30,7 @@ def search_amazon(product_name):
         image = card.find("img", {"class": "s-image"})
         img_src = image["src"] if image else None
 
+
         title = card.find("span", {"class":"a-size-medium a-color-base a-text-normal"})
         product_name = title.text if title else None
 
@@ -49,6 +50,7 @@ def search_amazon(product_name):
         #     product_rating = f"{product_rating} ({product_rating_count})" if product_rating_count else product_rating
         # else:
         #     product_rating  = None     
+
 
         price = card.find("span", {"class": "a-price-whole"})
         product_price = price.text if price else None
