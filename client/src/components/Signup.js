@@ -7,6 +7,7 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -22,12 +23,20 @@ const Signup = () => {
     setPassword(e.target.value);
   };
 
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setMessage("Passwords do not match");
+      return;
+    }
     fetch("http://127.0.0.1:5000/signup", {
       method: "POST",
       headers: {
@@ -45,6 +54,7 @@ const Signup = () => {
         setPassword("");
         setUsername("");
         setEmail("");
+        setConfirmPassword("");
         setMessage("Signup successful!");
       })
       .catch((error) => {
@@ -138,6 +148,29 @@ const Signup = () => {
                         required
                         value={password}
                         onChange={handlePasswordChange}
+                      />
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                      >
+                        {showPassword ? <IoMdEyeOff /> : <IoMdEye />}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="confirmPassword" className="form-label" style={{ color: "teal" }}>
+                      Confirm Password
+                    </label>
+                    <div className="input-group">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className="form-control"
+                        id="confirmPassword"
+                        placeholder="••••••••"
+                        required
+                        value={confirmPassword}
+                        onChange={handleConfirmPasswordChange}
                       />
                       <button
                         className="btn btn-outline-secondary"
