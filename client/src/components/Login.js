@@ -80,9 +80,9 @@ const Login = () => {
       <div className="container py-8">
         <div className="row justify-content-center">
           <div className="col-lg-6">
-            <div className="card border-primary">
+            <div className="card border-primary" style={{ backgroundColor: "lavender" }}>
               <div className="card-body">
-                <h1 className="text-center mb-4">Welcome Back</h1>
+                <h1 className="text-center mb-4" style={{ color: "teal" }}>Welcome Back</h1>
                 {message && (
                   <p
                     className={`text-center text-sm ${
@@ -97,7 +97,7 @@ const Login = () => {
 
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
-                    <label htmlFor="email" className="form-label">
+                    <label htmlFor="email" className="form-label" style={{ color: "teal" }}>
                       Your email
                     </label>
                     <input
@@ -112,7 +112,7 @@ const Login = () => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="password" className="form-label">
+                    <label htmlFor="password" className="form-label" style={{ color: "teal" }}>
                       Password
                     </label>
                     <div className="input-group">
@@ -143,7 +143,7 @@ const Login = () => {
                       checked={rememberMe}
                       onChange={handleRememberMeChange}
                     />
-                    <label className="form-check-label" htmlFor="rememberMe">
+                    <label className="form-check-label" htmlFor="rememberMe" style={{ color: "teal" }}>
                       Remember Me
                     </label>
                   </div>
@@ -157,13 +157,13 @@ const Login = () => {
                     </button>
                   </div>
                   <div className="text-center mt-3">
-                    <Link to="/forgot-password" className="text-primary">
+                    <Link to="/forgot-password" style={{ color: "teal" }}>
                       Forgot Password?
                     </Link>
                   </div>
-                  <p className="text-center mt-3">
+                  <p className="text-center mt-3" style={{ color: "black" }}>
                     Don’t have an account yet?{" "}
-                    <Link to="/signup" className="text-primary">
+                    <Link to="/signup" style={{ color: "teal" }}>
                       Sign up
                     </Link>
                   </p>

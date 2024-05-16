@@ -82,8 +82,8 @@ const Signup = () => {
         <div className="row justify-content-center">
           <div className="col-md-6">
             <div className="card">
-              <div className="card-body">
-                <h1 className="text-center mb-4">Create Account</h1>
+              <div className="card-body" style={{ backgroundColor: "lavender" }}>
+                <h1 className="text-center mb-4" style={{ color: "teal" }}>Create Account</h1>
                 {message && (
                   <p
                     className={`text-center text-sm ${
@@ -97,8 +97,10 @@ const Signup = () => {
                 )}
 
                 <form onSubmit={handleSubmit}>
-                  <div className="form-group">
-                    <label htmlFor="username">Your Username</label>
+                  <div className="mb-3">
+                    <label htmlFor="username" className="form-label" style={{ color: "teal" }}>
+                      Your Username
+                    </label>
                     <input
                       type="text"
                       className="form-control"
@@ -109,8 +111,10 @@ const Signup = () => {
                       onChange={handleUsernameChange}
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="email">Your Email</label>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label" style={{ color: "teal" }}>
+                      Your Email
+                    </label>
                     <input
                       type="email"
                       className="form-control"
@@ -121,8 +125,10 @@ const Signup = () => {
                       onChange={handleEmailChange}
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="password">Password</label>
+                  <div className="mb-3">
+                    <label htmlFor="password" className="form-label" style={{ color: "teal" }}>
+                      Password
+                    </label>
                     <div className="input-group">
                       <input
                         type={showPassword ? "text" : "password"}
@@ -145,12 +151,12 @@ const Signup = () => {
                   <button
                     type="submit"
                     className="btn btn-primary btn-block"
-                    style={{ backgroundColor: "teal" }}
+                    style={{ backgroundColor: "teal", width: "100%" }}
                   >
                     Sign up
                   </button>
-                  <p className="text-center mt-3">
-                    Already have an account? <Link to="/login">Log in</Link>
+                  <p className="text-center mt-3" style={{ color: "black" }}>
+                    Already have an account? <Link to="/login" style={{ color: "teal" }}>Log in</Link>
                   </p>
                 </form>
               </div>
