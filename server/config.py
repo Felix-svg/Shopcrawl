@@ -27,4 +27,4 @@ bcrypt = Bcrypt(app)
 
 CORS(app)
 
-jwt = JWTManager()
+jwt = JWTManager(app)
