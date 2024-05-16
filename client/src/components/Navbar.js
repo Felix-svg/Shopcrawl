@@ -31,7 +31,7 @@ function Navbar() {
                 {['Home', 'Products', 'About', 'Contact'].map((text) => (
                     <li key={text} style={{ margin: '0 30px', padding: '10px 20px', fontSize: '16px', fontWeight: 'bold', transition: 'background-color 0.3s ease, color 0.3s ease', borderRadius: '5px', textAlign: 'center' }}>
                         <a 
-                            href="#" 
+                            href="/home" 
                             style={{ color: '#90AEAD', textDecoration: 'none', display: 'block', padding: '2px 5px' }}
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}

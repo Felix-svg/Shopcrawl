@@ -12,8 +12,8 @@ const Footer = () => {
             <div className="single_footer single_footer_address">
               <h4>Page Links.</h4>
               <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Products</a></li>
+                <li><a href="/Home">Home</a></li>
+                <li><a href="/products">Products</a></li>
                 <li><a href="#">Services</a></li>
                 <li><a href="#">About Us</a></li>
                 <li><a href="#">Contact</a></li>

@@ -58,7 +58,7 @@ class Search(Resource):
                             name=product["product_name"],
                             price=product["product_price"],
                             image_src=product["image_src"],
-                            source="alibaba",
+                            source="amazon",
                             rating=product["product_rating"],
                             category=category,
                         )

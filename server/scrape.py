@@ -6,7 +6,6 @@ from product_ranking import rank_products, display_ranked_products, prompt_user_
 
 
 def search_amazon(product_name):
-
     url = f"https://www.amazon.com/s?k={product_name}"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
@@ -18,38 +17,25 @@ def search_amazon(product_name):
     }
 
     response = requests.get(url, headers=headers)
-
     soup = BeautifulSoup(response.content, "html.parser")
-
     product_cards = soup.find_all("div", {"data-component-type": "s-search-result"})
 
     products = []
 
     for card in product_cards:
-
         image = card.find("img", {"class": "s-image"})
         img_src = image["src"] if image else None
 
         title = card.find("h2", {"class": "a-size-mini a-spacing-none a-color-base s-line-clamp-2"})
         product_name = title.text if title else None
 
-        rating = rating = card.find("span", {"class": "a-icon-alt"})
-        product_rating= None
+        rating = card.find("span", {"class": "a-icon-alt"})
+        product_rating = None
         if rating:
             rating_text = rating.text.strip()
-            #extract numerical rating using regex
             match = re.search(r'\d+\.\d+', rating_text)
             if match:
                 product_rating = float(match.group())
-        
-        # rating_count = card.find("span", {"class": "a-size-base"})
-        # product_rating_count = rating_count.text.strip() if rating_count else None
-        
-        # if product_rating:
-        #     product_rating = f"{product_rating} ({product_rating_count})" if product_rating_count else product_rating
-        # else:
-        #     product_rating  = None     
-
 
         price = card.find("span", {"class": "a-price-whole"})
         product_price = price.text if price else None
@@ -59,7 +45,8 @@ def search_amazon(product_name):
                 "image_src": img_src,
                 "product_name": product_name,
                 "product_price": product_price,
-                "product_rating":product_rating
+                "product_rating": product_rating,
+                "source": "amazon"  # Correct source field
             }
         )
 
@@ -67,9 +54,10 @@ def search_amazon(product_name):
     filtered_products = [product for product in products if product["product_price"] is not None]
 
     # Sort the filtered products based on the converted price values
-    filtered_products.sort(key=lambda x: convert_price_to_float(x["product_price"]))  
-    
+    filtered_products.sort(key=lambda x: convert_price_to_float(x["product_price"]))
+
     return filtered_products
+
 
 
 def search_alibaba(product_name):
