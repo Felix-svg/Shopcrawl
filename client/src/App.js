@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import ResultsPage from './components/ResultsPage'; // Make sure the path is correct
 import Login from './components/Login';
 import Signup from './components/Signup';
+import RankProduct from './components/RankProduct';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -31,6 +32,7 @@ function App() {
           <Route path="/results" element={<ResultsPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path='/rank-products' element={<RankProduct/>} />
         </Routes>
         <Footer /> {/* Footer on every page */}
     </Router>

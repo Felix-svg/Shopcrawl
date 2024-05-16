@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import logo from '../components/images/logo-png.jpg';  // Ensure the path is correct
 
 function Navbar() {
@@ -28,16 +29,22 @@ function Navbar() {
                 <img src={logo} alt="Logo" style={{ height: '60px', marginRight: '20px' }} />
             </div>
             <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: 0, flex: 1 }}>
-                {['Home', 'Products', 'About', 'Contact'].map((text) => (
+                {[
+                    { text: 'Home', path: '/' },
+                    { text: 'Rank Products', path: '/rank-products' },
+                    { text: 'Products', path: '/products' },
+                    { text: 'About', path: '/about' },
+                    { text: 'Contact', path: '/contact' }
+                ].map(({ text, path }) => (
                     <li key={text} style={{ margin: '0 30px', padding: '10px 20px', fontSize: '16px', fontWeight: 'bold', transition: 'background-color 0.3s ease, color 0.3s ease', borderRadius: '5px', textAlign: 'center' }}>
-                        <a 
-                            href="#" 
+                        <Link 
+                            to={path} 
                             style={{ color: '#90AEAD', textDecoration: 'none', display: 'block', padding: '2px 5px' }}
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
                         >
                             {text}
-                        </a>
+                        </Link>
                     </li>
                 ))}
             </ul>
