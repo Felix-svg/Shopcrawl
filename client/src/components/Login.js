@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -17,6 +18,10 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
+  const handleRememberMeChange = () => {
+    setRememberMe(!rememberMe);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch("http://127.0.0.1:5000/login", {
@@ -24,7 +29,7 @@ const Login = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, rememberMe }),
     })
       .then((resp) => {
         if (!resp.ok) {
@@ -48,7 +53,30 @@ const Login = () => {
   };
 
   return (
-    <section className="bg-gray-50">
+    <section
+      className="bg-gray-50"
+      style={{
+        backgroundImage: `url("https://images.unsplash.com/photo-1714918161431-1bbafd741557?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0NHx8fGVufDB8fHx8fA%3D%3D")`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "relative",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0, 0, 0, 0.3)",
+        }}
+      ></div>
       <div className="container py-8">
         <div className="row justify-content-center">
           <div className="col-lg-6">
@@ -107,9 +135,32 @@ const Login = () => {
                       </button>
                     </div>
                   </div>
-                  <button type="submit" className="btn btn-primary w-100">
-                    Sign in
-                  </button>
+                  <div className="form-check mb-3">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id="rememberMe"
+                      checked={rememberMe}
+                      onChange={handleRememberMeChange}
+                    />
+                    <label className="form-check-label" htmlFor="rememberMe">
+                      Remember Me
+                    </label>
+                  </div>
+                  <div className="d-grid">
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      style={{ backgroundColor: "teal" }}
+                    >
+                      Sign in
+                    </button>
+                  </div>
+                  <div className="text-center mt-3">
+                    <Link to="/forgot-password" className="text-primary">
+                      Forgot Password?
+                    </Link>
+                  </div>
                   <p className="text-center mt-3">
                     Don’t have an account yet?{" "}
                     <Link to="/signup" className="text-primary">

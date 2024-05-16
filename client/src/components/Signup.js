@@ -54,7 +54,30 @@ const Signup = () => {
   };
 
   return (
-    <section className="bg-light">
+    <section
+      className="bg-light"
+      style={{
+        backgroundImage: "url('https://images.unsplash.com/photo-1714918161431-1bbafd741557?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0NHx8fGVufDB8fHx8fA%3D%3D')",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "relative",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0, 0, 0, 0.3)",
+        }}
+      ></div>
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6">
@@ -119,7 +142,11 @@ const Signup = () => {
                       </button>
                     </div>
                   </div>
-                  <button type="submit" className="btn btn-primary btn-block">
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-block"
+                    style={{ backgroundColor: "teal" }}
+                  >
                     Sign up
                   </button>
                   <p className="text-center mt-3">
