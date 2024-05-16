@@ -1,22 +1,29 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { IoMdEyeOff, IoMdEye } from "react-icons/io";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = (e) => {
@@ -47,7 +54,30 @@ const Signup = () => {
   };
 
   return (
-    <section className="bg-light">
+    <section
+      className="bg-light"
+      style={{
+        backgroundImage: "url('https://images.unsplash.com/photo-1714918161431-1bbafd741557?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0NHx8fGVufDB8fHx8fA%3D%3D')",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "relative",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0, 0, 0, 0.3)",
+        }}
+      ></div>
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6">
@@ -93,17 +123,30 @@ const Signup = () => {
                   </div>
                   <div className="form-group">
                     <label htmlFor="password">Password</label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="password"
-                      placeholder="••••••••"
-                      required
-                      value={password}
-                      onChange={handlePasswordChange}
-                    />
+                    <div className="input-group">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className="form-control"
+                        id="password"
+                        placeholder="••••••••"
+                        required
+                        value={password}
+                        onChange={handlePasswordChange}
+                      />
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                      >
+                        {showPassword ? <IoMdEyeOff /> : <IoMdEye />}
+                      </button>
+                    </div>
                   </div>
-                  <button type="submit" className="btn btn-primary btn-block">
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-block"
+                    style={{ backgroundColor: "teal" }}
+                  >
                     Sign up
                   </button>
                   <p className="text-center mt-3">
@@ -120,4 +163,3 @@ const Signup = () => {
 };
 
 export default Signup;
-
