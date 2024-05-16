@@ -143,6 +143,7 @@ const Login = () => {
                         id="rememberMe"
                         checked={rememberMe}
                         onChange={handleRememberMeChange}
+                        style={{ backgroundColor: rememberMe ? "teal" : "transparent" }}
                       />
                       <label className="form-check-label" htmlFor="rememberMe" style={{ color: "teal" }}>
                         Remember Me
