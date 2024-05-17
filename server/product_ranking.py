@@ -1,79 +1,57 @@
 from convert_price import convert_price_to_float
+
+class Product:
+    def __init__(self, product_name, product_price, product_rating) -> None:
+        self.product_name = product_name
+        self.product_price = convert_price_to_float(product_price)
+        self.product_rating = product_rating
+        
    
 #prompt user to input their preferences for price and rating weights
-def prompt_user_for_weights():
+#weights represents level of importance to the user
+def prompt_user_for_weights(factors):
     
-    price_weight = float(input("Enter the weight importance for product price(between 0 and 1): "))
-    rating_weight= float(input("Enter the weight importance for product rating(between 0 and 1): "))
-
-    #check if weights add up to 1
-    total_weight = price_weight + rating_weight
+    user_weights = {}
+    total_weight = 0.0
+    
+    for factor in factors:
+        weight = float(input(f"Enter the weight importance for {factor} between 0 and 1): "))
+        user_weights[factor] = weight
+        total_weight += weight
+        
     if total_weight != 1.0:
         print("Weights must add up to 1. Adjusting weights accordingly.")
-        price_weight /= total_weight
-        rating_weight /= total_weight
-        
-    user_weights = {
-        'price_weight': price_weight,
-        'rating_weight': rating_weight,
-        'marginal_weight': 0.5, #default value
-        'cost_weight': 0.5   #default value
-    }
-    
-    return user_weights
-        
+        for factor in factors: 
+            user_weights[factor] /= total_weight
+            
+    return user_weights            
 
-
+#calculate marginal benefit
 def calculate_mb(product1, product2, user_weights):
-    # MB calculation logic
-    #weights represents level of importance to the user
-    price1_str = product1.get('product_price')
-    price2_str = product2.get('product_price')
-    
-    #check if price strings are not None
-    if price1_str is not None and price2_str is not None:
-        price1 = convert_price_to_float(price1_str)
-        price2 = convert_price_to_float(price2_str)
+    mb = 0.0
+    for factor, weight in user_weights.items():
+        value1 = convert_price_to_float(product1.get(factor))
+        value2 = convert_price_to_float(product2.get(factor))
         
-        price_diff = price2 - price1
-    else:
-        price_diff = 0  #default value    
-    
-    # check if product ratings are not None
-    rating1_str = product1.get('product_rating')
-    rating2_str = product2.get('product_rating')
-    if rating1_str is not None and rating2_str is not None:
-        rating1 = float(rating1_str)
-        rating2 = float(rating2_str)
-    else:
-        rating1 = 0  # default value
-        rating2 = 0  # default value
+        if value1 is not None and value2 is not None:
+            diff = value2 - value1
+            mb += diff * weight
+            
+    return round(mb, 1)
 
-    rating_diff = rating2 - rating1
-    
-    mb = (price_diff * user_weights['price_weight']) + (rating_diff * user_weights['rating_weight'])
-    
-    return mb
-
-
-
+#calculate cost benefit        
 def calculate_cb(product1, product2):
-    # CB calculation logic
-    price1_str = product1.get('product_price')
-    price2_str = product2.get('product_price')
-    
-    if price1_str is not None and price2_str is not None:
-        
-        price1 = convert_price_to_float(price1_str)
-        price2 = convert_price_to_float(price2_str)
-         
+    cb = 0.0
+    if product1.get("product_price") is not None and product2.get("product_price") is not None:
+        price1 = convert_price_to_float(product1.get("product_price"))
+        price2 = convert_price_to_float(product2.get("product_price"))
         cb = price1 - price2
-    else:
-        cb = 0    
-    
-    return cb 
+        
+    return round(cb, 1)
 
-#ranking algorithm to compare and rank products based on marginal_weight, cost_weight, user_weights
+        
+
+#ranking algorithm to compare and rank products based on marginal benefit, cost benefit and user_weights
 
 def calculate_score(product1, product2, user_weights):
     
@@ -81,15 +59,7 @@ def calculate_score(product1, product2, user_weights):
     marginal_benefit = calculate_mb(product1, product2, user_weights)
     cost_benefit = calculate_cb(product1, product2)
     
-    weighted_marginal_benefit = marginal_benefit * user_weights['marginal_weight']
-    weighted_cost_benefit = cost_benefit * user_weights['cost_weight']
-    
-    total_score = weighted_cost_benefit + weighted_marginal_benefit
-    
-    #round off total score to 2 decimal places
-    total_score = round(total_score, 2)
-    
-    return total_score
+    return marginal_benefit, cost_benefit
 
 
 def rank_products(products, user_weights):
@@ -100,11 +70,11 @@ def rank_products(products, user_weights):
             product1 = products[i]
             product2 = products[j]
             
-            score = calculate_score(product1, product2, user_weights)
-            ranked_products.append({'product1': product1, 'product2': product2, 'score': score})
+            marginal_benefit, cost_benefit = calculate_score(product1, product2, user_weights)
+            ranked_products.append({'product1': product1, 'product2': product2, 'marginal_benefit': marginal_benefit, 'cost_benefit': cost_benefit})
             
     
-    ranked_products.sort(key=lambda x: x['score'], reverse=True)
+    ranked_products.sort(key=lambda x: x['marginal_benefit'], reverse=True)
     return ranked_products
     
 def display_ranked_products(ranked_products):
@@ -112,11 +82,18 @@ def display_ranked_products(ranked_products):
     for rank, product_info in enumerate(ranked_products, start=1):
         product1 = product_info['product1']
         product2 = product_info['product2']
-        score = product_info['score']
+        marginal_benefit = product_info['marginal_benefit']
+        cost_benefit = product_info['cost_benefit']
+        
         
         print(f"Rank {rank}:")
-        print(f"Product 1: {product1['product_name']}, Price: {product1['product_price']}, Rating: {product1['product_rating']}")
-        print(f"Product 2: {product2['product_name']}, Price: {product2['product_price']}, Rating: {product2['product_rating']}")
-        print(f"Score: {score}")
+        print(f"Product 1 Amazon: {product1['product_name']}, Price: {product1['product_price']}, Rating: {product1['product_rating']}")
+        print(f"Product 2 Alibaba: {product2['product_name']}, Price: {product2['product_price']}, Rating: {product2['product_rating']}")
+        print(f"Marginal Benefit: {marginal_benefit}")
+        print(f"Cost Benefit: {cost_benefit}")
         print()
  
+#if mb is negative it means  there will not be a substantial benefit in purchasing more of the product
+#hence they could explore other factors or products instead or adjusting their weights preferences
+#positive mb indicates increasing the quantity of products would provide a greater benefit
+#a -ve cb is a signal that the cost outweighs the benefit to purchasing the product

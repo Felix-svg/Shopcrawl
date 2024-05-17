@@ -2,122 +2,116 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const RankProduct = () => {
-    const [productName, setProductName] = useState('')
-    const [userWeights, setUserWeights] = useState({
-        'price importance':'',
-        'rating importance':''
-    })
-    const [rankedProducts, setRankedProducts] = useState([])
-    const [calculating, setCalculating] = useState(false);
+  const [productName, setProductName] = useState('');
+  const [priceImportance, setPriceImportance] = useState('');
+  const [ratingImportance, setRatingImportance] = useState('');
+  const [rankedProducts, setRankedProducts] = useState([]);
+  const [calculating, setCalculating] = useState(false);
 
-    const handleInputChange = (event) => {
-        setProductName(event.target.value)
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    if (name === 'productName') {
+      setProductName(value);
+    } else if (name === 'priceImportance') {
+      setPriceImportance(value);
+    } else if (name === 'ratingImportance') {
+      setRatingImportance(value);
     }
+  };
 
-    const handleWeightChange = (event) => {
-        const {name, value} = event.target
-        setUserWeights(prevState => ({
-            ...prevState,
-            [name]: value
-        }))
-    }
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-    // const handleSearch = () => {
-    //     setCalculating(true)
+    const requestData = {
+      product_name: productName,
+      product_price: parseFloat(priceImportance),
+      product_rating: parseFloat(ratingImportance),
+    };
 
-    //     axios.post("/rank_products", {product_name: productName, user_weights: userWeights})
-    //         .then(response => {
-    //             setRankedProducts(response.data)
-    //             setCalculating(false)
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching ranked products:', error)
-    //             setCalculating(false)
+    setCalculating(true);
 
-    //         })
-    // }
-    
+    axios
+      .post('http://127.0.0.1:5000/rank_products', requestData)
+      .then((response) => {
+        setRankedProducts(response.data);
+        setCalculating(false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setCalculating(false);
+      });
+  };
 
-    const handleSearch = () => {
-        setCalculating(true);
-    
-        fetch("http://127.0.0.1:5000/rank_products", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                product_name: productName,
-                user_weights: userWeights
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            setRankedProducts(data);
-            setCalculating(false);
-        })
-        .catch(error => {
-            console.error('Error fetching ranked products:', error);
-            setCalculating(false);
-        });
-    }
-    
-    return (
-        <div>
-            <div>
-                <label>Product Name:</label>
-                <input
-                    type="text"
-                    value={productName}
-                    onChange={handleInputChange}
-                    placeholder="Enter product name"
-                />
-            </div>
+  return (
+    <div>
+      <h1>Rank Products</h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Product Name:
+          <input
+            type="text"
+            name="productName"
+            value={productName}
+            onChange={handleInputChange}
+          />
+        </label>
+        <br />
+        <label>
+          Price Importance (0-1):
+          <input
+            type="number"
+            name="priceImportance"
+            step="0.1"
+            min="0"
+            max="1"
+            value={priceImportance}
+            onChange={handleInputChange}
+          />
+        </label>
+        <br />
+        <label>
+          Rating Importance (0-1):
+          <input
+            type="number"
+            name="ratingImportance"
+            step="0.1"
+            min="0"
+            max="1"
+            value={ratingImportance}
+            onChange={handleInputChange}
+          />
+        </label>
+        <br />
+        <button type="submit">Rank Products</button>
+      </form>
 
-            <div>
-                <label>Price Importance between 0 and 1: </label>
-                <input
-                    type="text"
-                    name="price importance"
-                    value={userWeights['price importance']}
-                    onChange={handleWeightChange}
-                    placeholder="Enter level of importance"
-                />
-            </div>
+      <h2>Ranked Products:</h2>
 
-            <div>
-                <label>Rating Importance between 0 and 1: </label>
-                <input
-                    type="text"
-                    name="rating importance"
-                    value={userWeights['rating importance']}
-                    onChange={handleWeightChange}
-                    placeholder="Enter level of importance"
-                />
-            </div>
-
-            <button onClick={handleSearch}>Search</button>
-
-            {calculating && <p>Calculating ranking...</p>}
-
-            <div>
-                <h4>Ranked Products</h4>
-                <ul>
-                    {rankedProducts.map((product, index) => (
-                        <li key={index}>
-                            {product.product_name} - {product.product_price}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </div>
-    )
-}   
-
+      {calculating ? (
+        <p>Calculating...</p>
+      ) : rankedProducts.length > 0 ? (
+        <ul>
+          {rankedProducts.map((product, index) => (
+            <li key={index}>
+              <strong>Rank {index + 1}:</strong>
+              <br />
+              Product 1 Amazon: {product.product1.product_name}, Price: {product.product1.product_price}, Rating: {product.product1.product_rating}
+              <br />
+              Product 2 Alibaba: {product.product2.product_name}, Price: {product.product2.product_price}, Rating: {product.product2.product_rating}
+              <br />
+              Marginal Benefit: {product.marginal_benefit}
+              <br />
+              Cost Benefit: {product.cost_benefit}
+              <br />
+              <br />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No ranked products to display.</p>
+      )}
+    </div>
+  );
+};
 
 export default RankProduct;
