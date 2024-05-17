@@ -1,63 +1,74 @@
-.search-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
-}
-
-.search-form {
+/* General Styling for the Search Bar and Button */
+.search-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-.search-box {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    border-radius: 25px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.search-input {
-    flex: 1;
-}
-
-.search-input input {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 25px 0 0 25px;
-    outline: none;
-    font-size: 16px;
-    width: 100%;
-}
-
-.search-btn {
-    display: flex;
-    align-items: center;
+.search-input input[type="search"] {
+    padding: 10px;
+    width: 300px; /* You might adjust this based on your layout */
+    border: 2px solid #ccc;
+    border-radius: 5px;
 }
 
 .search-btn button {
-    padding: 10px 20px;
-    margin: 0 10px;
-    border: none;
-    border-radius: 0 25px 25px 0;
     background-color: #007BFF;
-    color: #fff;
+    color: white;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .search-btn button:hover {
     background-color: #0056b3;
 }
 
-.search-btn button ion-icon {
-    font-size: 20px;
+/* Styling for the Results Section */
+.results-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
-.error {
-    color: red;
-    margin-top: 10px;
+.result-card {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.result-card img {
+    width: 50px; /* Adjust as necessary */
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.result-card a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.result-card p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    .results-container {
+        grid-template-columns: 1fr; /* Stack the columns on smaller screens */
+    }
+    .search-input input[type="search"] {
+        width: 100%; /* Full width on smaller screens */
+    }
+    .search-btn button {
+        width: 100%;
+    }
 }
