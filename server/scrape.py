@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-from server.convert_price import convert_price_to_float
+from convert_price import convert_price_to_float
 
 
 def search_amazon(product_name):
