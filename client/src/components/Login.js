@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Login = () => {
+const Login = ({onLogin}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -37,11 +39,17 @@ const Login = () => {
         }
         return resp.json();
       })
-      .then(() => {
+      .then((data) => {
+        if (data.access_token) {
+          localStorage.setItem("access_token", data.access_token);
         setMessage("Login successful!");
         setPassword("");
         setEmail("");
-      })
+        onLogin(data.access_token)
+        navigate("/search")
+      }else{
+        throw new Error("Token not found in response");
+      }})
       .catch((error) => {
         console.error(error);
         setMessage("Login failed. Please try again.");
@@ -105,7 +113,7 @@ const Login = () => {
                       name="email"
                       id="email"
                       className="form-control"
-                      placeholder="Username"
+                      placeholder="Email"
                       required
                       value={email}
                       onChange={handleEmailChange}
