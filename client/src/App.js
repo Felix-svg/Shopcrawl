@@ -27,13 +27,15 @@ function App() {
   return (
     <Router>
         <Navbar /> {/* Navbar on every page */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/results" element={<ResultsPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path='/rank-products' element={<RankProduct/>} />
-        </Routes>
+        <div style={{ backgroundColor: '#90AEAD' }}>
+          <Routes >
+            <Route path="/" element={<Home />} />
+            <Route path="/results" element={<ResultsPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path='/rank-products' element={<RankProduct/>} />
+          </Routes>
+        </div>
         <Footer /> {/* Footer on every page */}
     </Router>
   );
