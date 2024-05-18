@@ -42,17 +42,9 @@ def search_amazon(product_name):
             if match:
                 product_rating = float(match.group())
         
-        # rating_count = card.find("span", {"class": "a-size-base"})
-        # product_rating_count = rating_count.text.strip() if rating_count else None
         
-        # if product_rating:
-        #     product_rating = f"{product_rating} ({product_rating_count})" if product_rating_count else product_rating
-        # else:
-        #     product_rating  = None     
-
 
         price = card.find("span", {"class": "a-offscreen"})
-        print(price)
         product_price = price.text if price else None
 
         products.append(
@@ -149,6 +141,10 @@ def main():
     alibaba_products = search_alibaba(product_name)
 
     #check if lists are empty
+    if not amazon_products and not alibaba_products:
+        print("No products found on Amazon or Alibaba.")
+        return #exit the program
+    
     if not amazon_products:
         print("No products found on Amazon.")
         
@@ -157,9 +153,10 @@ def main():
 
     #combine products from both sites
     all_products = amazon_products + alibaba_products
+    factors = ['product_price', 'product_rating']
 
     #prompt user for weight preferences
-    user_weights = prompt_user_for_weights()
+    user_weights = prompt_user_for_weights(factors)
 
     #rank the combined products
     ranked_products = rank_products(all_products, user_weights)
@@ -197,8 +194,18 @@ category_criteria = {
 }
 
 
-# Function to categorize products based on criteria
+# # Function to categorize products based on criteria
+# def categorize_product(product_name):
+#     for category, keywords in category_criteria.items():
+#         for keyword in keywords:
+#             if keyword.lower() in product_name.lower():
+#                 return category
+#     return "other"  # Default category if no match is found
+
 def categorize_product(product_name):
+    # Use a default value if product_name is None
+    if product_name is None:
+        product_name = ""  # or use a specific placeholder like "unknown"
     for category, keywords in category_criteria.items():
         for keyword in keywords:
             if keyword.lower() in product_name.lower():
