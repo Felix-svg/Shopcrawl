@@ -42,14 +42,7 @@ def search_amazon(product_name):
             if match:
                 product_rating = float(match.group())
         
-        # rating_count = card.find("span", {"class": "a-size-base"})
-        # product_rating_count = rating_count.text.strip() if rating_count else None
         
-        # if product_rating:
-        #     product_rating = f"{product_rating} ({product_rating_count})" if product_rating_count else product_rating
-        # else:
-        #     product_rating  = None     
-
 
         price = card.find("span", {"class": "a-offscreen"})
         print(price)
@@ -149,6 +142,10 @@ def main():
     alibaba_products = search_alibaba(product_name)
 
     #check if lists are empty
+    if not amazon_products and not alibaba_products:
+        print("No products found on Amazon or Alibaba.")
+        return #exit the program
+    
     if not amazon_products:
         print("No products found on Amazon.")
         
@@ -157,9 +154,10 @@ def main():
 
     #combine products from both sites
     all_products = amazon_products + alibaba_products
+    factors = ['product_price', 'product_rating']
 
     #prompt user for weight preferences
-    user_weights = prompt_user_for_weights()
+    user_weights = prompt_user_for_weights(factors)
 
     #rank the combined products
     ranked_products = rank_products(all_products, user_weights)

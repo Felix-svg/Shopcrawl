@@ -11,6 +11,7 @@ from routes.signup import Signup
 from routes.search import Search
 from routes.search_history import Search_history
 from routes.users import Users, UserByID
+from routes.rankproducts import RankProducts
 
 api.add_resource(Home, "/")
 api.add_resource(Products, "/products")
@@ -23,6 +24,7 @@ api.add_resource(Search, "/search")
 api.add_resource(Search_history, "/search_history")
 api.add_resource(Users, "/users")
 api.add_resource(UserByID, "/users/<int:id>")
+api.add_resource(RankProducts, "/rank_products")
 
 
 if __name__ == "__main__":
