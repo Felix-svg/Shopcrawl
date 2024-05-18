@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import re
-from convert_price import convert_price_to_float
+from convert_price import convert_price_to_float, adjust_price
 from product_ranking import rank_products, display_ranked_products, prompt_user_for_weights
 
 
@@ -44,7 +44,8 @@ def search_amazon(product_name):
         
         
 
-        price = card.find("span", {"class": "a-price-whole"})
+        price = card.find("span", {"class": "a-offscreen"})
+        print(price)
         product_price = price.text if price else None
 
         products.append(
@@ -111,11 +112,14 @@ def search_alibaba(product_name):
         price = card.find("div", {"class": "search-card-e-price-main"})
         product_price = price.text.strip() if price else None
 
+        # Adjust the price to get only the upper part of the range
+        adjusted_price = adjust_price(product_price)
+
         products.append(
             {
                 "image_src": img_src,
                 "product_name": product_name,
-                "product_price": product_price,
+                "product_price": adjusted_price,
                 "product_rating": product_rating
             }
         )
