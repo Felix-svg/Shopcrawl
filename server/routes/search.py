@@ -89,7 +89,7 @@ def search():
         def process_products(products, source):
             for product in products:
                 if not product.get("product_name"):
-                    logging.error(f"Product from {source} missing name: {product}")
+                    #logging.error(f"Product from {source} missing name: {product}")
                     continue
                 category_name = categorize_product(product["product_name"])
                 category = Category.query.filter_by(name=category_name).first()
