@@ -34,7 +34,7 @@ const ResultCard = ({ result }) => (
     <div style={{
         minWidth: '220px',
         maxWidth: '220px',
-        height: '340px',  // Increased height to accommodate more content
+        height: '360px',  // Increased height to accommodate more content
         margin: '10px',
         padding: '15px',
         border: '1px solid #ccc',
@@ -48,8 +48,8 @@ const ResultCard = ({ result }) => (
         <img src={result.image_src} alt={result.product_name} style={{ height: '100px', width: '100%', objectFit: 'cover', marginBottom: '10px' }} />
         <div>
             <p style={{ margin: 0, fontWeight: 'bold', fontSize: '14px', textAlign: 'center' }}>{result.product_name}</p>
-            <p style={{ margin: 0, fontSize: '12px', textAlign: 'center' }}>{result.product_price}</p>
-            <p style={{ margin: 0, fontSize: '12px', textAlign: 'center' }}>{result.product_rating}</p>
+            <p style={{ margin: 0, fontSize: '12px', textAlign: 'center', fontWeight:'600' }}>Price: {result.product_price}</p>
+            <p style={{ margin: 0, fontSize: '12px', textAlign: 'center', fontWeight:'600' }}>Rating: {result.product_rating}</p>
         </div>
     </div>
 );
