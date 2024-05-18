@@ -195,8 +195,18 @@ category_criteria = {
 }
 
 
-# Function to categorize products based on criteria
+# # Function to categorize products based on criteria
+# def categorize_product(product_name):
+#     for category, keywords in category_criteria.items():
+#         for keyword in keywords:
+#             if keyword.lower() in product_name.lower():
+#                 return category
+#     return "other"  # Default category if no match is found
+
 def categorize_product(product_name):
+    # Use a default value if product_name is None
+    if product_name is None:
+        product_name = ""  # or use a specific placeholder like "unknown"
     for category, keywords in category_criteria.items():
         for keyword in keywords:
             if keyword.lower() in product_name.lower():
