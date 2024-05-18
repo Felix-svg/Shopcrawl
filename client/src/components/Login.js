@@ -80,7 +80,7 @@ const Login = () => {
       <div className="container py-8">
         <div className="row justify-content-center">
           <div className="col-lg-6">
-            <div className="card border-primary" style={{ backgroundColor: "lavender" }}>
+            <div className="card border" style={{ backgroundColor: "lavender" }}>
               <div className="card-body">
                 <h1 className="text-center mb-4" style={{ color: "teal" }}>Welcome Back</h1>
                 {message && (
@@ -135,23 +135,17 @@ const Login = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="mb-3 d-flex justify-content-between align-items-center">
-                    <div className="form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="rememberMe"
-                        checked={rememberMe}
-                        onChange={handleRememberMeChange}
-                        style={{ backgroundColor: rememberMe ? "teal" : "transparent" }}
-                      />
-                      <label className="form-check-label" htmlFor="rememberMe" style={{ color: "teal" }}>
-                        Remember Me
-                      </label>
-                    </div>
-                    <Link to="/forgot-password" style={{ color: "teal" }}>
-                      Forgot Password?
-                    </Link>
+                  <div className="form-check mb-3">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id="rememberMe"
+                      checked={rememberMe}
+                      onChange={handleRememberMeChange}
+                    />
+                    <label className="form-check-label" htmlFor="rememberMe" style={{ color: "teal" }}>
+                      Remember Me
+                    </label>
                   </div>
                   <div className="d-grid">
                     <button
@@ -161,6 +155,11 @@ const Login = () => {
                     >
                       Sign in
                     </button>
+                  </div>
+                  <div className="text-center mt-3">
+                    <Link to="/forgot-password" style={{ color: "teal" }}>
+                      Forgot Password?
+                    </Link>
                   </div>
                   <p className="text-center mt-3" style={{ color: "black" }}>
                     Don’t have an account yet?{" "}
