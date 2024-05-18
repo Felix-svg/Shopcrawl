@@ -34,7 +34,7 @@ const ResultCard = ({ result }) => (
     <div style={{
         minWidth: '220px',
         maxWidth: '220px',
-        height: '360px',  // Increased height to accommodate more content
+        height: '380px',  // Increased height to accommodate more content
         margin: '10px',
         padding: '15px',
         border: '1px solid #ccc',
