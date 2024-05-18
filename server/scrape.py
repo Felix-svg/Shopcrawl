@@ -45,7 +45,6 @@ def search_amazon(product_name):
         
 
         price = card.find("span", {"class": "a-offscreen"})
-        print(price)
         product_price = price.text if price else None
 
         products.append(

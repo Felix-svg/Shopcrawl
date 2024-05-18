@@ -189,7 +189,7 @@ const Signup = () => {
                     Sign up
                   </button>
                   <p className="text-center mt-3" style={{ color: "black" }}>
-                    Already have an account? <Link to="/login" style={{ color: "teal" }}>Log in</Link>
+                    Already have an account? <Link to="/login" style={{ color: "teal" }}>Sign in</Link>
                   </p>
                 </form>
               </div>
