@@ -33,7 +33,7 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <div>
+      <div style={{ backgroundColor: '#90AEAD' }}>
         <Routes>
           {!loggedIn ? (
             <>
