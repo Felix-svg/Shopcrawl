@@ -65,38 +65,27 @@ const Signup = () => {
 
   return (
     <section
-      className="bg-light"
+      className=" d-flex justify-content-center align-items-center"
       style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1714918161431-1bbafd741557?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0NHx8fGVufDB8fHx8fA%3D%3D')",
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
+        backgroundColor:"#90AEAD",
         minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        position: "relative",
+        position: "relative"
       }}
     >
       <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "rgba(0, 0, 0, 0.3)",
-        }}
+        className="position-absolute w-100 h-100"
       ></div>
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-md-6">
+          <div className="col-lg-6 col-md-8 col-sm-10">
             <div className="card">
-              <div className="card-body" style={{ backgroundColor: "lavender" }}>
-                <h1 className="text-center mb-4" style={{ color: "teal" }}>Create Account</h1>
+              <div className="card-body" >
+                <h1 className="text-center mb-4" style={{ color: "teal" }}>
+                  Create Account
+                </h1>
                 {message && (
                   <p
-                    className={`text-center text-sm ${
+                    className={`text-center ${
                       message.includes("successful")
                         ? "text-success"
                         : "text-danger"
@@ -108,7 +97,11 @@ const Signup = () => {
 
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
-                    <label htmlFor="username" className="form-label" style={{ color: "teal" }}>
+                    <label
+                      htmlFor="username"
+                      className="form-label"
+                      style={{ color: "teal" }}
+                    >
                       Your Username
                     </label>
                     <input
@@ -122,7 +115,11 @@ const Signup = () => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="email" className="form-label" style={{ color: "teal" }}>
+                    <label
+                      htmlFor="email"
+                      className="form-label"
+                      style={{ color: "teal" }}
+                    >
                       Your Email
                     </label>
                     <input
@@ -136,7 +133,11 @@ const Signup = () => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="password" className="form-label" style={{ color: "teal" }}>
+                    <label
+                      htmlFor="password"
+                      className="form-label"
+                      style={{ color: "teal" }}
+                    >
                       Password
                     </label>
                     <div className="input-group">
@@ -159,7 +160,11 @@ const Signup = () => {
                     </div>
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="confirmPassword" className="form-label" style={{ color: "teal" }}>
+                    <label
+                      htmlFor="confirmPassword"
+                      className="form-label"
+                      style={{ color: "teal" }}
+                    >
                       Confirm Password
                     </label>
                     <div className="input-group">
@@ -189,7 +194,10 @@ const Signup = () => {
                     Sign up
                   </button>
                   <p className="text-center mt-3" style={{ color: "black" }}>
-                    Already have an account? <Link to="/login" style={{ color: "teal" }}>Sign in</Link>
+                    Already have an account?{" "}
+                    <Link to="/login" style={{ color: "teal" }}>
+                      Sign in
+                    </Link>
                   </p>
                 </form>
               </div>
@@ -202,3 +210,4 @@ const Signup = () => {
 };
 
 export default Signup;
+

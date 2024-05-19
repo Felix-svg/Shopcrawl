@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Login = ({onLogin}) => {
+const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -42,14 +42,15 @@ const Login = ({onLogin}) => {
       .then((data) => {
         if (data.access_token) {
           localStorage.setItem("access_token", data.access_token);
-        setMessage("Login successful!");
-        setPassword("");
-        setEmail("");
-        onLogin(data.access_token)
-        navigate("/search")
-      }else{
-        throw new Error("Token not found in response");
-      }})
+          setMessage("Login successful!");
+          setPassword("");
+          setEmail("");
+          onLogin(data.access_token);
+          navigate("/search");
+        } else {
+          throw new Error("Token not found in response");
+        }
+      })
       .catch((error) => {
         console.error(error);
         setMessage("Login failed. Please try again.");
@@ -62,38 +63,27 @@ const Login = ({onLogin}) => {
 
   return (
     <section
-      className="bg-gray-50"
+      className="d-flex justify-content-center align-items-center"
       style={{
-        backgroundImage: `url("https://images.unsplash.com/photo-1714918161431-1bbafd741557?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0NHx8fGVufDB8fHx8fA%3D%3D")`,
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
+        backgroundColor:"#90AEAD",
         minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
         position: "relative",
       }}
     >
       <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "rgba(0, 0, 0, 0.3)",
-        }}
+        className="position-absolute w-100 h-100"
       ></div>
-      <div className="container py-8">
+      <div className="container py-5">
         <div className="row justify-content-center">
-          <div className="col-lg-6">
-            <div className="card border" style={{ backgroundColor: "lavender" }}>
+          <div className="col-lg-6 col-md-8 col-sm-10">
+            <div className="card border" >
               <div className="card-body">
-                <h1 className="text-center mb-4" style={{ color: "teal" }}>Welcome Back</h1>
+                <h1 className="text-center mb-4" style={{ color: "teal" }}>
+                  Welcome Back
+                </h1>
                 {message && (
                   <p
-                    className={`text-center text-sm ${
+                    className={`text-center ${
                       message.includes("successful")
                         ? "text-success"
                         : "text-danger"
@@ -105,11 +95,15 @@ const Login = ({onLogin}) => {
 
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
-                    <label htmlFor="email" className="form-label" style={{ color: "teal" }}>
+                    <label
+                      htmlFor="email"
+                      className="form-label"
+                      style={{ color: "teal" }}
+                    >
                       Your email
                     </label>
                     <input
-                      type="text"
+                      type="email"
                       name="email"
                       id="email"
                       className="form-control"
@@ -120,7 +114,11 @@ const Login = ({onLogin}) => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="password" className="form-label" style={{ color: "teal" }}>
+                    <label
+                      htmlFor="password"
+                      className="form-label"
+                      style={{ color: "teal" }}
+                    >
                       Password
                     </label>
                     <div className="input-group">
@@ -151,7 +149,11 @@ const Login = ({onLogin}) => {
                       checked={rememberMe}
                       onChange={handleRememberMeChange}
                     />
-                    <label className="form-check-label" htmlFor="rememberMe" style={{ color: "teal" }}>
+                    <label
+                      className="form-check-label"
+                      htmlFor="rememberMe"
+                      style={{ color: "teal" }}
+                    >
                       Remember Me
                     </label>
                   </div>
