@@ -1,8 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import logo from '../components/images/logo-png.jpg';  // Ensure the path is correct
+import logo from './images/logo-png.jpg';  // Ensure the path is correct
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Navbar() {
+function Navbar({ loggedIn }) {
     const handleMouseEnter = (e) => {
         e.target.style.backgroundColor = '#E0E0E0';
         e.target.style.color = 'black';
@@ -24,36 +25,50 @@ function Navbar() {
     };
 
     return (
-        <nav style={{ backgroundColor: 'white', padding: '20px 20px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <img src={logo} alt="Logo" style={{ height: '60px', marginRight: '20px' }} />
-            </div>
-            <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: 0, flex: 1 }}>
-                {[
-                    { text: 'Home', path: '/' },
-                    { text: 'Rank Products', path: '/rank-products' },
-                    { text: 'Products', path: '/products' },
-                    { text: 'About', path: '/about' },
-                    { text: 'Contact', path: '/contact' }
-                ].map(({ text, path }) => (
-                    <li key={text} style={{ margin: '0 30px', padding: '10px 20px', fontSize: '16px', fontWeight: 'bold', transition: 'background-color 0.3s ease, color 0.3s ease', borderRadius: '5px', textAlign: 'center' }}>
-                        <Link 
-                            to={path} 
-                            style={{ color: '#90AEAD', textDecoration: 'none', display: 'block', padding: '2px 5px' }}
-                            onMouseEnter={handleMouseEnter}
-                            onMouseLeave={handleMouseLeave}
-                        >
-                            {text}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <button style={{ padding: '10px 20px', fontSize: '16px', fontWeight: 'bold', backgroundColor: '#90AEAD', color: 'black', border: 'none', borderRadius: '5px', cursor: 'pointer', transition: 'background-color 0.3s ease, color 0.3s ease' }}
-                    onMouseEnter={handleButtonMouseEnter}
-                    onMouseLeave={handleButtonMouseLeave}>
-                    Login
+        <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div className="container">
+                <Link className="navbar-brand" to="/">
+                    <img src={logo} alt="Logo" style={{ height: '60px' }} />
+                </Link>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
                 </button>
+                <div className="collapse navbar-collapse" id="navbarNav">
+                    <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                        {[
+                            { text: 'Home', path: '/' },
+                            { text: 'Rank Products', path: '/rank-products' },
+                            { text: 'Products', path: '/products' },
+                            { text: 'About', path: '/about' },
+                            { text: 'Contact', path: '/contact' }
+                        ].map(({ text, path }) => (
+                            <li key={text} className="nav-item">
+                                <Link 
+                                    className="nav-link" 
+                                    to={path} 
+                                    style={{ color: '#90AEAD', fontWeight: 'bold' }}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    {text}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                    {!loggedIn ? (
+                        <Link to="/login">
+                        <button 
+                            className="btn" 
+                            style={{ backgroundColor: '#90AEAD', color: 'black' }}
+                            onMouseEnter={handleButtonMouseEnter}
+                            onMouseLeave={handleButtonMouseLeave}
+                        >
+                            Sign In / Create Account
+                        </button>
+                        </Link>
+                        
+                    ) : null}
+                </div>
             </div>
         </nav>
     );

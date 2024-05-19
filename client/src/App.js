@@ -8,7 +8,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import RankProduct from "./components/RankProduct";
 import LandingPage from "./components/LandingPage";
-import ProductList from "./components/ProductList";
+import Products from "./components/Products";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -32,32 +32,26 @@ function App() {
 
   return (
     <Router>
-      <Navbar />
-      <div style={{ backgroundColor: '#90AEAD' }}>
-        <Routes>
-          {!loggedIn ? (
-            <>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/products" element={<ProductList />} />
-              <Route path="/login" element={<Login onLogin={handleLogin} />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </>
-          ) : (
-            <>
-              <Route
-                path="/search"
-                element={<Home onLogout={handleLogout} />}
-              />
-              <Route path="/results" element={<ResultsPage />} />
-              <Route path="/rank-products" element={<RankProduct />} />
-              <Route path="*" element={<Navigate to="/search" />} />
-            </>
-          )}
-        </Routes>
-      </div>
+    <div  className="">
+      <Navbar loggedIn={loggedIn} />
+      <Routes>
+         
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/products" element={<Products />} />
+            <Route
+              path="/search"
+              element={<Home onLogout={handleLogout} />}
+            />
+            <Route path="/results" element={<ResultsPage />} />
+            <Route path="/rank-products" element={<RankProduct />} />
+            <Route path="*" element={<Navigate to="/search" />} />
+      </Routes>
       <Footer />
-    </Router>
+    </div>
+  </Router>
   );
 }
 

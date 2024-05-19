@@ -1,89 +1,63 @@
 .footer {
-    background: #111111;
-    padding: 20px 0; /* Reduced padding to decrease the height */
-    color: #fff;
-  }
-  
-  .footer .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .footer .row {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-  }
-  
-  .single_footer {
-    margin-bottom: 20px; /* Adjusted margin to fit the new footer height */
-  }
-  
-  .single_footer h4 {
-    font-size: 18px;
-    margin-bottom: 15px; /* Adjusted margin to fit the new footer height */
-    font-weight: bold;
-  }
-  
-  .single_footer p {
-    font-size: 14px;
-    line-height: 1.6;
-  }
-  
-  .single_footer ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .single_footer ul li {
-    margin-bottom: 10px;
-  }
-  
-  .single_footer ul li a {
-    color: #fff;
-    text-decoration: none;
-  }
-  
-  .single_footer ul li a:hover {
-    text-decoration: underline;
-  }
-  
-  .social_profile ul {
-    display: flex;
-    list-style: none;
-    padding: 0;
-  }
-  
-  .social_profile ul li {
-    margin-right: 15px;
-  }
-  
-  .social_profile ul li a {
-    color: #fff;
-    font-size: 20px;
-  }
-  
-  .social_profile ul li a:hover {
-    color: #007bff;
-  }
-  
-  .copyright {
+  background-color: #f8f9fa;
+  padding: 20px 0; /* Reduced padding from 40px to 20px */
+}
+
+.single_footer h4 {
+  font-size: 18px;
+  color: #343a40;
+  margin-bottom: 10px; /* Reduced margin from 20px to 10px */
+  position: relative;
+  padding-bottom: 5px; /* Reduced padding from 10px to 5px */
+}
+
+.single_footer ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.single_footer ul li {
+  margin-bottom: 5px; /* Reduced margin from 10px to 5px */
+}
+
+.single_footer ul li a {
+  color: #6c757d;
+  text-decoration: none;
+}
+
+.single_footer ul li a:hover {
+  color: #007bff;
+}
+
+.social_profile ul {
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  gap: 5px; /* Reduced gap from 10px to 5px */
+}
+
+.social_profile ul li {
+  display: inline-block;
+}
+
+.social_profile ul li a {
+  display: inline-block;
+  color: #6c757d;
+  font-size: 16px;
+}
+
+.social_profile ul li a:hover {
+  color: #007bff;
+}
+
+.single_footer_about p {
+  color: #6c757d;
+  line-height: 1.6;
+  margin-bottom: 10px; /* Added margin to create some space */
+}
+
+@media (max-width: 768px) {
+  .single_footer_address, .single_footer_about {
     text-align: center;
-    margin-top: 20px; /* Adjusted margin to fit the new footer height */
-    font-size: 14px;
   }
-  
-  .copyright a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .copyright a:hover {
-    text-decoration: underline;
-  }
-  
-  .single_footer_about {
-    margin-bottom: 30px; /* Adjusted margin to fit the new footer height */
-  }
-  
+}

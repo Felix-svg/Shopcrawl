@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import InformationPanel from './InfoPanel';
 
 const RankProduct = () => {
   const [productName, setProductName] = useState('');
@@ -10,7 +9,6 @@ const RankProduct = () => {
   const [calculating, setCalculating] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(10);
-
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -33,7 +31,7 @@ const RankProduct = () => {
     };
 
     setCalculating(true);
-    setCurrentPage(1)
+    setCurrentPage(1);
 
     axios
       .post('http://127.0.0.1:5000/rank_products', requestData)
@@ -56,19 +54,19 @@ const RankProduct = () => {
   }
 
   const renderPaginationItems = () => {
-    const totalProducts = rankedProducts.length
-    const pageNumbers = Math.ceil(totalProducts / productsPerPage)
-  
-    const paginationItems = []
-  
-    let startPage = currentPage - 5
-    let endPage = currentPage + 4
-  
+    const totalProducts = rankedProducts.length;
+    const pageNumbers = Math.ceil(totalProducts / productsPerPage);
+
+    const paginationItems = [];
+
+    let startPage = currentPage - 5;
+    let endPage = currentPage + 4;
+
     if (startPage < 1) {
       startPage = 1
       endPage = Math.min(10, pageNumbers)
     }
-  
+
     if (endPage > pageNumbers) {
       startPage = Math.max(1, pageNumbers - 9)
       endPage = pageNumbers
@@ -114,8 +112,7 @@ const RankProduct = () => {
         </button>
       </li>
     );
-  
-    
+
     return paginationItems;
   };
 
@@ -190,12 +187,12 @@ const RankProduct = () => {
         <p className="text-center">Calculating...</p>
       ) : rankedProducts.length > 0 ? (
         <>
-          <div className="row">
+          <div className="row row-cols-1 row-cols-md-2">
             {currentProducts.map((product, index) => (
-              <div className="col-md-6" key={index}>
-                <div className="card mb-3">
+              <div className="col mb-4" key={index}>
+                <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">Rank {indexOfFirstProduct + index}</h5>
+                    <h5 className="card-title">Rank {index + 1}</h5>
                     <p className="card-text">
                       <strong>Product 1 Amazon:</strong> {product.product1.product_name}, Price: {product.product1.product_price}, Rating: {product.product1.product_rating}
                       <br />
