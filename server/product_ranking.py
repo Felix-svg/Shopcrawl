@@ -59,7 +59,6 @@ def calculate_score(product1, product2, user_weights):
     cost_benefit = calculate_cb(product1, product2)
     return marginal_benefit, cost_benefit
 
-
 def rank_products(products, user_weights):
     ranked_products = []
     for i in range(len(products)):
