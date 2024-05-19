@@ -23,3 +23,5 @@ def adjust_price(price_str):
     except IndexError:
         # If there's an issue with splitting the string, return None
         return None
+    
+    

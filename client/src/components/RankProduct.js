@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import InformationPanel from './InfoPanel';
 
 const RankProduct = () => {
   const [productName, setProductName] = useState('');
@@ -46,12 +47,12 @@ const RankProduct = () => {
   };
 
   const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = rankedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage + 1;
+  const currentProducts = rankedProducts.slice(indexOfFirstProduct - 1, indexOfLastProduct);
 
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+    setCurrentPage(pageNumber)
+  }
 
   const renderPaginationItems = () => {
     const totalProducts = rankedProducts.length;
@@ -63,13 +64,13 @@ const RankProduct = () => {
     let endPage = currentPage + 4;
 
     if (startPage < 1) {
-      startPage = 1;
-      endPage = Math.min(10, pageNumbers);
+      startPage = 1
+      endPage = Math.min(10, pageNumbers)
     }
 
     if (endPage > pageNumbers) {
-      startPage = Math.max(1, pageNumbers - 9);
-      endPage = pageNumbers;
+      startPage = Math.max(1, pageNumbers - 9)
+      endPage = pageNumbers
     }
 
     // Previous page button
@@ -117,98 +118,107 @@ const RankProduct = () => {
   };
 
   return (
-    <div className="container">
-      <h1 className="text-center my-4">Rank Products</h1>
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="productName" className="form-label">
-                Product Name:
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="productName"
-                name="productName"
-                value={productName}
-                onChange={handleInputChange}
-              />
+    <section style={{ backgroundColor : "#90AEAD" }}>
+      <div className="container">
+        <h2 className="text-center my-4">Rank Products</h2>
+        <div className="row">
+          <div className="col-md-4">
+            <InformationPanel />
+          </div>
+          <div className="col-md-8">
+            <div className="row justify-content-center">
+              <div className="col-md-8">
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label htmlFor="productName" className="form-label">
+                      Product Name:
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="productName"
+                      name="productName"
+                      value={productName}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="priceImportance" className="form-label">
+                      Price Importance (0-1):
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="priceImportance"
+                      name="priceImportance"
+                      step="0.1"
+                      min="0"
+                      max="1"
+                      value={priceImportance}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="ratingImportance" className="form-label">
+                      Rating Importance (0-1):
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="ratingImportance"
+                      name="ratingImportance"
+                      step="0.1"
+                      min="0"
+                      max="1"
+                      value={ratingImportance}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-dark">
+                    Rank Products
+                  </button>
+                </form>
+              </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="priceImportance" className="form-label">
-                Price Importance (0-1):
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="priceImportance"
-                name="priceImportance"
-                step="0.1"
-                min="0"
-                max="1"
-                value={priceImportance}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="ratingImportance" className="form-label">
-                Rating Importance (0-1):
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="ratingImportance"
-                name="ratingImportance"
-                step="0.1"
-                min="0"
-                max="1"
-                value={ratingImportance}
-                onChange={handleInputChange}
-              />
-            </div>
-            <button type="submit" className="btn btn-dark">
-              Rank Products
-            </button>
-          </form>
+          </div>
         </div>
-      </div>
-
-      <h2 className="text-center mt-4">Ranked Products:</h2>
-
-      {calculating ? (
-        <p className="text-center">Calculating...</p>
-      ) : rankedProducts.length > 0 ? (
-        <>
-          <div className="row row-cols-1 row-cols-md-2">
-            {currentProducts.map((product, index) => (
-              <div className="col mb-4" key={index}>
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Rank {index + 1}</h5>
-                    <p className="card-text">
-                      <strong>Product 1 Amazon:</strong> {product.product1.product_name}, Price: {product.product1.product_price}, Rating: {product.product1.product_rating}
-                      <br />
-                      <strong>Product 2 Alibaba:</strong> {product.product2.product_name}, Price: {product.product2.product_price}, Rating: {product.product2.product_rating}
-                      <br />
-                      <strong>Marginal Benefit:</strong> {product.marginal_benefit}
-                      <br />
-                      <strong>Cost Benefit:</strong> {product.cost_benefit}
-                    </p>
+    
+        <h2 className="text-center mt-4">Ranked Products:</h2>
+    
+        {calculating ? (
+          <p className="text-center">Calculating...</p>
+        ) : rankedProducts.length > 0 ? (
+          <>
+            <div className="row row-cols-1 row-cols-md-2">
+              {currentProducts.map((product, index) => (
+                <div className="col mb-4" key={index}>
+                  <div className="card">
+                    <div className="card-body">
+                      <h5 className="card-title">Rank {indexOfFirstProduct + index}</h5>
+                      <p className="card-text">
+                        <strong>Product 1 Amazon:</strong> {product.product1.product_name}, Price: {product.product1.product_price}, Rating: {product.product1.product_rating}
+                        <br />
+                        <strong>Product 2 Alibaba:</strong> {product.product2.product_name}, Price: {product.product2.product_price}, Rating: {product.product2.product_rating}
+                        <br />
+                        <strong>Marginal Benefit:</strong> {product.marginal_benefit}
+                        <br />
+                        <strong>Cost Benefit:</strong> {product.cost_benefit}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-          <ul className="pagination justify-content-center">
-            {renderPaginationItems()}
-          </ul>
-        </>
-      ) : (
-        <p className="text-center">No ranked products to display.</p>
-      )}
-    </div>
+              ))}
+            </div>
+            <ul className="pagination justify-content-center">
+              {renderPaginationItems()}
+            </ul>
+          </>
+        ) : (
+          <p className="text-center">No ranked products to display.</p>
+        )}
+      </div>
+    </section>
   );
-};
+}
 
 export default RankProduct;
