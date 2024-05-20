@@ -1,5 +1,5 @@
 import React from "react";
-import { getWebsiteNameFromUrl } from "../utils";
+
 
 const RankProductCard = ({ product, index, indexOfFirstProduct }) => { 
 
@@ -11,15 +11,21 @@ const RankProductCard = ({ product, index, indexOfFirstProduct }) => {
           <p className="card-text">
             <strong>Product 1:</strong> {product.product1.product_name}, Price: {product.product1.product_price}, Rating: {product.product1.product_rating}
             <br />
-            Product 1 Source: {getWebsiteNameFromUrl(product.product1.product_source)}
+            <a href={product.product1.source} target="_blank" rel="noopener noreferrer">
+               Product 1 Source  
+            </a>
             <br />
             <strong>Product 2:</strong> {product.product2.product_name}, Price: {product.product2.product_price}, Rating: {product.product2.product_rating}
             <br />
-            Product 2 Source: {getWebsiteNameFromUrl(product.product2.product_source)}
+            <a href={product.product2.source} target="_blank" rel="noopener noreferrer">
+               Product 2 Source  
+            </a>
             <br />
             <strong>Product 3:</strong> {product.product3.product_name}, Price: {product.product3.product_price}, Rating: {product.product3.product_rating}
             <br />
-            Product 3 Source: {getWebsiteNameFromUrl(product.product3.product_source)}
+            <a href={product.product3.source} target="_blank" rel="noopener noreferrer">
+               Product 3 Source  
+            </a>
             <br />
             <strong>Marginal Benefit:</strong> {product.marginal_benefit}
             <br />
