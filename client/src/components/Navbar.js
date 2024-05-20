@@ -9,7 +9,7 @@ function Navbar({ loggedIn, onLogout }) {
     const navigate = useNavigate();
 
     const handleMouseEnter = (e) => {
-        e.target.style.backgroundColor = '#E0E0E0';
+        // e.target.style.backgroundColor = '#E0E0E0';
         e.target.style.color = 'black';
     };
 
