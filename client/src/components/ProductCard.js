@@ -1,5 +1,3 @@
-// client/src/components/ProductCard.js
-
 import React from 'react';
 
 function ProductCard({ product }) {
@@ -11,19 +9,19 @@ function ProductCard({ product }) {
     textAlign: 'center',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     transition: 'transform 0.2s',
-    width: '200px' // Reduce the width of the card
+    width: '200px' 
   };
 
   const imageStyle = {
     width: '100%',
-    height: '150px', // Adjust height to fit smaller card
+    height: '150px', 
     objectFit: 'cover',
     borderBottom: '1px solid #ddd',
     marginBottom: '10px'
   };
 
   const nameStyle = {
-    fontSize: '1em',
+    fontSize: '16px',
     marginBottom: '5px'
   };
 
