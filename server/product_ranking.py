@@ -90,10 +90,10 @@ def display_ranked_products(ranked_products):
 
         print(f"Rank {rank}:")
         print(
-            f"Product 1 Amazon: {product1.product_name}, Price: {product1.product_price}, Rating: {product1.product_rating}"
+            f"Product 1 Amazon: {product1['product_name']}, Price: {product1['product_price']}, Rating: {product1['product_rating']}"
         )
         print(
-            f"Product 2 Alibaba: {product2.product_name}, Price: {product2.product_price}, Rating: {product2.product_rating}"
+            f"Product 2 Alibaba: {product2['product_name']}, Price: {product2['product_price']}, Rating: {product2['product_rating']}"
         )
         print(f"Marginal Benefit: {marginal_benefit}")
         print(f"Cost Benefit: {cost_benefit}")
