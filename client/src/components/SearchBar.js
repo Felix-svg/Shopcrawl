@@ -39,6 +39,7 @@ const SearchBar = () => {
           state: {
             alibaba: response.data.alibaba,
             amazon: response.data.amazon,
+            jumia: response.data.jumia
           },
         });
       } else {
@@ -66,7 +67,7 @@ const SearchBar = () => {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search products"
+          placeholder="Search our products, deals and more."
           style={{
             width: "100%",
             padding: "10px",
@@ -74,7 +75,6 @@ const SearchBar = () => {
             border: "1px solid #ccc",
             borderRadius: "5px",
             boxSizing: "border-box",
-            textAlign:"center"
           }}
           disabled={isLoading}
         />
