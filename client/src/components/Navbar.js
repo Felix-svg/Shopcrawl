@@ -1,9 +1,12 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import logo from './images/logo-png.jpg';  // Ensure the path is correct
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { handleLogout } from './Home';
 
-function Navbar({ loggedIn }) {
+function Navbar({ loggedIn, onLogout }) {
+    const navigate = useNavigate()
+
     const handleMouseEnter = (e) => {
         e.target.style.backgroundColor = '#E0E0E0';
         e.target.style.color = 'black';
@@ -67,7 +70,17 @@ function Navbar({ loggedIn }) {
                         </button>
                         </Link>
                         
-                    ) : null}
+                    ) : (
+                        <button 
+                            className="btn" 
+                            style={{ backgroundColor: '#90AEAD', color: 'black' }}
+                            onMouseEnter={handleButtonMouseEnter}
+                            onMouseLeave={handleButtonMouseLeave}
+                            onClick={() => handleLogout(navigate, onLogout)}
+                        >
+                            Logout
+                        </button>
+                    )}
                 </div>
             </div>
         </nav>

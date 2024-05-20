@@ -13,7 +13,6 @@ const Products = () => {
       })
       .then((data) => {
         setProducts(data.products);
-        console.log(data);
       })
       .catch((error) => console.error(error));
   }, []);
