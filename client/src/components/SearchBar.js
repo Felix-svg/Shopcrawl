@@ -66,7 +66,7 @@ const SearchBar = () => {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search our products, deals and more."
+          placeholder="Search products"
           style={{
             width: "100%",
             padding: "10px",
@@ -74,6 +74,7 @@ const SearchBar = () => {
             border: "1px solid #ccc",
             borderRadius: "5px",
             boxSizing: "border-box",
+            textAlign:"center"
           }}
           disabled={isLoading}
         />
