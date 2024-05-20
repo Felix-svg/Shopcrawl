@@ -39,6 +39,7 @@ const SearchBar = () => {
           state: {
             alibaba: response.data.alibaba,
             amazon: response.data.amazon,
+            jumia: response.data.jumia
           },
         });
       } else {

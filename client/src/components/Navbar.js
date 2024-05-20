@@ -1,9 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from './images/logo-png.jpg'; // Ensure the path is correct
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { handleLogout } from './Home';
 
-function Navbar({ loggedIn }) {
+function Navbar({ loggedIn, onLogout }) {
+    const navigate = useNavigate();
+
     const handleMouseEnter = (e) => {
         e.target.style.backgroundColor = '#E0E0E0';
         e.target.style.color = 'black';
@@ -27,14 +31,14 @@ function Navbar({ loggedIn }) {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
             <div className="container">
-                <Link className="navbar-brand" to="/" style={{ marginRight: 'auto', marginLeft: 'auto' }}>
+                <Link className="navbar-brand" to="/">
                     <img src={logo} alt="Logo" style={{ height: '60px' }} />
                 </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
-                    <ul className="navbar-nav">
+                <div className="collapse navbar-collapse" id="navbarNav">
+                    <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                         {[
                             { text: 'Home', path: '/' },
                             { text: 'Rank Products', path: '/rank-products' },
@@ -42,7 +46,7 @@ function Navbar({ loggedIn }) {
                             { text: 'About', path: '/about' },
                             { text: 'Contact', path: '/contact' }
                         ].map(({ text, path }) => (
-                            <li key={text} className="nav-item mx-3">
+                            <li key={text} className="nav-item">
                                 <Link 
                                     className="nav-link" 
                                     to={path} 
@@ -55,25 +59,29 @@ function Navbar({ loggedIn }) {
                             </li>
                         ))}
                     </ul>
-                </div>
-                {!loggedIn ? (
-                    <div className="ms-auto">
+                    {!loggedIn ? (
                         <Link to="/login">
                             <button 
                                 className="btn" 
-                                style={{ 
-                                    backgroundColor: '#90AEAD', 
-                                    color: 'black', 
-                                    padding: '0.375rem 1.5rem', // Increased padding for a wider button
-                                }}
+                                style={{ backgroundColor: '#90AEAD', color: 'black' }}
                                 onMouseEnter={handleButtonMouseEnter}
                                 onMouseLeave={handleButtonMouseLeave}
                             >
-                                Login
+                                Sign In / Create Account
                             </button>
                         </Link>
-                    </div>
-                ) : null}
+                    ) : (
+                        <button 
+                            className="btn" 
+                            style={{ backgroundColor: '#90AEAD', color: 'black' }}
+                            onMouseEnter={handleButtonMouseEnter}
+                            onMouseLeave={handleButtonMouseLeave}
+                            onClick={() => handleLogout(navigate, onLogout)}
+                        >
+                            Logout
+                        </button>
+                    )}
+                </div>
             </div>
         </nav>
     );

@@ -32,6 +32,11 @@ const Products = () => {
               <div className="card-body">
                 <h5 className="card-title">{product.name}</h5>
                 <p className="card-text">{product.description}</p>
+                <div className="d-flex justify-content-center mt-3">
+                  <a href={product.source} target="_blank" rel="noopener noreferrer">
+                    Buy here
+                  </a>
+                </div>
               </div>
               <div className="card-footer">
                 <small className="text-muted">Price: {product.price}</small>
