@@ -1,7 +1,7 @@
 
 from flask import request, jsonify
 from flask_restful import Resource
-from product_ranking import rank_products, prompt_user_for_weights
+from product_ranking import rank_products
 from scrape import search_alibaba, search_amazon
 
 
@@ -32,9 +32,6 @@ class RankProducts(Resource):
 
         # Combine products from both sites
         all_products = amazon_products + alibaba_products
-
-        # Prompt user for weight preferences
-        # user_weights = prompt_user_for_weights(factors)
 
         # Rank the combined products
         ranked_products = rank_products(all_products, user_weights)
