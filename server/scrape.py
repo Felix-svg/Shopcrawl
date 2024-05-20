@@ -223,8 +223,8 @@ def main():
     jumia_products = search_jumia(product_name)
 
     # check if lists are empty
-    if not amazon_products and not alibaba_products:
-        print("No products found on Amazon or Alibaba.")
+    if not amazon_products and not alibaba_products and not jumia_products:
+        print("No products found on Amazon, Jumia or Alibaba.")
         return  # exit the program
 
     if not amazon_products:
