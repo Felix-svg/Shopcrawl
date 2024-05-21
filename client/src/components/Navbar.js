@@ -39,49 +39,10 @@ function Navbar({ loggedIn, onLogout }) {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                        {loggedIn && (
-                            <li className="nav-item">
-                                <Link 
-                                    className="nav-link" 
-                                    to="/search" 
-                                    style={{ color: '#90AEAD', fontWeight: 'bold' }}
-                                    onMouseEnter={handleMouseEnter}
-                                    onMouseLeave={handleMouseLeave}
-                                >
-                                    Search
-                                </Link>
-                            </li>
-                        )}
-                        {!loggedIn && [
-                            { text: 'Home', path: '/' },
-                            { text: 'Products', path: '/products' }
-                        ].map(({ text, path }) => (
-                            <li key={text} className="nav-item">
-                                <Link 
-                                    className="nav-link" 
-                                    to={path} 
-                                    style={{ color: '#90AEAD', fontWeight: 'bold' }}
-                                    onMouseEnter={handleMouseEnter}
-                                    onMouseLeave={handleMouseLeave}
-                                >
-                                    {text}
-                                </Link>
-                            </li>
-                        ))}
-                        {loggedIn && (
-                            <li className="nav-item">
-                                <Link 
-                                    className="nav-link" 
-                                    to="/rank-products" 
-                                    style={{ color: '#90AEAD', fontWeight: 'bold' }}
-                                    onMouseEnter={handleMouseEnter}
-                                    onMouseLeave={handleMouseLeave}
-                                >
-                                    Rank Products
-                                </Link>
-                            </li>
-                        )}
                         {[
+                            { text: 'Home', path: '/' },
+                            { text: 'Rank Products', path: '/rank-products' },
+                            { text: 'Products', path: '/products' },
                             { text: 'About', path: '/about' },
                             // { text: 'Contact', path: '/contact' }
                         ].map(({ text, path }) => (
