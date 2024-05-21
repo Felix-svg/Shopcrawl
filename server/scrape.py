@@ -10,7 +10,6 @@ from product_ranking import (
 
 
 def search_amazon(product_name):
-
     url = f"https://www.amazon.com/s?k={product_name}"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
@@ -22,15 +21,12 @@ def search_amazon(product_name):
     }
 
     response = requests.get(url, headers=headers)
-
     soup = BeautifulSoup(response.content, "html.parser")
-
     product_cards = soup.find_all("div", {"data-component-type": "s-search-result"})
 
     products = []
 
     for card in product_cards:
-
         image = card.find("img", {"class": "s-image"})
         img_src = image["src"] if image else None
 
@@ -73,6 +69,7 @@ def search_amazon(product_name):
     filtered_products.sort(key=lambda x: convert_price_to_float(x["product_price"]))
 
     return filtered_products
+
 
 
 def search_alibaba(product_name):
