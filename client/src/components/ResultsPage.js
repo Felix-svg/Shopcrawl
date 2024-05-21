@@ -8,7 +8,7 @@ function ResultsPage() {
 
     return (
         <div className="results-container">
-            <Link to="/" className="back-link">Go Back</Link>
+            <Link to="/search" className="back-link">Go Back</Link>
             <div>
                 <h2 className="results-heading" style={{ color: '#002244' }}>Alibaba Results</h2>
                 <ResultsSection results={alibaba} style={{
@@ -36,20 +36,15 @@ const ResultsSection = ({ results = [], style }) => (
 );
 
 const ResultCard = ({ result }) => (
-    <div className="card ms-2 me-2 mt-2 mb-2 p-3" style={{ width: '16rem' }}>
-        <img src={result.image_src} alt={result.product_name} className="card-img-top" />
-        <div className="card-body d-flex flex-column justify-content-between">
-            <div>
-                <h5 className="card-title mb-2">{result.product_name}</h5>
-                <p className="card-text mb-2">Price: {result.product_price}</p>
-                <p className="card-text mb-2">
-                    {result.product_rating === null ? "No rating found" : `Rating: ${result.product_rating}`}
-                </p>
-                <p className="card-text mb-2">
-                    {result.product_description || "No description available"}
-                </p>
-            </div>
-            <a href={result.source} target="_blank" rel="noopener noreferrer" className="btn btn-link mt-3">
+    <div className="result-card">
+        <img src={result.image_src} alt={result.product_name} className="result-image" />
+        <div className="result-details">
+            <p className="result-name">{result.product_name}</p>
+           <strong><p className="result-price">Price: {result.product_price}</p></strong> 
+            <p className="result-rating">
+                {result.product_rating === null ? "No rating found" : `Rating: ${result.product_rating}`}
+            </p>
+            <a href={result.source} target="_blank" rel="noopener noreferrer">
                 Buy here
             </a>
         </div>
