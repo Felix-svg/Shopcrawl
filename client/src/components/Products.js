@@ -14,6 +14,7 @@ const Products = () => {
       })
       .then((data) => {
         setProducts(data.products);
+        console.log(data);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -29,12 +30,24 @@ const Products = () => {
                 className="card-img-top"
                 alt={product.name}
               />
-              <div className="card-body">
-              <p className="card-title">{product.name}</p>
+              <div className="card-body d-flex flex-column">
+                <p className="card-title">{product.name}</p>
                 <p className="card-text">{product.description}</p>
+                <div className="mt-auto d-flex justify-content-center">
+                  <a
+                    href={product.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-link"
+                  >
+                    Buy here
+                  </a>
+                </div>
               </div>
               <div className="card-footer">
-                <small className="text-muted">Price: {product.price}</small>
+                <strong>
+                  <small className="text-muted">Price: {product.price}</small>
+                </strong>
               </div>
             </div>
           </div>
