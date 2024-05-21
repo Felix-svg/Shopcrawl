@@ -82,7 +82,6 @@ function Navbar({ loggedIn, onLogout }) {
                         )}
                         {[
                             { text: 'About', path: '/about' },
-                            // { text: 'Contact', path: '/contact' }
                         ].map(({ text, path }) => (
                             <li key={text} className="nav-item">
                                 <Link 
