@@ -44,8 +44,8 @@ function Navbar({ loggedIn, onLogout }) {
                             { text: 'Home', path: '/' },
                             { text: 'Rank Products', path: '/rank-products' },
                             { text: 'Products', path: '/products' },
-                            // { text: 'About', path: '/about' },
-                            // { text: 'Contact', path: '/contact' }
+                            { text: 'About', path: '/about' },
+                            { text: 'Contact', path: '/contact' }
                         ].map(({ text, path }) => (
                             <li key={text} className="nav-item">
                                 <Link 
