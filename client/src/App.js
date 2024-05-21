@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
+import About from "./components/About";
 import Footer from "./components/Footer";
 import ResultsPage from "./components/ResultsPage";
 import Login from "./components/Login";
@@ -47,6 +48,8 @@ function App() {
               <Route path="/login" element={<Login onLogin={handleLogin} />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/about" element={<About />} />
+
               {/* <Route path="*" element={<Navigate to="/" />} /> */}
             </>
           ) : (
