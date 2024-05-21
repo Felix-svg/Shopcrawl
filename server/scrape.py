@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import re
-from convert_price import convert_price_to_float
+from convert_price import convert_price_to_float, adjust_price
 from product_ranking import rank_products, display_ranked_products, prompt_user_for_weights
 
 
@@ -36,8 +36,10 @@ def search_amazon(product_name):
             match = re.search(r'\d+\.\d+', rating_text)
             if match:
                 product_rating = float(match.group())
+        
+        
 
-        price = card.find("span", {"class": "a-price-whole"})
+        price = card.find("span", {"class": "a-offscreen"})
         product_price = price.text if price else None
 
         products.append(
@@ -106,11 +108,14 @@ def search_alibaba(product_name):
         price = card.find("div", {"class": "search-card-e-price-main"})
         product_price = price.text.strip() if price else None
 
+        # Adjust the price to get only the upper part of the range
+        adjusted_price = adjust_price(product_price)
+
         products.append(
             {
                 "image_src": img_src,
                 "product_name": product_name,
-                "product_price": product_price,
+                "product_price": adjusted_price,
                 "product_rating": product_rating
             }
         )
@@ -133,6 +138,10 @@ def main():
     alibaba_products = search_alibaba(product_name)
 
     #check if lists are empty
+    if not amazon_products and not alibaba_products:
+        print("No products found on Amazon or Alibaba.")
+        return #exit the program
+    
     if not amazon_products:
         print("No products found on Amazon.")
         
@@ -141,9 +150,10 @@ def main():
 
     #combine products from both sites
     all_products = amazon_products + alibaba_products
+    factors = ['product_price', 'product_rating']
 
     #prompt user for weight preferences
-    user_weights = prompt_user_for_weights()
+    user_weights = prompt_user_for_weights(factors)
 
     #rank the combined products
     ranked_products = rank_products(all_products, user_weights)
@@ -181,8 +191,18 @@ category_criteria = {
 }
 
 
-# Function to categorize products based on criteria
+# # Function to categorize products based on criteria
+# def categorize_product(product_name):
+#     for category, keywords in category_criteria.items():
+#         for keyword in keywords:
+#             if keyword.lower() in product_name.lower():
+#                 return category
+#     return "other"  # Default category if no match is found
+
 def categorize_product(product_name):
+    # Use a default value if product_name is None
+    if product_name is None:
+        product_name = ""  # or use a specific placeholder like "unknown"
     for category, keywords in category_criteria.items():
         for keyword in keywords:
             if keyword.lower() in product_name.lower():

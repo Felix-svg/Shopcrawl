@@ -1,4 +1,6 @@
-import React from 'react';
+// ProductCard.js
+
+import React from "react";
 
 function ProductCard({ product }) {
   const cardStyle = {
