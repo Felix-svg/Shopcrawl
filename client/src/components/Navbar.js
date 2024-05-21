@@ -106,7 +106,7 @@ function Navbar({ loggedIn, onLogout }) {
                                 onMouseEnter={handleButtonMouseEnter}
                                 onMouseLeave={handleButtonMouseLeave}
                             >
-                                Sign In / Create Account
+                                Sign In
                             </button>
                         </Link>
                     ) : (
