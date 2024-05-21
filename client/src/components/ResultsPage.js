@@ -36,15 +36,20 @@ const ResultsSection = ({ results = [], style }) => (
 );
 
 const ResultCard = ({ result }) => (
-    <div className="result-card">
-        <img src={result.image_src} alt={result.product_name} className="result-image" />
-        <div className="result-details">
-            <p className="result-name">{result.product_name}</p>
-            <p className="result-price">Price: {result.product_price}</p>
-            <p className="result-rating">
-                {result.product_rating === null ? "No rating found" : `Rating: ${result.product_rating}`}
-            </p>
-            <a href={result.source} target="_blank" rel="noopener noreferrer">
+    <div className="card ms-2 me-2 mt-2 mb-2 p-3" style={{ width: '16rem' }}>
+        <img src={result.image_src} alt={result.product_name} className="card-img-top" />
+        <div className="card-body d-flex flex-column justify-content-between">
+            <div>
+                <h5 className="card-title mb-2">{result.product_name}</h5>
+                <p className="card-text mb-2">Price: {result.product_price}</p>
+                <p className="card-text mb-2">
+                    {result.product_rating === null ? "No rating found" : `Rating: ${result.product_rating}`}
+                </p>
+                <p className="card-text mb-2">
+                    {result.product_description || "No description available"}
+                </p>
+            </div>
+            <a href={result.source} target="_blank" rel="noopener noreferrer" className="btn btn-link mt-3">
                 Buy here
             </a>
         </div>
