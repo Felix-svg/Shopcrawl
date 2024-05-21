@@ -9,7 +9,7 @@ function Navbar({ loggedIn, onLogout }) {
     const navigate = useNavigate()
 
     const handleMouseEnter = (e) => {
-        e.target.style.backgroundColor = '#E0E0E0';
+        // e.target.style.backgroundColor = '#E0E0E0';
         e.target.style.color = 'black';
     };
 
@@ -39,10 +39,49 @@ function Navbar({ loggedIn, onLogout }) {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                        {[
+                        {loggedIn && (
+                            <li className="nav-item">
+                                <Link 
+                                    className="nav-link" 
+                                    to="/search" 
+                                    style={{ color: '#90AEAD', fontWeight: 'bold' }}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    Search
+                                </Link>
+                            </li>
+                        )}
+                        {!loggedIn && [
                             { text: 'Home', path: '/' },
-                            { text: 'Rank Products', path: '/rank-products' },
-                            { text: 'Products', path: '/products' },
+                            { text: 'Products', path: '/products' }
+                        ].map(({ text, path }) => (
+                            <li key={text} className="nav-item">
+                                <Link 
+                                    className="nav-link" 
+                                    to={path} 
+                                    style={{ color: '#90AEAD', fontWeight: 'bold' }}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    {text}
+                                </Link>
+                            </li>
+                        ))}
+                        {loggedIn && (
+                            <li className="nav-item">
+                                <Link 
+                                    className="nav-link" 
+                                    to="/rank-products" 
+                                    style={{ color: '#90AEAD', fontWeight: 'bold' }}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    Rank Products
+                                </Link>
+                            </li>
+                        )}
+                        {[
                             { text: 'About', path: '/about' },
                             { text: 'Contact', path: '/contact' }
                         ].map(({ text, path }) => (
@@ -61,6 +100,7 @@ function Navbar({ loggedIn, onLogout }) {
                     </ul>
                     {!loggedIn ? (
                         <Link to="/login">
+<<<<<<< HEAD
                         <button 
                             className="btn" 
                             style={{ backgroundColor: '#90AEAD', color: 'black' }}
@@ -69,6 +109,16 @@ function Navbar({ loggedIn, onLogout }) {
                         >
                             Sign In / Create Account
                         </button>
+=======
+                            <button 
+                                className="btn" 
+                                style={{ backgroundColor: '#90AEAD', color: 'black' }}
+                                onMouseEnter={handleButtonMouseEnter}
+                                onMouseLeave={handleButtonMouseLeave}
+                            >
+                                Sign In
+                            </button>
+>>>>>>> bf7bdde53896ff09c46e5612cec5f62fb4e10428
                         </Link>
                         
                     ) : (

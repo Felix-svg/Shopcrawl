@@ -4,7 +4,7 @@ from config import db, app
 from models.search_history import SearchHistory
 from models.category import Category
 from models.product import Product
-from scrape import search_alibaba, search_amazon, categorize_product
+from scrape import search_alibaba, search_amazon, search_jumia, categorize_product
 from sqlalchemy.exc import IntegrityError
 import logging
 from datetime import datetime
@@ -104,7 +104,7 @@ def search():
                             name=product["product_name"],
                             price=product["product_price"],
                             image_src=product["image_src"],
-                            source=source,
+                            source = product["source"],
                             rating=product.get("product_rating"),  # Use get to avoid KeyError
                             timestamp=datetime.utcnow(),
                             category=category,
@@ -122,9 +122,9 @@ def search():
         amazon_data = search_amazon(product_name)
         process_products(amazon_data, "amazon")
 
-        # # Uncomment if you want to fetch and save products from eBay
-        # ebay_data = search_ebay(product_name)
-        # process_products(ebay_data, "ebay")
+        # Fetch and save products from Jumia
+        jumia_data = search_jumia(product_name)
+        process_products(jumia_data, "jumia")
 
         try:
             db.session.commit()
@@ -133,9 +133,7 @@ def search():
             logging.error(f"Commit IntegrityError: {e}")
             return jsonify({"error": "An error occurred while saving the data"}), 500
 
-        return jsonify({"alibaba": alibaba_data, "amazon": amazon_data})
-    # else:
-    #     return jsonify({"error": "No query provided"}), 400
+        return jsonify({"alibaba": alibaba_data, "amazon": amazon_data, "jumia":jumia_data})
     elif product_name is None or not product_name.strip():
         return jsonify({"error": "No query provided"}), 400
 
