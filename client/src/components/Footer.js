@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faTwitter, faGooglePlusG, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Footer.css';
 
@@ -15,9 +16,7 @@ const Footer = () => {
               <ul className="list-unstyled">
                 <li><a href="/home">Home</a></li>
                 <li><a href="/products">Products</a></li>
-                <li><a href="/services">Services</a></li>
                 <li><a href="/about">About Us</a></li>
-                <li><a href="/contacts">Contact</a></li>
               </ul>
             </div>
           </div>
@@ -31,6 +30,8 @@ const Footer = () => {
                   <li className="list-inline-item"><a href="https://www.google.com/"><FontAwesomeIcon icon={faGooglePlusG} /></a></li>
                   <li className="list-inline-item"><a href="https://www.instagram.com/"><FontAwesomeIcon icon={faInstagram} /></a></li>
                 </ul>
+                <p><a href="tel:+123456789"><FontAwesomeIcon icon={faPhone} /> +123456789</a></p>
+
               </div>
             </div>
           </div>

@@ -83,7 +83,7 @@ function Navbar({ loggedIn, onLogout }) {
                         )}
                         {[
                             { text: 'About', path: '/about' },
-                            { text: 'Contact', path: '/contact' }
+                            // { text: 'Contact', path: '/contact' }
                         ].map(({ text, path }) => (
                             <li key={text} className="nav-item">
                                 <Link 
@@ -100,16 +100,6 @@ function Navbar({ loggedIn, onLogout }) {
                     </ul>
                     {!loggedIn ? (
                         <Link to="/login">
-<<<<<<< HEAD
-                        <button 
-                            className="btn" 
-                            style={{ backgroundColor: '#90AEAD', color: 'black' }}
-                            onMouseEnter={handleButtonMouseEnter}
-                            onMouseLeave={handleButtonMouseLeave}
-                        >
-                            Sign In / Create Account
-                        </button>
-=======
                             <button 
                                 className="btn" 
                                 style={{ backgroundColor: '#90AEAD', color: 'black' }}
@@ -118,7 +108,6 @@ function Navbar({ loggedIn, onLogout }) {
                             >
                                 Sign In
                             </button>
->>>>>>> bf7bdde53896ff09c46e5612cec5f62fb4e10428
                         </Link>
                         
                     ) : (

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -10,6 +11,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate()
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -56,6 +58,7 @@ const Signup = () => {
         setEmail("");
         setConfirmPassword("");
         setMessage("Signup successful!");
+        navigate("/login");
       })
       .catch((error) => {
         console.error(error);
