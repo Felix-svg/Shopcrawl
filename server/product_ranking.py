@@ -1,4 +1,5 @@
 from convert_price import convert_price_to_float
+from fetchrankresults import fetch_search_results
 
 
 class Product:
@@ -98,17 +99,17 @@ def display_ranked_products(ranked_products):
         cost_benefit = product_info["cost_benefit"]
 
         print(f"Rank {rank}:")
-        print(f"Product 1 Amazon: {product1['product_name']}")
+        print(f"Product 1: {product1['product_name']}")
         print(f"Price: {product1['product_price']}")
         print(f"Rating: {product1['product_rating']}")
         print(f"Source: {product1['source']}")
         print()
-        print(f"Product 2 Alibaba: {product2['product_name']}")
+        print(f"Product 2: {product2['product_name']}")
         print(f"Price: {product2['product_price']}")
         print(f"Rating: {product2['product_rating']}")
         print(f"Source: {product2['source']}")
         print()
-        print(f"Product 3 Jumia: {product3['product_name']}")
+        print(f"Product 3: {product3['product_name']}")
         print(f"Price: {product3['product_price']}")
         print(f"Rating: {product3['product_rating']}")
         print(f"Source: {product3['source']}")
@@ -117,6 +118,32 @@ def display_ranked_products(ranked_products):
         print(f"Cost Benefit: {cost_benefit}")
         print()
         product_count += 1  # Increment the product count after displaying each product
+
+
+def main():
+    
+    product_name = input("Enter the product name: ")
+    
+    search_results = fetch_search_results(product_name)
+    
+    if search_results is not None:
+        factors = ["product_price", "product_rating"]
+
+        # prompt user for weight preferences
+        user_weights = prompt_user_for_weights(factors)
+        
+        
+        # rank the combined products
+        ranked_products = rank_products(search_results, user_weights)
+
+        # display the ranked products
+        display_ranked_products(ranked_products)
+
+    else:
+        print("No search results found.")
+
+if __name__ == "__main__":
+    main()
 
 
 # if mb is negative it means  there will not be a substantial benefit in purchasing more of the product
