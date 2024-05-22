@@ -9,7 +9,7 @@ const LandingPage = () => {
           <p className="lead">Sign in or create an account to start comparing prices!</p>
           <div className="d-flex justify-content-center">
             {/* <Link to="/login" className="btn btn-dark me-2">Sign In</Link> */}
-            <Link to="/signup" className="btn btn-dark">Sign up / Create Account</Link>
+            <Link to="/signup" className="btn btn-dark">Sign Up / Create Account</Link>
           </div>
           <div className="mt-4"> {/* Add margin top */}
             <p className="lead">Or explore a range of available products</p>
