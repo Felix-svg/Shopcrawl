@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
-  Navigate,
   Route,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
+import About from "./components/About";
 import Footer from "./components/Footer";
 import ResultsPage from "./components/ResultsPage";
 import Login from "./components/Login";
@@ -47,6 +47,8 @@ function App() {
               <Route path="/login" element={<Login onLogin={handleLogin} />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/about" element={<About />} />
+
               {/* <Route path="*" element={<Navigate to="/" />} /> */}
             </>
           ) : (
@@ -55,10 +57,11 @@ function App() {
               <Route path="/results" element={<ResultsPage />} />
               <Route path="/rank-products" element={<RankProduct />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/about" element={<About />} />
               {/* <Route path="*" element={<Navigate to="/search" />} /> */}
             </>
           )}
-          {/* <Route path="*" element={<NotFound />} /> */}
+          <Route path="*" element={<NotFound loggedIn={loggedIn} />} />
         </Routes>
         <Footer />
       </div>

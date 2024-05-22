@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faTwitter, faGooglePlusG, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Footer.css';
 
@@ -13,11 +14,9 @@ const Footer = () => {
             <div className="single_footer single_footer_address">
               <h4>Page Links</h4>
               <ul className="list-unstyled">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/about">About Us</a></li>
               </ul>
             </div>
           </div>
@@ -26,11 +25,13 @@ const Footer = () => {
               <h4>Follow Us</h4>
               <div className="social_profile">
                 <ul className="list-inline">
-                  <li className="list-inline-item"><a href="#"><FontAwesomeIcon icon={faFacebookF} /></a></li>
-                  <li className="list-inline-item"><a href="#"><FontAwesomeIcon icon={faTwitter} /></a></li>
-                  <li className="list-inline-item"><a href="#"><FontAwesomeIcon icon={faGooglePlusG} /></a></li>
-                  <li className="list-inline-item"><a href="#"><FontAwesomeIcon icon={faInstagram} /></a></li>
+                  <li className="list-inline-item"><a href="https://www.facebook.com/"><FontAwesomeIcon icon={faFacebookF} /></a></li>
+                  <li className="list-inline-item"><a href="https://x.com/"><FontAwesomeIcon icon={faTwitter} /></a></li>
+                  <li className="list-inline-item"><a href="https://www.google.com/"><FontAwesomeIcon icon={faGooglePlusG} /></a></li>
+                  <li className="list-inline-item"><a href="https://www.instagram.com/"><FontAwesomeIcon icon={faInstagram} /></a></li>
                 </ul>
+                <p><a href="tel:+123456789"><FontAwesomeIcon icon={faPhone} /> +123456789</a></p>
+
               </div>
             </div>
           </div>

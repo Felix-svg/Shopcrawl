@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Products = () => {
   let [products, setProducts] = useState([]);
@@ -29,17 +30,24 @@ const Products = () => {
                 className="card-img-top"
                 alt={product.name}
               />
-              <div className="card-body">
-                <h5 className="card-title">{product.name}</h5>
+              <div className="card-body d-flex flex-column">
+                <p className="card-title">{product.name}</p>
                 <p className="card-text">{product.description}</p>
-                <div className="d-flex justify-content-center mt-3">
-                  <a href={product.source} target="_blank" rel="noopener noreferrer">
+                <div className="mt-auto d-flex justify-content-center">
+                  <a
+                    href={product.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-link"
+                  >
                     Buy here
                   </a>
                 </div>
               </div>
               <div className="card-footer">
-                <small className="text-muted">Price: {product.price}</small>
+                <strong>
+                  <small className="text-muted">Price: {product.price}</small>
+                </strong>
               </div>
             </div>
           </div>

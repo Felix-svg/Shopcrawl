@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -10,6 +11,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -31,12 +33,24 @@ const Signup = () => {
     setShowPassword(!showPassword);
   };
 
+  const validatePassword = (password) => {
+    const re = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+    return re.test(password);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
       return;
     }
+
+    if (!validatePassword(password)) {
+      setMessage("Password must be at least 8 characters long and include at least one number, one uppercase letter, one lowercase letter, and one special character.");
+      return;
+    }
+
     fetch("http://127.0.0.1:5000/signup", {
       method: "POST",
       headers: {
@@ -46,7 +60,11 @@ const Signup = () => {
     })
       .then((resp) => {
         if (!resp.ok) {
-          throw new Error("Signup failed");
+          if (resp.status === 409) {
+            throw new Error("Username or email already exists");
+          } else {
+            throw new Error("Signup failed");
+          }
         }
         return resp.json();
       })
@@ -56,30 +74,29 @@ const Signup = () => {
         setEmail("");
         setConfirmPassword("");
         setMessage("Signup successful!");
+        navigate("/login");
       })
       .catch((error) => {
         console.error(error);
-        setMessage("Signup failed. Please try again.");
+        setMessage(error.message);
       });
   };
 
   return (
     <section
-      className=" d-flex justify-content-center align-items-center"
+      className="d-flex justify-content-center align-items-center"
       style={{
-        backgroundColor:"#90AEAD",
+        backgroundColor: "#90AEAD",
         minHeight: "100vh",
-        position: "relative"
+        position: "relative",
       }}
     >
-      <div
-        className="position-absolute w-100 h-100"
-      ></div>
+      <div className="position-absolute w-100 h-100"></div>
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-8 col-sm-10">
             <div className="card">
-              <div className="card-body" >
+              <div className="card-body">
                 <h1 className="text-center mb-4" style={{ color: "teal" }}>
                   Create Account
                 </h1>
@@ -210,4 +227,3 @@ const Signup = () => {
 };
 
 export default Signup;
-

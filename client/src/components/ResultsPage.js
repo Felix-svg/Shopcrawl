@@ -8,7 +8,7 @@ function ResultsPage() {
 
     return (
         <div className="results-container">
-            <Link to="/" className="back-link">Go Back</Link>
+            <Link to="/search" className="back-link">Go Back</Link>
             <div>
                 <h2 className="results-heading" style={{ color: '#002244' }}>Alibaba Results</h2>
                 <ResultsSection results={alibaba} style={{
@@ -40,7 +40,7 @@ const ResultCard = ({ result }) => (
         <img src={result.image_src} alt={result.product_name} className="result-image" />
         <div className="result-details">
             <p className="result-name">{result.product_name}</p>
-            <p className="result-price">Price: {result.product_price}</p>
+           <strong><p className="result-price">Price: {result.product_price}</p></strong> 
             <p className="result-rating">
                 {result.product_rating === null ? "No rating found" : `Rating: ${result.product_rating}`}
             </p>
