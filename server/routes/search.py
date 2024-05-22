@@ -78,6 +78,111 @@ from datetime import datetime
 
 @app.route("/search", methods=["GET"])
 def search():
+    """
+    This endpoint searches for products across multiple e-commerce platforms based on a query parameter.
+    ---
+    tags:
+        - Products
+    summary: Search for products.
+    description: Searches for products on Amazon, Alibaba, and Jumia based on the provided product name query. Saves search history and product data to the database.
+    parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          required: true
+          description: The product name to search for.
+          example: "laptop"
+    responses:
+        200:
+            description: A successful search returning products from various platforms.
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            alibaba:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        product_name:
+                                            type: string
+                                            example: "Laptop ABC"
+                                        product_price:
+                                            type: number
+                                            example: 500.0
+                                        image_src:
+                                            type: string
+                                            example: "http://example.com/image.jpg"
+                                        product_rating:
+                                            type: number
+                                            example: 4.5
+                                        source:
+                                            type: string
+                                            example: "alibaba"
+                            amazon:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        product_name:
+                                            type: string
+                                            example: "Laptop XYZ"
+                                        product_price:
+                                            type: number
+                                            example: 600.0
+                                        image_src:
+                                            type: string
+                                            example: "http://example.com/image.jpg"
+                                        product_rating:
+                                            type: number
+                                            example: 4.7
+                                        source:
+                                            type: string
+                                            example: "amazon"
+                            jumia:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        product_name:
+                                            type: string
+                                            example: "Laptop JKL"
+                                        product_price:
+                                            type: number
+                                            example: 550.0
+                                        image_src:
+                                            type: string
+                                            example: "http://example.com/image.jpg"
+                                        product_rating:
+                                            type: number
+                                            example: 4.6
+                                        source:
+                                            type: string
+                                            example: "jumia"
+        400:
+            description: Bad request due to missing or invalid query parameter.
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            error:
+                                type: string
+                                example: "No query provided"
+        500:
+            description: Internal server error due to an issue saving data to the database.
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            error:
+                                type: string
+                                example: "An error occurred while saving the data"
+    """
+    
     product_name = request.args.get("q")
 
     if product_name:
