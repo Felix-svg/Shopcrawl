@@ -1,6 +1,21 @@
+# import sys
+# import os
 import pytest
-from product_ranking import Product, prompt_user_for_weights, calculate_mb, calculate_cb, calculate_score, rank_products
-from convert_price import convert_price_to_float
+
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+
+from .. import convert_price
+from .. import product_ranking
+
+
+convert_price_to_float = convert_price.convert_price_to_float
+Product = product_ranking.Product
+prompt_user_for_weights = product_ranking.prompt_user_for_weights
+calculate_mb = product_ranking.calculate_mb
+calculate_cb = product_ranking.calculate_cb
+calculate_score = product_ranking.calculate_score
+rank_products = product_ranking.rank_products
+
 
 def test_product_initialization():
     product = Product("Test Product", "$10.00", "4.5", "Amazon")

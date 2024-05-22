@@ -2,11 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import re
 from convert_price import convert_price_to_float, adjust_price, convert_price_to_usd
-# from product_ranking import (
-#     rank_products,
-#     display_ranked_products,
-#     prompt_user_for_weights,
-# )
+
 
 
 def search_amazon(product_name):
