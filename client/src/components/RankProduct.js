@@ -119,7 +119,7 @@ const RankProduct = () => {
   };
 
   return (
-    <section style={{ backgroundColor : "#90AEAD" }}>
+    <section style={{ backgroundColor : "#90AEAD", padding:"4px" }}>
       <div className="container">
         <h2 className="text-center my-4">Rank Products</h2>
         <div className="row">

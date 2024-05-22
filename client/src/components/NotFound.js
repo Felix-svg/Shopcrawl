@@ -1,4 +1,4 @@
-const NotFound = () => {
+const NotFound = ({loggedIn}) => {
   return (
     <section class="py-3 py-md-5 min-vh-100 d-flex justify-content-center align-items-center">
       <div class="container">
@@ -12,13 +12,20 @@ const NotFound = () => {
               </h2>
               <h3 class="h2 mb-2">Oops! You're lost.</h3>
               <p class="mb-5">The page you are looking for was not found.</p>
-              <a
+              {!loggedIn ? <a
                 class="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0"
                 href="/"
                 role="button"
               >
                 Back to Home
-              </a>
+              </a> : <a
+                class="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0"
+                href="/search"
+                role="button"
+              >
+                Back to Search
+              </a> }
+              
             </div>
           </div>
         </div>
