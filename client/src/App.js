@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
-  Navigate,
   Route,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -58,10 +57,11 @@ function App() {
               <Route path="/results" element={<ResultsPage />} />
               <Route path="/rank-products" element={<RankProduct />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/about" element={<About />} />
               {/* <Route path="*" element={<Navigate to="/search" />} /> */}
             </>
           )}
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<NotFound loggedIn={loggedIn} />} />
         </Routes>
         <Footer />
       </div>
