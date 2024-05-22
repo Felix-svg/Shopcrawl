@@ -57,7 +57,7 @@ const SearchBar = () => {
           </button>
         )}
       </form>
-      {error && <p className="error-message">{error}</p>}Please wait
+      {error && <p className="error-message">{error}</p>}
       {isLoading && (
         <div className="animation-container">
           {[...Array(36).keys()].map((index) => (
