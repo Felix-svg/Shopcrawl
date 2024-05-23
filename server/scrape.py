@@ -1,8 +1,12 @@
 from bs4 import BeautifulSoup
 import requests
 import re
-from convert_price import convert_price_to_float, adjust_price, convert_price_to_usd
-
+from convert_price import (
+    convert_price_to_float,
+    adjust_price,
+    convert_price_to_usd,
+    clean_price_string,
+)
 
 
 def search_amazon(product_name):
@@ -26,22 +30,20 @@ def search_amazon(product_name):
         image = card.find("img", {"class": "s-image"})
         img_src = image["src"] if image else None
 
-        title = card.find(
-            "h2", {"class": "a-size-mini a-spacing-none a-color-base s-line-clamp-2"}
-        )
+        title = card.find("span", {"class": "a-size-medium a-color-base a-text-normal"})
         product_name = title.text if title else None
 
-        rating = rating = card.find("span", {"class": "a-icon-alt"})
+        rating = card.find("span", {"class": "a-icon-alt"})
         product_rating = None
         if rating:
             rating_text = rating.text.strip()
-            # extract numerical rating using regex
             match = re.search(r"\d+\.\d+", rating_text)
             if match:
                 product_rating = float(match.group())
 
-        price = card.find("span", {"class": "a-offscreen"})
-        product_price = price.text if price else None
+        price = card.find("span", {"class": "a-price-whole"})
+        whole_price = price.text if price else None
+        product_price = clean_price_string(whole_price)
 
         source = card.find("a", {"class": "a-link-normal s-no-outline"})
         product_source = f"https://www.amazon.com{source['href']}" if source else None
@@ -67,10 +69,9 @@ def search_amazon(product_name):
     return filtered_products
 
 
-
 def search_alibaba(product_name):
-
     url = f"https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&tab=all&SearchText={product_name}"
+    # url = f"https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText={product_name}"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
         "Accept-Encoding": "gzip, deflate",
@@ -81,20 +82,13 @@ def search_alibaba(product_name):
     }
 
     response = requests.get(url, headers=headers)
-
     soup = BeautifulSoup(response.content, "html.parser")
 
-    product_cards = soup.find_all(
-        "div",
-        {
-            "class": "fy23-search-card m-gallery-product-item-v2 J-search-card-wrapper fy23-gallery-card searchx-offer-item"
-        },
-    )
+    product_cards = soup.find_all("div", {"class": "fy23-search-card m-gallery-product-item-v2 J-search-card-wrapper fy23-gallery-card searchx-offer-item"})
 
     products = []
 
     for card in product_cards:
-
         image = card.find("img", {"class": "search-card-e-slider__img"})
         img_src = image["src"] if image else None
 
@@ -106,7 +100,6 @@ def search_alibaba(product_name):
         if rating:
             rating_text = rating.text.strip()
             match = re.search(r"\d+\.\d+", rating_text)
-
             if match:
                 product_rating = float(match.group())
 
@@ -116,9 +109,7 @@ def search_alibaba(product_name):
         # Adjust the price to get only the upper part of the range
         adjusted_price = adjust_price(product_price)
 
-        source = card.find(
-            "a", {"class": "search-card-e-slider__link search-card-e-slider__gallery"}
-        )
+        source = card.find("a", {"class": "search-card-e-slider__link"})
         product_source = f"https:{source['href']}" if source else None
 
         products.append(
@@ -206,7 +197,6 @@ def search_jumia(product_name):
     return filtered_products
 
 
-
 # Define criteria for categorization
 category_criteria = {
     "electronics": ["phone", "laptop", "tablet", "camera", "television"],
@@ -235,15 +225,6 @@ category_criteria = {
 }
 
 
-# # Function to categorize products based on criteria
-# def categorize_product(product_name):
-#     for category, keywords in category_criteria.items():
-#         for keyword in keywords:
-#             if keyword.lower() in product_name.lower():
-#                 return category
-#     return "other"  # Default category if no match is found
-
-
 def categorize_product(product_name):
     # Use a default value if product_name is None
     if product_name is None:
@@ -253,4 +234,3 @@ def categorize_product(product_name):
             if keyword.lower() in product_name.lower():
                 return category
     return "other"  # Default category if no match is found
-

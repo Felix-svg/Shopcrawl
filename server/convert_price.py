@@ -1,6 +1,14 @@
 import re
 
 
+def clean_price_string(price_str):
+    if not price_str:
+        return None
+    # Remove trailing periods
+    cleaned_price = price_str.rstrip('.')
+    # Prepend dollar sign
+    return f"${cleaned_price}"
+
 def convert_price_to_float(price_str):
     if price_str is None:
         return None
@@ -15,19 +23,19 @@ def convert_price_to_float(price_str):
     numeric_part = re.search(r"[\d,.]+", price_str)
     if numeric_part:
         numeric_part = numeric_part.group().replace(",", "")
-        return float(numeric_part)
+        return float(numeric_part.rstrip('.'))
     else:
         raise ValueError(f"Could not convert string to float: {price_str}")
 
 
 def adjust_price(price_str):
-    try:
-        # Split the price string by hyphen ('-') and take the second part
-        upper_price_str = price_str.split("-")[-1].strip()
-        return upper_price_str
-    except IndexError:
-        # If there's an issue with splitting the string, return None
+    if not price_str:
         return None
+    # Find the highest price in the range if the price is a range
+    prices = re.findall(r'\d+\.?\d*', price_str.replace(",", ""))
+    if prices:
+        return f"${prices[-1]}"  # Prepend dollar sign to the highest price in the range
+    return None
 
 
 def convert_price_to_usd(price_str, exchange_rate=0.0071):
