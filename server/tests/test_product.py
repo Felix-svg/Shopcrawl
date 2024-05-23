@@ -4,8 +4,8 @@ import pytest
 
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from .. import convert_price
-from .. import product_ranking
+from convert_price import convert_price
+from product_ranking import product_ranking
 
 
 convert_price_to_float = convert_price.convert_price_to_float
