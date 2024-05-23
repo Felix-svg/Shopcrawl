@@ -6,6 +6,8 @@ from flask_migrate import Migrate
 from flask_restful import Api
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+from flasgger import Swagger
+
 
 app = Flask(__name__)
 
@@ -26,5 +28,7 @@ api = Api(app)
 bcrypt = Bcrypt(app)
 
 CORS(app)
+
+swagger = Swagger(app)
 
 jwt = JWTManager(app)

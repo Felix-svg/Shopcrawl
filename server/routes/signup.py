@@ -8,6 +8,68 @@ from models.user import User
 
 class Signup(Resource):
     def post(self):
+        """
+        This endpoint registers a new user by providing a username, email, and password.
+        ---
+        tags:
+            - Auth
+        summary: User registration
+        description: Registers a new user, checks for existing username and email, hashes the password, saves the user to the database, and returns a JWT access token upon successful registration.
+        requestBody:
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            username:
+                                type: string
+                                description: The desired username of the new user.
+                                example: "johndoe"
+                            email:
+                                type: string
+                                description: The email address of the new user.
+                                example: "johndoe@example.com"
+                            password:
+                                type: string
+                                description: The password for the new user.
+                                example: "securepassword"
+        responses:
+            201:
+                description: User registration successful
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                message:
+                                    type: string
+                                    example: "User Registration Success"
+                                access_token:
+                                    type: string
+                                    description: The JWT access token.
+                                    example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+            400:
+                description: Bad request due to missing details, existing username, or email
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                error:
+                                    type: string
+                                    example: "User details not provided"
+            422:
+                description: Unprocessable Entity due to invalid data
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                error:
+                                    type: string
+                                    example: "422 Unprocessable Entity"
+        """
         try:
             username = request.get_json()["username"]
             email = request.get_json()["email"]

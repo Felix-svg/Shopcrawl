@@ -5,6 +5,19 @@ from models.search_history import SearchHistory
 
 class Search_history(Resource):
     def get(self):
+        """
+        This is an endpoint that returns users search history.
+        ---
+        tags:
+            - Search
+        description: Returns search queries.
+        responses:
+            200:
+                description: A successful response
+                examples:
+                    application/json: "macbook"
+        """
+        
         Search_histories = []
 
         for history in SearchHistory.query.all():
