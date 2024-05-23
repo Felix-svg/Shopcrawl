@@ -5,7 +5,7 @@ import ProductCard from './ProductCard';
 import axios from 'axios';
 
 function ProductList() {
-  const [products, setProducts] = useState({ amazon: [], alibaba: [] });
+  const [products, setProducts] = useState({ amazon: [], alibaba: [], jumia: [] });
 
   useEffect(() => {
     axios.get('https://shopcrawl-cjfb.onrender.com/products')
@@ -14,7 +14,8 @@ function ProductList() {
         console.log('Fetched products:', allProducts); // Debugging line
         const amazonProducts = allProducts.filter(product => product.source === 'amazon');
         const alibabaProducts = allProducts.filter(product => product.source === 'alibaba');
-        setProducts({ amazon: amazonProducts, alibaba: alibabaProducts });
+        const jumiaProducts = allProducts.filter(product => product.source === 'jumia');
+        setProducts({ amazon: amazonProducts, alibaba: alibabaProducts, jumia:jumiaProducts });
       })
       .catch(error => {
         console.error('There was an error fetching the products!', error);
