@@ -51,7 +51,7 @@ const Signup = () => {
       return;
     }
 
-    fetch("https://shopcrawl-cjfb.onrender.com/signup", {
+    fetch("https://shopcrawl-server.onrender.com/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

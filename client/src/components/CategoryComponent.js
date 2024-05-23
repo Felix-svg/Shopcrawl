@@ -13,7 +13,7 @@ const CategoryComponent = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('https://shopcrawl-cjfb.onrender.com/categories');
+      const response = await axios.get('https://shopcrawl-server.onrender.com/categories');
       setCategories(response.data); // Assuming the backend returns an array of categories
     } catch (error) {
       console.error('Error fetching categories:', error);

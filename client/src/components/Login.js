@@ -26,7 +26,7 @@ const Login = ({ onLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("https://shopcrawl-cjfb.onrender.com/login", {
+    fetch("https://shopcrawl-server.onrender.com/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

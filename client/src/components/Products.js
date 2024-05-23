@@ -5,7 +5,7 @@ const Products = () => {
   let [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("https://shopcrawl-cjfb.onrender.com/products")
+    fetch("https://shopcrawl-server.onrender.com/products")
       .then((resp) => {
         if (!resp.ok) {
           throw new Error("Error fetching data");
