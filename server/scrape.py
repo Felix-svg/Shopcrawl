@@ -18,7 +18,7 @@ def search_amazon(product_name):
 
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.content, "html.parser")
-    product_cards = soup.find_all("div", {"data-component-type": "s-search-result"})
+    product_cards = soup.find_all("span", {"data-component-type": "s-search-result"})
 
     products = []
 
@@ -87,7 +87,7 @@ def search_alibaba(product_name):
     product_cards = soup.find_all(
         "div",
         {
-            "class": "m-gallery-product-item-v2"
+            "class": "organic-list viewtype-gallery"
         },
     )
     print(product_cards)
