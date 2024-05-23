@@ -22,7 +22,7 @@ def search_amazon(product_name):
 
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.content, "html.parser")
-    product_cards = soup.find_all("span", {"data-component-type": "s-search-result"})
+    product_cards = soup.find_all("div", {"data-component-type": "s-search-result"})
 
     products = []
 
@@ -92,10 +92,10 @@ def search_alibaba(product_name):
         image = card.find("img", {"class": "search-card-e-slider__img"})
         img_src = image["src"] if image else None
 
-        title = card.find("h2", {"class": "title"})
+        title = card.find("h2", {"class": "search-card-e-title"})
         product_name = title.text.strip() if title else None
 
-        rating = card.find("span", {"class": "rating-score"})
+        rating = card.find("span", {"class": "search-card-e-review"})
         product_rating = None
         if rating:
             rating_text = rating.text.strip()
@@ -103,7 +103,7 @@ def search_alibaba(product_name):
             if match:
                 product_rating = float(match.group())
 
-        price = card.find("div", {"class": "price"})
+        price = card.find("div", {"class": "search-card-e-price-main"})
         product_price = price.text.strip() if price else None
 
         # Adjust the price to get only the upper part of the range
