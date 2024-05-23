@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import RankProductCard from './RankedDisplay';
 import InformationPanel from './InfoPanel';
 
 const RankProduct = () => {
@@ -118,7 +119,7 @@ const RankProduct = () => {
   };
 
   return (
-    <section style={{ backgroundColor : "#90AEAD" }}>
+    <section style={{ backgroundColor : "#90AEAD", padding:"4px" }}>
       <div className="container">
         <h2 className="text-center my-4">Rank Products</h2>
         <div className="row">
@@ -191,22 +192,7 @@ const RankProduct = () => {
           <>
             <div className="row row-cols-1 row-cols-md-2">
               {currentProducts.map((product, index) => (
-                <div className="col mb-4" key={index}>
-                  <div className="card">
-                    <div className="card-body">
-                      <h5 className="card-title">Rank {indexOfFirstProduct + index}</h5>
-                      <p className="card-text">
-                        <strong>Product 1 Amazon:</strong> {product.product1.product_name}, Price: {product.product1.product_price}, Rating: {product.product1.product_rating}
-                        <br />
-                        <strong>Product 2 Alibaba:</strong> {product.product2.product_name}, Price: {product.product2.product_price}, Rating: {product.product2.product_rating}
-                        <br />
-                        <strong>Marginal Benefit:</strong> {product.marginal_benefit}
-                        <br />
-                        <strong>Cost Benefit:</strong> {product.cost_benefit}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <RankProductCard key={index} product={product} index={index} indexOfFirstProduct={indexOfFirstProduct} />
               ))}
             </div>
             <ul className="pagination justify-content-center">

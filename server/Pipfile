@@ -17,6 +17,8 @@ requests = "*"
 beautifulsoup4 = "*"
 pipenv = "*"
 shell = "*"
+pytest = "*"
+flasgger = "*"
 
 [dev-packages]
 

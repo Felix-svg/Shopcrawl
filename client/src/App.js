@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
-  Navigate,
   Route,
+  Navigate
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
+import About from "./components/About";
 import Footer from "./components/Footer";
 import ResultsPage from "./components/ResultsPage";
 import Login from "./components/Login";
@@ -35,30 +36,28 @@ function App() {
     localStorage.removeItem("access_token");
     setLoggedIn(false);
   };
-
   return (
     <Router>
       <div>
         <Navbar loggedIn={loggedIn} onLogout={handleLogout} />
         <Routes>
-          {!loggedIn ? (
-            <>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<Login onLogin={handleLogin} />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/products" element={<Products />} />
-              {/* <Route path="*" element={<Navigate to="/" />} /> */}
-            </>
-          ) : (
-            <>
-              <Route path="/search" element={<Home />} />
-              <Route path="/results" element={<ResultsPage />} />
-              <Route path="/rank-products" element={<RankProduct />} />
-              <Route path="/products" element={<Products />} />
-              {/* <Route path="*" element={<Navigate to="/search" />} /> */}
-            </>
+          {/* Route for non-logged-in users */}
+          {!loggedIn && (
+            <Route path="/" element={<LandingPage />} />
           )}
-          {/* <Route path="*" element={<NotFound />} /> */}
+          {/* Route for logged-in users */}
+          {loggedIn && (
+            <Route path="/" element={<Navigate to="/search" />} />
+          )}
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/search" element={<Home />} />
+          <Route path="/results" element={<ResultsPage />} />
+          <Route path="/rank-products" element={<RankProduct />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/about" element={<About />} />
+          {/* Not Found route */}
+          <Route path="*" element={<NotFound loggedIn={loggedIn} />} />
         </Routes>
         <Footer />
       </div>

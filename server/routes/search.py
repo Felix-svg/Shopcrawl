@@ -4,7 +4,7 @@ from config import db, app
 from models.search_history import SearchHistory
 from models.category import Category
 from models.product import Product
-from scrape import search_alibaba, search_amazon, categorize_product
+from scrape import search_alibaba, search_amazon, search_jumia, categorize_product
 from sqlalchemy.exc import IntegrityError
 import logging
 from datetime import datetime
@@ -78,6 +78,111 @@ from datetime import datetime
 
 @app.route("/search", methods=["GET"])
 def search():
+    """
+    This endpoint searches for products across multiple e-commerce platforms based on a query parameter.
+    ---
+    tags:
+        - Products
+    summary: Search for products.
+    description: Searches for products on Amazon, Alibaba, and Jumia based on the provided product name query. Saves search history and product data to the database.
+    parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          required: true
+          description: The product name to search for.
+          example: "laptop"
+    responses:
+        200:
+            description: A successful search returning products from various platforms.
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            alibaba:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        product_name:
+                                            type: string
+                                            example: "Laptop ABC"
+                                        product_price:
+                                            type: number
+                                            example: 500.0
+                                        image_src:
+                                            type: string
+                                            example: "http://example.com/image.jpg"
+                                        product_rating:
+                                            type: number
+                                            example: 4.5
+                                        source:
+                                            type: string
+                                            example: "alibaba"
+                            amazon:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        product_name:
+                                            type: string
+                                            example: "Laptop XYZ"
+                                        product_price:
+                                            type: number
+                                            example: 600.0
+                                        image_src:
+                                            type: string
+                                            example: "http://example.com/image.jpg"
+                                        product_rating:
+                                            type: number
+                                            example: 4.7
+                                        source:
+                                            type: string
+                                            example: "amazon"
+                            jumia:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        product_name:
+                                            type: string
+                                            example: "Laptop JKL"
+                                        product_price:
+                                            type: number
+                                            example: 550.0
+                                        image_src:
+                                            type: string
+                                            example: "http://example.com/image.jpg"
+                                        product_rating:
+                                            type: number
+                                            example: 4.6
+                                        source:
+                                            type: string
+                                            example: "jumia"
+        400:
+            description: Bad request due to missing or invalid query parameter.
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            error:
+                                type: string
+                                example: "No query provided"
+        500:
+            description: Internal server error due to an issue saving data to the database.
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            error:
+                                type: string
+                                example: "An error occurred while saving the data"
+    """
+    
     product_name = request.args.get("q")
 
     if product_name:
@@ -104,7 +209,7 @@ def search():
                             name=product["product_name"],
                             price=product["product_price"],
                             image_src=product["image_src"],
-                            source=source,
+                            source = product["source"],
                             rating=product.get("product_rating"),  # Use get to avoid KeyError
                             timestamp=datetime.utcnow(),
                             category=category,
@@ -122,9 +227,9 @@ def search():
         amazon_data = search_amazon(product_name)
         process_products(amazon_data, "amazon")
 
-        # # Uncomment if you want to fetch and save products from eBay
-        # ebay_data = search_ebay(product_name)
-        # process_products(ebay_data, "ebay")
+        # Fetch and save products from Jumia
+        jumia_data = search_jumia(product_name)
+        process_products(jumia_data, "jumia")
 
         try:
             db.session.commit()
@@ -133,9 +238,7 @@ def search():
             logging.error(f"Commit IntegrityError: {e}")
             return jsonify({"error": "An error occurred while saving the data"}), 500
 
-        return jsonify({"alibaba": alibaba_data, "amazon": amazon_data})
-    # else:
-    #     return jsonify({"error": "No query provided"}), 400
+        return jsonify({"alibaba": alibaba_data, "amazon": amazon_data, "jumia":jumia_data})
     elif product_name is None or not product_name.strip():
         return jsonify({"error": "No query provided"}), 400
 

@@ -1,29 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./SearchBar.css";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [barHeight, setBarHeight] = useState([1, 1.5, 2, 1.5, 1]); // Initial heights for each bar
-
-  useEffect(() => {
-    let animationFrame;
-    if (isLoading) {
-      const animateBars = () => {
-        setBarHeight((prevHeights) =>
-          prevHeights.map((h) => (h === 2 ? 1 : h + 0.5))
-        );
-        animationFrame = requestAnimationFrame(animateBars);
-      };
-      animateBars();
-    } else {
-      cancelAnimationFrame(animationFrame);
-    }
-    return () => cancelAnimationFrame(animationFrame);
-  }, [isLoading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,6 +23,7 @@ const SearchBar = () => {
           state: {
             alibaba: response.data.alibaba,
             amazon: response.data.amazon,
+            jumia:response.data.jumia
           },
         });
       } else {
@@ -52,70 +37,35 @@ const SearchBar = () => {
   };
 
   return (
-    <div style={{ padding: "20px", width: "100%", maxWidth: "600px", margin: "auto" }}>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginBottom: "20px",
-        }}
-      >
+    <div className="search-bar-container">
+      <form onSubmit={handleSubmit} className="search-form">
         <input
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search products"
-          style={{
-            width: "100%",
-            padding: "10px",
-            marginBottom: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-            boxSizing: "border-box",
-            textAlign:"center"
-          }}
+          className="search-input"
           disabled={isLoading}
         />
-        <button
-          type="submit"
-          style={{
-            backgroundColor: "black",
-            color: "#90AEAD",
-            border: "none",
-            borderRadius: "5px",
-            padding: "10px 20px",
-            cursor: "pointer",
-            width: "100%",
-          }}
-          disabled={isLoading}
-        >
-          {isLoading ? "Loading..." : "Search"}
-        </button>
+        {!isLoading && (
+          <button
+            type="submit"
+            className="search-button"
+            disabled={isLoading}
+          >
+            Search
+          </button>
+        )}
       </form>
-      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       {isLoading && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "50px",
-            margin: "20px",
-          }}
-        >
-          {barHeight.map((height, index) => (
-            <div
-              key={index}
-              style={{
-                backgroundColor: "#90AEAD",
-                width: "10px",
-                height: `${height * 15}px`, // Convert scale factor to px
-                margin: "0 2px",
-                transition: "height 0.5s",
-              }}
-            />
+        <div className="animation-container">
+          {[...Array(36).keys()].map((index) => (
+            <div key={index} className={`baton-${index}`}>
+              <div className="metronome">
+                <div className="baton"></div>
+              </div>
+            </div>
           ))}
         </div>
       )}

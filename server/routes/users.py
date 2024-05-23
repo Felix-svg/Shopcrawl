@@ -7,6 +7,47 @@ from models.user import User
 
 class Users(Resource):
     def get(self):
+        """
+        This endpoint retrieves a list of all users.
+        ---
+        tags:
+            - Users
+        summary: Get all users
+        description: Retrieves a list of all users in the system, excluding their password hashes.
+        responses:
+            200:
+                description: A list of users
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                users:
+                                    type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1
+                                            username:
+                                                type: string
+                                                example: "johndoe"
+                                            email:
+                                                type: string
+                                                example: "johndoe@example.com"
+            500:
+                description: Internal server error
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                error:
+                                    type: string
+                                    example: "An error occurred while retrieving the users"
+        """
+        
         try:
             users = []
             for user in User.query.all():
@@ -19,6 +60,50 @@ class Users(Resource):
 
 class UserByID(Resource):
     def get(self, id):
+        """
+        This endpoint retrieves a user by their ID.
+        ---
+        tags:
+            - Users
+        summary: Get user by ID
+        description: Retrieves a user by their ID, excluding their password hash.
+        parameters:
+            - in: path
+              name: id
+              schema:
+                type: integer
+              required: true
+              description: The ID of the user to retrieve.
+              example: 1
+        responses:
+            200:
+                description: A user object
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                id:
+                                    type: integer
+                                    example: 1
+                                username:
+                                    type: string
+                                    example: "johndoe"
+                                email:
+                                    type: string
+                                    example: "johndoe@example.com"
+            404:
+                description: User not found
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                error:
+                                    type: string
+                                    example: "User not found"
+        """
+
         user = User.query.filter(User.id == id).first()
 
         if user:
@@ -26,6 +111,43 @@ class UserByID(Resource):
         return make_response({"error": "User not found"}, 404)
 
     def delete(self, id):
+        """
+        This endpoint deletes a user by their ID.
+        ---
+        tags:
+            - Users
+        summary: Delete user by ID
+        description: Deletes a user by their ID.
+        parameters:
+            - in: path
+              name: id
+              schema:
+                type: integer
+              required: true
+              description: The ID of the user to delete.
+              example: 1
+        responses:
+            200:
+                description: User deleted successfully
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                message:
+                                    type: string
+                                    example: "User deleted successfully"
+            404:
+                description: User not found
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                error:
+                                    type: string
+                                    example: "User not found"
+        """
         user = User.query.filter(User.id == id).first()
         if user:
             db.session.delete(user)
