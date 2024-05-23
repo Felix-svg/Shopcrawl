@@ -12,7 +12,7 @@ class Product(db.Model, SerializerMixin):
     price = db.Column(db.String(50), nullable=False)
     image_src = db.Column(db.String(255))
     source = db.Column(
-        db.String(50)
+        db.String(500)
     )  # Store the source of the product (e.g., 'alibaba', 'amazon')
     rating = db.Column(db.String)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
