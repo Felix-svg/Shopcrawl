@@ -10,12 +10,7 @@ from flasgger import Swagger
 import os
 
 
-app = Flask(
-    __name__,
-    static_url_path="",
-    static_folder="../client/build",
-    template_folder="../client/build",
-)
+app = Flask(__name__)
 
 app.secret_key = "138ff724cdb6b3ec36782dc7fe1bb6ad7075a2830842c5bc5e839a4d8c8edef6"
 # app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
@@ -33,9 +28,9 @@ db = SQLAlchemy(metadata=metadata)
 migrate = Migrate(app, db)
 db.init_app(app)
 
-@app.errorhandler(404)
-def not_found(e):
-    return render_template("index.html")
+# @app.errorhandler(404)
+# def not_found(e):
+#     return render_template("index.html")
 
 api = Api(app)
 bcrypt = Bcrypt(app)
