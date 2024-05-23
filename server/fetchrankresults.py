@@ -2,7 +2,7 @@ import requests
 
 def fetch_search_results(product_name):
     # Make an HTTP request to the Flask server to fetch search results
-        response = requests.get("http://localhost:5000/search", params={"q": product_name})
+        response = requests.get("https://shopcrawl-server.onrender.com/search", params={"q": product_name})
         
         if response.status_code == 200:
             search_results = response.json()

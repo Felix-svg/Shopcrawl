@@ -2,15 +2,15 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 const LandingPage = () => {
-  const handleMouseEnter = (e) => {
-    e.target.style.backgroundColor = '#90AEAD';
-    e.target.style.color = 'black';
-  };
+  // const handleMouseEnter = (e) => {
+  //   e.target.style.backgroundColor = '#90AEAD';
+  //   e.target.style.color = 'black';
+  // };
 
-  const handleMouseLeave = (e) => {
-    e.target.style.backgroundColor = 'black';
-    e.target.style.color = 'white';
-  };
+  // const handleMouseLeave = (e) => {
+  //   e.target.style.backgroundColor = 'black';
+  //   e.target.style.color = 'white';
+  // };
 
   return (
     <div className="container mt-5">

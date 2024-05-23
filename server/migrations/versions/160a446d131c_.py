@@ -1,8 +1,8 @@
-"""Initial migration
+"""empty message
 
-Revision ID: efcc500bb025
+Revision ID: 160a446d131c
 Revises: 
-Create Date: 2024-05-23 18:51:50.185852
+Create Date: 2024-05-23 23:06:30.147767
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'efcc500bb025'
+revision = '160a446d131c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -36,10 +36,10 @@ def upgrade():
     )
     op.create_table('products',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=255), nullable=False),
-    sa.Column('price', sa.String(length=50), nullable=False),
-    sa.Column('image_src', sa.String(length=255), nullable=True),
-    sa.Column('source', sa.String(length=50), nullable=True),
+    sa.Column('name', sa.String(), nullable=False),
+    sa.Column('price', sa.String(), nullable=False),
+    sa.Column('image_src', sa.String(), nullable=True),
+    sa.Column('source', sa.String(), nullable=True),
     sa.Column('rating', sa.String(), nullable=True),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
     sa.Column('category_id', sa.Integer(), nullable=True),
