@@ -2,11 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import re
 from convert_price import convert_price_to_float, adjust_price, convert_price_to_usd
-from product_ranking import (
-    rank_products,
-    display_ranked_products,
-    prompt_user_for_weights,
-)
+
 
 
 def search_amazon(product_name):
@@ -210,42 +206,6 @@ def search_jumia(product_name):
     return filtered_products
 
 
-def main():
-    # prompt user input for product name
-    product_name = input("Enter the product name: ")
-
-    # perform searches
-    amazon_products = search_amazon(product_name)
-    alibaba_products = search_alibaba(product_name)
-    jumia_products = search_jumia(product_name)
-
-    # check if lists are empty
-    if not amazon_products and not alibaba_products and not jumia_products:
-        print("No products found on Amazon, Jumia or Alibaba.")
-        return  # exit the program
-
-    if not amazon_products:
-        print("No products found on Amazon.")
-
-    if not alibaba_products:
-        print("No products found on Alibaba.")
-
-    if not jumia_products:
-        print("No products found on Jumia.")
-
-    # combine products from both sites
-    all_products = amazon_products + alibaba_products + jumia_products
-    factors = ["product_price", "product_rating"]
-
-    # prompt user for weight preferences
-    user_weights = prompt_user_for_weights(factors)
-
-    # rank the combined products
-    ranked_products = rank_products(all_products, user_weights)
-
-    # display the ranked products
-    display_ranked_products(ranked_products)
-
 
 # Define criteria for categorization
 category_criteria = {
@@ -294,6 +254,3 @@ def categorize_product(product_name):
                 return category
     return "other"  # Default category if no match is found
 
-
-if __name__ == "__main__":
-    main()
