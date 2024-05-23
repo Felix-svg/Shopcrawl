@@ -1,6 +1,7 @@
 import re
 
 
+
 def convert_price_to_float(price_str):
     if price_str is None:
         return None
@@ -15,12 +16,22 @@ def convert_price_to_float(price_str):
     numeric_part = re.search(r"[\d,.]+", price_str)
     if numeric_part:
         numeric_part = numeric_part.group().replace(",", "")
-        return float(numeric_part)
+        # Handle cases with multiple decimal points
+        if numeric_part.count('.') > 1:
+            parts = numeric_part.split('.')
+            numeric_part = parts[0] + '.' + ''.join(parts[1:])
+        try:
+            return float(numeric_part)
+        except ValueError:
+            raise ValueError(f"Could not convert string to float: {price_str}")
     else:
         raise ValueError(f"Could not convert string to float: {price_str}")
 
 
+
 def adjust_price(price_str):
+    if price_str is None:
+        return None
     try:
         # Split the price string by hyphen ('-') and take the second part
         upper_price_str = price_str.split("-")[-1].strip()

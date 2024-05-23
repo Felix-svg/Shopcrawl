@@ -90,6 +90,9 @@ def search_alibaba(product_name):
             "class": "m-gallery-product-item-v2"
         },
     )
+    print(product_cards)
+
+    print(product_cards)
 
     products = []
 
@@ -249,4 +252,9 @@ def categorize_product(product_name):
             if keyword.lower() in product_name.lower():
                 return category
     return "other"  # Default category if no match is found
+
+
+if __name__ == "__main__":
+    search_alibaba("iphone")
+    search_amazon("iphone")
 
