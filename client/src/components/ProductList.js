@@ -8,7 +8,7 @@ function ProductList() {
   const [products, setProducts] = useState({ amazon: [], alibaba: [] });
 
   useEffect(() => {
-    axios.get('https://shopcrawl-p24b.onrender.com/products')
+    axios.get('https://shopcrawl-cjfb.onrender.com/products')
       .then(response => {
         const allProducts = response.data.products;
         console.log('Fetched products:', allProducts); // Debugging line
