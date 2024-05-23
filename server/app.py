@@ -1,10 +1,14 @@
 
 #!/usr/bin/env python3
+from dotenv import load_dotenv
+load_dotenv()
+
 from config import app, api
 
 
+
 # Routes
-from routes.home import Home
+#from routes.home import Home
 from routes.products import Products, ProductByID
 from routes.categories import Categories, CategoryByID
 from routes.login import Login
@@ -14,7 +18,7 @@ from routes.search_history import Search_history
 from routes.users import Users, UserByID
 from routes.rankproducts import RankProducts
 
-api.add_resource(Home, "/")
+#api.add_resource(Home, "/")
 api.add_resource(Products, "/products")
 api.add_resource(ProductByID, "/products/<int:id>")
 api.add_resource(Categories, "/categories")
@@ -30,4 +34,4 @@ api.add_resource(RankProducts, "/rank_products")
 app.add_url_rule('/search', view_func=search, methods=['GET'])
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

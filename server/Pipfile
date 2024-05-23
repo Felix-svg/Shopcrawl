@@ -19,6 +19,9 @@ pipenv = "*"
 shell = "*"
 pytest = "*"
 flasgger = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
