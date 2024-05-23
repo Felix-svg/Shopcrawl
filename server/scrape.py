@@ -26,22 +26,23 @@ def search_amazon(product_name):
         image = card.find("img", {"class": "s-image"})
         img_src = image["src"] if image else None
 
-        title = card.find(
-            "h2", {"class": "a-size-mini a-spacing-none a-color-base s-line-clamp-2"}
-        )
+        title = card.find("span", {"class": "a-size-medium a-color-base a-text-normal"})
         product_name = title.text if title else None
 
-        rating = rating = card.find("span", {"class": "a-icon-alt"})
+        rating = card.find("span", {"class": "a-icon-alt"})
         product_rating = None
         if rating:
             rating_text = rating.text.strip()
-            # extract numerical rating using regex
             match = re.search(r"\d+\.\d+", rating_text)
             if match:
                 product_rating = float(match.group())
 
-        price = card.find("span", {"class": "a-offscreen"})
-        product_price = price.text if price else None
+        price_whole = card.find("span", {"class": "a-price-whole"})
+        price_fraction = card.find("span", {"class": "a-price-fraction"})
+        if price_whole and price_fraction:
+            product_price = f"{price_whole.text}.{price_fraction.text}"
+        else:
+            product_price = None
 
         source = card.find("a", {"class": "a-link-normal s-no-outline"})
         product_source = f"https://www.amazon.com{source['href']}" if source else None
@@ -81,44 +82,39 @@ def search_alibaba(product_name):
     }
 
     response = requests.get(url, headers=headers)
-
     soup = BeautifulSoup(response.content, "html.parser")
 
     product_cards = soup.find_all(
         "div",
         {
-            "class": "fy23-search-card m-gallery-product-item-v2 J-search-card-wrapper fy23-gallery-card searchx-offer-item"
+            "class": "m-gallery-product-item-v2"
         },
     )
 
     products = []
 
     for card in product_cards:
-
         image = card.find("img", {"class": "search-card-e-slider__img"})
         img_src = image["src"] if image else None
 
-        title = card.find("h2", {"class": "search-card-e-title"})
+        title = card.find("h2", {"class": "title"})
         product_name = title.text.strip() if title else None
 
-        rating = card.find("span", {"class": "search-card-e-review"})
+        rating = card.find("span", {"class": "rating-score"})
         product_rating = None
         if rating:
             rating_text = rating.text.strip()
             match = re.search(r"\d+\.\d+", rating_text)
-
             if match:
                 product_rating = float(match.group())
 
-        price = card.find("div", {"class": "search-card-e-price-main"})
+        price = card.find("div", {"class": "price"})
         product_price = price.text.strip() if price else None
 
         # Adjust the price to get only the upper part of the range
         adjusted_price = adjust_price(product_price)
 
-        source = card.find(
-            "a", {"class": "search-card-e-slider__link search-card-e-slider__gallery"}
-        )
+        source = card.find("a", {"class": "organic-gallery-offer__img-section"})
         product_source = f"https:{source['href']}" if source else None
 
         products.append(
