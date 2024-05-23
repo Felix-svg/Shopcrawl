@@ -1,8 +1,12 @@
 from bs4 import BeautifulSoup
 import requests
 import re
-from convert_price import convert_price_to_float, adjust_price, convert_price_to_usd
-
+from convert_price import (
+    convert_price_to_float,
+    adjust_price,
+    convert_price_to_usd,
+    clean_price_string,
+)
 
 
 def search_amazon(product_name):
@@ -37,12 +41,9 @@ def search_amazon(product_name):
             if match:
                 product_rating = float(match.group())
 
-        price_whole = card.find("span", {"class": "a-price-whole"})
-        price_fraction = card.find("span", {"class": "a-price-fraction"})
-        if price_whole and price_fraction:
-            product_price = f"{price_whole.text}.{price_fraction.text}"
-        else:
-            product_price = None
+        price = card.find("span", {"class": "a-price-whole"})
+        whole_price = price.text if price else None
+        product_price = clean_price_string(whole_price)
 
         source = card.find("a", {"class": "a-link-normal s-no-outline"})
         product_source = f"https://www.amazon.com{source['href']}" if source else None
@@ -68,10 +69,9 @@ def search_amazon(product_name):
     return filtered_products
 
 
-
 def search_alibaba(product_name):
-
     url = f"https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&tab=all&SearchText={product_name}"
+    # url = f"https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText={product_name}"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
         "Accept-Encoding": "gzip, deflate",
@@ -84,15 +84,7 @@ def search_alibaba(product_name):
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.content, "html.parser")
 
-    product_cards = soup.find_all(
-        "div",
-        {
-            "class": "organic-list viewtype-gallery"
-        },
-    )
-    print(product_cards)
-
-    print(product_cards)
+    product_cards = soup.find_all("div", {"class": "fy23-search-card m-gallery-product-item-v2 J-search-card-wrapper fy23-gallery-card searchx-offer-item"})
 
     products = []
 
@@ -117,7 +109,7 @@ def search_alibaba(product_name):
         # Adjust the price to get only the upper part of the range
         adjusted_price = adjust_price(product_price)
 
-        source = card.find("a", {"class": "organic-gallery-offer__img-section"})
+        source = card.find("a", {"class": "search-card-e-slider__link"})
         product_source = f"https:{source['href']}" if source else None
 
         products.append(
@@ -205,7 +197,6 @@ def search_jumia(product_name):
     return filtered_products
 
 
-
 # Define criteria for categorization
 category_criteria = {
     "electronics": ["phone", "laptop", "tablet", "camera", "television"],
@@ -234,15 +225,6 @@ category_criteria = {
 }
 
 
-# # Function to categorize products based on criteria
-# def categorize_product(product_name):
-#     for category, keywords in category_criteria.items():
-#         for keyword in keywords:
-#             if keyword.lower() in product_name.lower():
-#                 return category
-#     return "other"  # Default category if no match is found
-
-
 def categorize_product(product_name):
     # Use a default value if product_name is None
     if product_name is None:
@@ -252,9 +234,3 @@ def categorize_product(product_name):
             if keyword.lower() in product_name.lower():
                 return category
     return "other"  # Default category if no match is found
-
-
-if __name__ == "__main__":
-    search_alibaba("iphone")
-    search_amazon("iphone")
-
