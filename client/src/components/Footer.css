@@ -34,7 +34,6 @@
   list-style: none;
   display: flex;
   gap: 5px; /* Reduced gap from 10px to 5px */
-  justify-content: center; /* Center icons */
 }
 
 .social_profile ul li {
@@ -49,6 +48,39 @@
 
 .social_profile ul li a:hover {
   color: #007bff;
+}
+
+/* Specific colors for each social media platform */
+.social_profile ul li a.facebook {
+  color: #3b5998;
+}
+
+.social_profile ul li a.twitter {
+  color: #1da1f2;
+}
+
+.social_profile ul li a.google {
+  color: #db4437;
+}
+
+.social_profile ul li a.instagram {
+  color: #e1306c;
+}
+
+.social_profile ul li a.facebook:hover {
+  color: #2d4373;
+}
+
+.social_profile ul li a.twitter:hover {
+  color: #0d8ded;
+}
+
+.social_profile ul li a.google:hover {
+  color: #c23321;
+}
+
+.social_profile ul li a.instagram:hover {
+  color: #bc2a58;
 }
 
 .single_footer_about p {

@@ -25,13 +25,32 @@ const Footer = () => {
               <h4>Follow Us</h4>
               <div className="social_profile">
                 <ul className="list-inline">
-                  <li className="list-inline-item"><a href="https://www.facebook.com/"><FontAwesomeIcon icon={faFacebookF} /></a></li>
-                  <li className="list-inline-item"><a href="https://x.com/"><FontAwesomeIcon icon={faTwitter} /></a></li>
-                  <li className="list-inline-item"><a href="https://www.google.com/"><FontAwesomeIcon icon={faGooglePlusG} /></a></li>
-                  <li className="list-inline-item"><a href="https://www.instagram.com/"><FontAwesomeIcon icon={faInstagram} /></a></li>
+                  <li className="list-inline-item">
+                    <a href="https://www.facebook.com/" className="facebook">
+                      <FontAwesomeIcon icon={faFacebookF} />
+                    </a>
+                  </li>
+                  <li className="list-inline-item">
+                    <a href="https://x.com/" className="twitter">
+                      <FontAwesomeIcon icon={faTwitter} />
+                    </a>
+                  </li>
+                  <li className="list-inline-item">
+                    <a href="https://www.google.com/" className="google">
+                      <FontAwesomeIcon icon={faGooglePlusG} />
+                    </a>
+                  </li>
+                  <li className="list-inline-item">
+                    <a href="https://www.instagram.com/" className="instagram">
+                      <FontAwesomeIcon icon={faInstagram} />
+                    </a>
+                  </li>
                 </ul>
-                <p><a href="tel:+123456789"><FontAwesomeIcon icon={faPhone} /> +123456789</a></p>
-
+                <p>
+                  <a href="tel:+123456789">
+                    <FontAwesomeIcon icon={faPhone} /> +123456789
+                  </a>
+                </p>
               </div>
             </div>
           </div>
