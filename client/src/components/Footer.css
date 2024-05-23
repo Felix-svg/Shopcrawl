@@ -34,6 +34,7 @@
   list-style: none;
   display: flex;
   gap: 5px; /* Reduced gap from 10px to 5px */
+  justify-content: center; /* Center icons */
 }
 
 .social_profile ul li {
@@ -59,5 +60,9 @@
 @media (max-width: 768px) {
   .single_footer_address, .single_footer_about {
     text-align: center;
+  }
+
+  .social_profile ul {
+    justify-content: center; /* Center icons in mobile view */
   }
 }
