@@ -36,7 +36,7 @@ const RankProduct = () => {
     setCurrentPage(1);
 
     axios
-      .post('http://127.0.0.1:5000/rank_products', requestData)
+      .post('https://shopcrawl-p24b.onrender.com/rank_products', requestData)
       .then((response) => {
         setRankedProducts(response.data);
         setCalculating(false);

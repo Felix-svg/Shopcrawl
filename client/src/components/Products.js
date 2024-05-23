@@ -5,7 +5,7 @@ const Products = () => {
   let [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/products")
+    fetch("https://shopcrawl-p24b.onrender.com/products")
       .then((resp) => {
         if (!resp.ok) {
           throw new Error("Error fetching data");

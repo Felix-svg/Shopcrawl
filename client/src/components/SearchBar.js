@@ -15,7 +15,7 @@ const SearchBar = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://127.0.0.1:5000/search?q=${query}`
+        `https://shopcrawl-p24b.onrender.com/search?q=${query}`
       );
       setIsLoading(false);
       if (response.data) {
