@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from flask_restful import Resource
-from product_ranking import rank_products
+from product_ranking import rank_and_display_products, Product
 from fetchrankresults import fetch_search_results
 
 class RankProducts(Resource):
@@ -37,26 +37,58 @@ class RankProducts(Resource):
                 content:
                     application/json:
                         schema:
-                            type: array
-                            items:
-                                type: object
-                                properties:
-                                    name:
-                                        type: string
-                                        description: The name of the product.
-                                        example: "Laptop XYZ"
-                                    price:
-                                        type: number
-                                        description: The price of the product.
-                                        example: 999.99
-                                    rating:
-                                        type: number
-                                        description: The rating of the product.
-                                        example: 4.5
-                                    source:
-                                        type: string
-                                        description: The e-commerce platform where the product is found.
-                                        example: "Amazon"
+                            type: object
+                            properties:
+                                ranked_products_mb:
+                                    type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            product_name:
+                                                type: string
+                                                description: The name of the product.
+                                                example: "Laptop XYZ"
+                                            product_price:
+                                                type: number
+                                                description: The price of the product.
+                                                example: 999.99
+                                            product_rating:
+                                                type: number
+                                                description: The rating of the product.
+                                                example: 4.5
+                                            source:
+                                                type: string
+                                                description: The e-commerce platform where the product is found.
+                                                example: "Amazon"
+                                            marginal_benefit:
+                                                type: number
+                                                description: The calculated marginal benefit of the product.
+                                                example: 7.5
+                                ranked_products_cb:
+                                    type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            product_name:
+                                                type: string
+                                                description: The name of the product.
+                                                example: "Laptop XYZ"
+                                            product_price:
+                                                type: number
+                                                description: The price of the product.
+                                                example: 999.99
+                                            product_rating:
+                                                type: number
+                                                description: The rating of the product.
+                                                example: 4.5
+                                            source:
+                                                type: string
+                                                description: The e-commerce platform where the product is found.
+                                                example: "Amazon"
+                                            cost_benefit:
+                                                type: number
+                                                description: The calculated cost benefit of the product.
+                                                example: 7.5
             400:
                 description: Bad request due to missing or invalid parameters.
                 content:
@@ -92,11 +124,22 @@ class RankProducts(Resource):
         
         # Perform searches
         search_results = fetch_search_results(product_name)
-
+       
         if search_results:
-            # rank the combined products
-            ranked_products = rank_products(search_results, user_weights)
+            # Convert search results into Product objects
+            products = []
+            for result in search_results:
+                product = Product(
+                    result.get("product_name"),
+                    result.get("product_price"),
+                    result.get("product_rating"),
+                    result.get("source")
+                )
+                products.append(product)
 
+            # Rank the combined products
+            ranked_products = rank_and_display_products(products, user_weights)
+            
             # Return the ranked products as JSON
             return jsonify(ranked_products)
         else:

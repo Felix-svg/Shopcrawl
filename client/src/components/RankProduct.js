@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import RankProductCard from './RankedDisplay';
+import RankProductCard from './RankCard';
 import InformationPanel from './InfoPanel';
 
 const RankProduct = () => {
   const [productName, setProductName] = useState('');
   const [priceImportance, setPriceImportance] = useState('');
   const [ratingImportance, setRatingImportance] = useState('');
-  const [rankedProducts, setRankedProducts] = useState([]);
+  const [productsMb, setProductsMb] = useState([]);
+  const [productsCb, setProductsCb] = useState([]);
   const [calculating, setCalculating] = useState(false);
+  const [error, setError] = useState('');
+  const [rankingType, setRankingType] = useState('mb');
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(10);
+  const itemsPerPage = 10;
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -23,103 +26,96 @@ const RankProduct = () => {
     }
   };
 
+  const fetchRankedProducts = async (requestData) => {
+    setCalculating(true);
+    console.log('Request Data:', requestData); // Debugging: log request data
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/rank_products', requestData);
+      console.log('Response Data:', response.data); // Debugging: log response data
+      if (response.status === 200) {
+        const { ranked_products_mb, ranked_products_cb } = response.data;
+        setProductsMb(ranked_products_mb);
+        setProductsCb(ranked_products_cb);
+        setError('');
+      } else {
+        setError('Failed to fetch ranked products.');
+      }
+      setCalculating(false);
+    } catch (error) {
+      console.error('Error fetching ranked products:', error); // Debugging: log error details
+      setError('Failed to fetch ranked products. Please try again later.');
+      setCalculating(false);
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const requestData = {
       product_name: productName,
       product_price: parseFloat(priceImportance),
       product_rating: parseFloat(ratingImportance),
     };
-
-    setCalculating(true);
-    setCurrentPage(1);
-
-    axios
-      .post('https://shopcrawl-server.onrender.com/rank_products', requestData)
-      .then((response) => {
-        setRankedProducts(response.data);
-        setCalculating(false);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        setCalculating(false);
-      });
+    fetchRankedProducts(requestData);
   };
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage + 1;
-  const currentProducts = rankedProducts.slice(indexOfFirstProduct - 1, indexOfLastProduct);
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber)
-  }
-
-  const renderPaginationItems = () => {
-    const totalProducts = rankedProducts.length;
-    const pageNumbers = Math.ceil(totalProducts / productsPerPage);
-
-    const paginationItems = [];
-
-    let startPage = currentPage - 5;
-    let endPage = currentPage + 4;
-
-    if (startPage < 1) {
-      startPage = 1
-      endPage = Math.min(10, pageNumbers)
-    }
-
-    if (endPage > pageNumbers) {
-      startPage = Math.max(1, pageNumbers - 9)
-      endPage = pageNumbers
-    }
-
-    // Previous page button
-    paginationItems.push(
-      <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`} key="previous">
-        <button
-          className="page-link text-white bg-dark"
-          onClick={() => handlePageChange(currentPage - 1)}
-        >
-          Previous
-        </button>
-      </li>
+  const renderProducts = (products) => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const selectedProducts = products.slice(startIndex, startIndex + itemsPerPage);
+    return (
+      <div className="row mt-4" style={{ marginLeft: '50px', marginRight: '50px' }}>  
+        {selectedProducts.map((product, index) => (
+          <div key={index} className="col-lg-6 col-md-4 mb-4">
+            <RankProductCard
+              rank={startIndex + index + 1}
+              product={product}
+              benefitType={rankingType === 'mb' ? 'Marginal Benefit' : 'Cost Benefit'}
+            />
+          </div>
+        ))}
+      </div>
     );
+    
+  };
 
-    // Page numbers
-    for (let i = startPage; i <= endPage; i++) {
-      paginationItems.push(
-        <li
-          key={i}
-          className={`page-item ${currentPage === i ? 'active' : ''}`}
-          onClick={() => handlePageChange(i)}
-        >
-          <button
-            className={`page-link ${currentPage === i ? 'bg-black text-white' : 'text-dark'}`}
-          >
-            {i}
-          </button>
-        </li>
-      );
-    }
-
-    // Next page button
-    paginationItems.push(
-      <li className={`page-item ${currentPage === pageNumbers ? 'disabled' : ''}`} key="next">
-        <button
-          className="page-link text-white bg-dark"
-          onClick={() => handlePageChange(currentPage + 1)}
-        >
-          Next
-        </button>
-      </li>
+  const renderPagination = (totalItems) => {
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    return (
+      <div className="d-flex justify-content-center mt-4">
+        <nav>
+          <ul className="pagination">
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
+                Prev
+              </button>
+            </li>
+            {[...Array(totalPages)].map((_, index) => (
+              <li
+                key={index}
+                className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
+                onClick={() => handlePageChange(index + 1)}
+              >
+                <button className="page-link">
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
+                Next
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     );
-
-    return paginationItems;
   };
 
   return (
-    <section style={{ backgroundColor : "#90AEAD", padding:"4px" }}>
+    <section style={{ backgroundColor: "#90AEAD", padding: "4px" }}>
       <div className="container">
         <h2 className="text-center my-4">Rank Products</h2>
         <div className="row">
@@ -179,32 +175,50 @@ const RankProduct = () => {
                     Rank Products
                   </button>
                 </form>
+                <div className="mb-3 mt-4">
+                  <label htmlFor="rankingType" className="form-label">
+                    Select Ranking Type:
+                  </label>
+                  <select
+                    className="form-select"
+                    id="rankingType"
+                    name="rankingType"
+                    value={rankingType}
+                    onChange={(e) => setRankingType(e.target.value)}
+                  >
+                    <option value="mb">Marginal Benefit</option>
+                    <option value="cb">Cost Benefit</option>
+                  </select>
+               </div>
               </div>
             </div>
           </div>
         </div>
-    
-        <h2 className="text-center mt-4">Ranked Products:</h2>
-    
-        {calculating ? (
-          <p className="text-center">Calculating...</p>
-        ) : rankedProducts.length > 0 ? (
-          <>
-            <div className="row row-cols-1 row-cols-md-2">
-              {currentProducts.map((product, index) => (
-                <RankProductCard key={index} product={product} index={index} indexOfFirstProduct={indexOfFirstProduct} />
-              ))}
-            </div>
-            <ul className="pagination justify-content-center">
-              {renderPaginationItems()}
-            </ul>
-          </>
-        ) : (
-          <p className="text-center">No ranked products to display.</p>
-        )}
       </div>
+      <h2 className='text-center mt-5'>Ranked Products</h2>
+
+      {calculating && <p className="text-center mt-4">Calculating...</p>}
+      {error && <p className="text-center mt-4 text-danger">{error}</p>}
+
+      {rankingType === 'mb' && productsMb.length > 0 && (
+        <>
+          {renderProducts(productsMb)}
+          {renderPagination(productsMb.length)}
+        </>
+      )}
+
+      {rankingType === 'cb' && productsCb.length > 0 && (
+        <>
+          {renderProducts(productsCb)}
+          {renderPagination(productsCb.length)}
+        </>
+      )}
+
+      {!calculating && productsMb.length === 0 && productsCb.length === 0 && (
+        <p className="text-center mt-4">No ranked products to display.</p>
+      )}
     </section>
   );
-}
+};
 
 export default RankProduct;

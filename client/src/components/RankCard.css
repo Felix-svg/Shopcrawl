@@ -1,0 +1,48 @@
+#rankcard {
+    width: 100%;
+    max-width: 600px; /* Adjust as necessary */
+    height: 300px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#r-cardbody {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+
+#text {
+    display: flex;
+    align-items: center;  /* Ensures text and link are vertically centered */
+    /* margin-bottom: 0.5rem; */
+}
+  
+#text strong {
+    margin-right: 0.5rem;
+}
+
+#text a {
+    display: inline-block;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#title, #text {
+    word-wrap: break-word;
+} 
+
+.page-link {
+    background-color: #90AEAD;
+    color: black;
+}
+  
+.page-item.active .page-link {
+    background-color:black;
+    color: white;
+}

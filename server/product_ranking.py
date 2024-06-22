@@ -3,11 +3,13 @@ from fetchrankresults import fetch_search_results
 
 
 class Product:
-    def __init__(self, product_name, product_price, product_rating, product_source) -> None:
+    def __init__(
+        self, product_name, product_price, product_rating, product_source
+    ) -> None:
         self.product_name = product_name
         self.product_price = convert_price_to_float(product_price)
-        self.product_rating = float(product_rating)  # Ensure the rating is also a float
-        self.product_source = product_source
+        self.product_rating = float(product_rating) if product_rating else None
+        self.source = product_source
 
     def get(self, attribute):
         return getattr(self, attribute, None)
@@ -32,121 +34,91 @@ def prompt_user_for_weights(factors):
     return user_weights
 
 
-def calculate_mb(product1, product2, product3, user_weights):
+def calculate_mb(product, user_weights):
     mb = 0.0
     for factor, weight in user_weights.items():
-        value1 = convert_price_to_float(product1.get(factor))
-        value2 = convert_price_to_float(product2.get(factor))
-        value3 = convert_price_to_float(product3.get(factor))
+        if factor == "product_price":
+            value = convert_price_to_float(product.get(factor))
+        elif factor == "product_rating":
+            value = float(product.get(factor)) if product.get(factor) else None
+        else:
+            continue
 
-        if value1 is not None and value2 is not None and value3 is not None:
-            diff = (value2 - value1) + (value3 - value1)
-            mb += diff * weight
+        if value is not None:
+            mb += value * weight
 
     return round(mb, 1)
 
 
-def calculate_cb(product1, product2, product3):
+def calculate_cb(product, user_weights):
     cb = 0.0
-    price1 = convert_price_to_float(product1.get("product_price"))
-    price2 = convert_price_to_float(product2.get("product_price"))
-    price3 = convert_price_to_float(product3.get("product_price"))
-
-    if price1 is not None and price2 is not None and price3 is not None:
-        cb = price1 - price2 - price3
+    price = convert_price_to_float(product.get("product_price"))
+    if price is not None:
+        cb += price * user_weights["product_price"]
 
     return round(cb, 1)
 
+def rank_and_display_products(products, user_weights):
+    ranked_products_mb = sorted(products, key=lambda x: calculate_mb(x, user_weights), reverse=True)
+    ranked_products_cb = sorted(products, key=lambda x: calculate_cb(x, user_weights), reverse=True)
 
-def calculate_score(product1, product2, product3, user_weights):
-    marginal_benefit = calculate_mb(product1, product2, product3, user_weights)
-    cost_benefit = calculate_cb(product1, product2, product3)
-    return marginal_benefit, cost_benefit
+    ranked_products_mb_json = [
+        {
+            "product_name": p.product_name, 
+            "product_price": p.product_price, 
+            "product_rating": p.product_rating, 
+            "source": p.source,
+            "marginal_benefit": calculate_mb(p, user_weights)
+        }
+        for p in ranked_products_mb
+    ]
+    ranked_products_cb_json = [
+        {
+            "product_name": p.product_name, 
+            "product_price": p.product_price, 
+            "product_rating": p.product_rating, 
+            "source": p.source,
+            "cost_benefit": calculate_cb(p, user_weights)
+        }
+        for p in ranked_products_cb
+    ]
 
-def rank_products(products, user_weights):
-    ranked_products = []
-    for i in range(len(products)):
-        for j in range(i + 1, len(products)):
-            for k in range(j + 1, len(products)):          
-                product1 = products[i]
-                product2 = products[j]
-                product3 = products[k]
-                marginal_benefit, cost_benefit = calculate_score(
-                    product1, product2, product3, user_weights
-                )
-                ranked_products.append(
-                    {
-                        "product1": product1,
-                        "product2": product2,
-                        "product3": product3,
-                        "marginal_benefit": marginal_benefit,
-                        "cost_benefit": cost_benefit,
-                    }
-                )
+    return {
+        "ranked_products_mb": ranked_products_mb_json,
+        "ranked_products_cb": ranked_products_cb_json
+    }
 
-    ranked_products.sort(key=lambda x: x["marginal_benefit"], reverse=True)
-    return ranked_products
-
-def display_ranked_products(ranked_products):
-    product_count = 0  # Counter for the number of products displayed
-    for rank, product_info in enumerate(ranked_products, start=1):
-        if product_count >= 50:  # Check if already displayed 100 products
-            break  # Exit the loop if 100 products have been displayed
-        product1 = product_info["product1"]
-        product2 = product_info["product2"]
-        product3 = product_info["product3"]
-        marginal_benefit = product_info["marginal_benefit"]
-        cost_benefit = product_info["cost_benefit"]
-
-        print(f"Rank {rank}:")
-        print(f"Product 1: {product1['product_name']}")
-        print(f"Price: {product1['product_price']}")
-        print(f"Rating: {product1['product_rating']}")
-        print(f"Source: {product1['source']}")
-        print()
-        print(f"Product 2: {product2['product_name']}")
-        print(f"Price: {product2['product_price']}")
-        print(f"Rating: {product2['product_rating']}")
-        print(f"Source: {product2['source']}")
-        print()
-        print(f"Product 3: {product3['product_name']}")
-        print(f"Price: {product3['product_price']}")
-        print(f"Rating: {product3['product_rating']}")
-        print(f"Source: {product3['source']}")
-        print()
-        print(f"Marginal Benefit: {marginal_benefit}")
-        print(f"Cost Benefit: {cost_benefit}")
-        print()
-        product_count += 1  # Increment the product count after displaying each product
 
 
 def main():
-    
     product_name = input("Enter the product name: ")
-    
+
+    # Fetch search results (replace with actual scraping logic)
     search_results = fetch_search_results(product_name)
-    
+
     if search_results is not None:
         factors = ["product_price", "product_rating"]
 
-        # prompt user for weight preferences
+        # Prompt user for weight preferences
         user_weights = prompt_user_for_weights(factors)
-        
-        
-        # rank the combined products
-        ranked_products = rank_products(search_results, user_weights)
 
-        # display the ranked products
-        display_ranked_products(ranked_products)
+        # Convert search results into Product objects
+        products = []
+        for result in search_results:
+            product = Product(
+                result.get("product_name"),
+                result.get("product_price"),
+                result.get("product_rating"),
+                result.get("source")
+            )
+            products.append(product)
+
+        # Rank and display the products based on mb and cb
+        rank_and_display_products(products, user_weights)
 
     else:
         print("No search results found.")
 
+
 if __name__ == "__main__":
     main()
-
-
-# if mb is negative it means  there will not be a substantial benefit in purchasing more of the product
-# hence they could explore other factors or products instead or adjusting their weights preferences
-# positive mb indicates increasing the quantity of products would provide a greater benefit
-# a -ve cb is a signal that the cost outweighs the benefit to purchasing the product
