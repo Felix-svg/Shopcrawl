@@ -30,7 +30,7 @@ const RankProduct = () => {
     setCalculating(true);
     console.log('Request Data:', requestData); // Debugging: log request data
     try {
-      const response = await axios.post('http://127.0.0.1:5000/rank_products', requestData);
+      const response = await axios.post('https://shopcrawl-server.onrender.com/rank_products', requestData);
       console.log('Response Data:', response.data); // Debugging: log response data
       if (response.status === 200) {
         const { ranked_products_mb, ranked_products_cb } = response.data;

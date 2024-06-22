@@ -8,7 +8,7 @@ def fetch_search_results(product_name):
 
     try:
         # Make an HTTP request to the Flask server to fetch search results
-        response = requests.get("http://127.0.0.1:5000/search", params={"q": sanitized_product_name})
+        response = requests.get("https://shopcrawl-server.onrender.com/search", params={"q": sanitized_product_name})
 
         # Handle HTTP response
         response.raise_for_status()  # Raise exception for bad status codes (4xx or 5xx)
