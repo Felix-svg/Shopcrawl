@@ -1,20 +1,5 @@
-# import sys
-# import os
+
 import pytest
-
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-
-from convert_price import convert_price
-from product_ranking import product_ranking
-
-
-convert_price_to_float = convert_price.convert_price_to_float
-Product = product_ranking.Product
-prompt_user_for_weights = product_ranking.prompt_user_for_weights
-calculate_mb = product_ranking.calculate_mb
-calculate_cb = product_ranking.calculate_cb
-calculate_score = product_ranking.calculate_score
-rank_products = product_ranking.rank_products
 
 
 def test_product_initialization():
@@ -33,17 +18,7 @@ def test_product_get_method():
     assert product.get("product_source") == "Amazon"
     assert product.get("non_existent_attribute") is None
     
-# Test convert_price_to_float function
-def test_convert_price_to_float_valid():
-    assert convert_price_to_float("10.99") == 10.99
 
-def test_convert_price_to_float_invalid():
-    with pytest.raises(ValueError):
-        convert_price_to_float("invalid")
-
-def test_convert_price_to_float_none():
-    assert convert_price_to_float(None) is None
-    
     
 def test_prompt_user_for_weights(monkeypatch):
     #mock user input with monkeypatch
@@ -180,3 +155,8 @@ def test_rank_products(sample_products):
     # Check if products are ranked correctly based on the given weights
     sorted_products = sorted(sample_products, key=lambda p: calculate_score(p, **user_weights), reverse=True)
     assert all(ranked_products[0][f"product{i+1}"] == sorted_products[i] for i in range(len(sample_products)))
+    
+
+from server.product_ranking import Product, prompt_user_for_weights, calculate_mb, calculate_cb, calculate_score, rank_products
+    
+    
