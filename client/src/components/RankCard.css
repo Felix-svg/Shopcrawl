@@ -1,7 +1,7 @@
-#rankcard {
+/* #rankcard {
     width: 100%;
-    max-width: 600px; /* Adjust as necessary */
-    height: 300px;
+    max-width: 600px;
+    height: auto;
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -12,13 +12,13 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-}
+} */
 
-
+/* 
 #text {
     display: flex;
-    align-items: center;  /* Ensures text and link are vertically centered */
-    /* margin-bottom: 0.5rem; */
+    align-items: center; 
+    
 }
   
 #text strong {
@@ -35,7 +35,7 @@
 
 #title, #text {
     word-wrap: break-word;
-} 
+}  */
 
 .page-link {
     background-color: #90AEAD;
