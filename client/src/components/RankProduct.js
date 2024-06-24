@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RankProductCard from './RankCard';
 import InformationPanel from './InfoPanel';
@@ -13,6 +13,7 @@ const RankProduct = () => {
   const [error, setError] = useState('');
   const [rankingType, setRankingType] = useState('mb');
   const [currentPage, setCurrentPage] = useState(1);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const itemsPerPage = 10;
 
   const handleInputChange = (event) => {
@@ -28,10 +29,10 @@ const RankProduct = () => {
 
   const fetchRankedProducts = async (requestData) => {
     setCalculating(true);
-    console.log('Request Data:', requestData); // Debugging: log request data
+    // console.log('Request Data:', requestData); // Debugging: log request data
     try {
       const response = await axios.post('https://shopcrawl-server.onrender.com/rank_products', requestData);
-      console.log('Response Data:', response.data); // Debugging: log response data
+      // console.log('Response Data:', response.data); // Debugging: log response data
       if (response.status === 200) {
         const { ranked_products_mb, ranked_products_cb } = response.data;
         setProductsMb(ranked_products_mb);
@@ -68,8 +69,9 @@ const RankProduct = () => {
     return (
       <div className="row mt-4" style={{ marginLeft: '50px', marginRight: '50px' }}>  
         {selectedProducts.map((product, index) => (
-          <div key={index} className="col-lg-6 col-md-4 mb-4">
+          <div className="col-lg-6 col-md-6 mb-4">
             <RankProductCard
+              key={index}
               rank={startIndex + index + 1}
               product={product}
               benefitType={rankingType === 'mb' ? 'Marginal Benefit' : 'Cost Benefit'}
@@ -81,36 +83,59 @@ const RankProduct = () => {
     
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize); 
+    };
+  }, []); 
+
   const renderPagination = (totalItems) => {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const maxPageNumbersToShow = windowWidth < 576 ? 5 : 10; // Show fewer pages on small screens
+    const currentBlock = Math.floor((currentPage - 1) / maxPageNumbersToShow);
+
+    const getPageNumbers = () => {
+        const start = currentBlock * maxPageNumbersToShow + 1;
+        const end = Math.min(start + maxPageNumbersToShow - 1, totalPages);
+        const pageNumbers = [];
+        for (let i = start; i <= end; i++) {
+            pageNumbers.push(i);
+        }
+        return pageNumbers;
+    };
+
     return (
-      <div className="d-flex justify-content-center mt-4">
-        <nav>
-          <ul className="pagination">
-            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-              <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
-                Prev
-              </button>
-            </li>
-            {[...Array(totalPages)].map((_, index) => (
-              <li
-                key={index}
-                className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
-                onClick={() => handlePageChange(index + 1)}
-              >
-                <button className="page-link">
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-              <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
+        <div className="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+                <ul className="pagination">
+                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                        <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
+                            Prev
+                        </button>
+                    </li>
+                    {getPageNumbers().map((pageNumber) => (
+                        <li
+                            key={pageNumber}
+                            className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}
+                        >
+                            <button className="page-link" onClick={() => handlePageChange(pageNumber)}>
+                                {pageNumber}
+                            </button>
+                        </li>
+                    ))}
+                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                        <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
+                            Next
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     );
   };
 
