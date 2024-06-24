@@ -8,6 +8,7 @@ from scrape import search_alibaba, search_amazon, search_jumia, categorize_produ
 from sqlalchemy.exc import IntegrityError
 import logging
 from datetime import datetime
+import re
 
 
 # # class Search(Resource):
@@ -249,8 +250,11 @@ from datetime import datetime
 #         return jsonify({"error": "No query provided"}), 400
 
 
-def get_saved_products(product_name):
-    products = Product.query.filter(Product.name.ilike(f"%{product_name}%")).all()
+def get_saved_products(product_name, source_domain):
+    products = Product.query.filter(
+        Product.name.ilike(f"%{product_name}%"),
+        Product.source.ilike(f"%{source_domain}%"),
+    ).all()
     return [
         {
             "product_name": product.name,
@@ -261,6 +265,11 @@ def get_saved_products(product_name):
         }
         for product in products
     ]
+
+
+def extract_domain(url):
+    match = re.search(r"https?://(?:www\.)?([^/]+)", url)
+    return match.group(1) if match else None
 
 
 @app.route("/search", methods=["GET"])
@@ -409,13 +418,13 @@ def search():
         jumia_data = search_jumia(product_name)
 
         if not alibaba_data:
-            alibaba_data = get_saved_products(product_name)
+            alibaba_data = get_saved_products(product_name, "alibaba.com")
 
         if not amazon_data:
-            amazon_data = get_saved_products(product_name)
+            amazon_data = get_saved_products(product_name, "amazon.com")
 
         if not jumia_data:
-            jumia_data = get_saved_products(product_name)
+            jumia_data = get_saved_products(product_name, "jumia.co.ke")
 
         process_products(alibaba_data, "alibaba")
         process_products(amazon_data, "amazon")
