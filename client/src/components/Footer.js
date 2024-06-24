@@ -66,7 +66,7 @@ const Footer = () => {
         <div className="row">
           <div className="col-12 text-center">
             <p className="copyright">
-              Copyright © 2024 <a href="https://shopcrawl-p24b.onrender.com/">Shopcrawl</a>.
+              Copyright © 2024 <a href="https://shopcrawl.vercel.app/">Shopcrawl</a>.
             </p>
           </div>
         </div>
