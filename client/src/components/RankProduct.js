@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RankProductCard from './RankCard';
 import InformationPanel from './InfoPanel';
@@ -93,7 +93,7 @@ const RankProduct = () => {
       window.removeEventListener('resize', handleResize); 
     };
   }, []); 
-  
+
   const renderPagination = (totalItems) => {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     const maxPageNumbersToShow = windowWidth < 576 ? 5 : 10; // Show fewer pages on small screens
