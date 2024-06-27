@@ -22,35 +22,38 @@ const InformationPanel = () => {
           </button>
           {showInformation && (
             <div className="information-content">
-              <ul>
-                <li>
-                  Our tool ranks products from different e-commerce websites by applying Marginal Benefit and Cost Benefit formulas to factors such as Product Pricing and Consumer ratings.
-                </li>
-                <li>
-                  The results include the product name, price, rating, cost benefit, and marginal benefit based on ranks.
-                  <ul>
-                    <li>
-                      The higher the marginal benefit, the better it is to buy more of the product.
-                    </li>
-                    <li>
-                      The higher the cost benefit, the better it is to buy a more pricey product.
-                    </li>
-                    <li>
-                      If the marginal benefit is negative, it means there will not be a substantial benefit in purchasing more of the product; hence, you could explore other factors or products instead or adjust their importance. A positive marginal benefit indicates that increasing the quantity of products would provide a greater benefit.
-                    </li>
-                    <li>
-                      A negative cost benefit is a signal that the cost outweighs the benefit of purchasing the product.
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  Cost Benefit is the result of the price difference between products on different e-commerce websites. The price importance will determine this.
-                </li>
-                <li>
-                  Marginal Benefit is the result of differences between factors such as price, ratings, based on your price and rating importance input.
-                </li>
-              </ul>
-            </div>
+            <ul>
+              <li>
+                Our tool ranks products from various e-commerce websites based on Marginal Benefit and Cost Benefit formulas, considering factors such as Product Pricing and Consumer Ratings.
+              </li>
+              <li>
+                The results include product names, prices, ratings, and rankings based on cost benefit and marginal benefit.
+                <ul>
+                  <li>
+                    A higher Marginal Benefit indicates greater benefit from purchasing more of the product.
+                  </li>
+                  <li>
+                    The product with the highest price does not necessarily have the highest cost benefit. The cost benefit is a balance between the cost and the perceived benefits.
+                  </li>
+                  <li>
+                    A lower Marginal Benefit suggests limited benefit in buying more of the product; in such cases, consider exploring other products or adjusting the importance of factors. A positive Marginal Benefit implies greater benefit from increasing product quantity.
+                  </li>
+                  <li>
+                    Negative Cost Benefit suggests that the cost outweighs the benefit of purchasing the product.
+                  </li>
+                </ul>
+              </li>
+              <li>
+                Cost Benefit is the difference between total benefits and costs of products from e-commerce sites, influenced by the input of price importance.
+              </li>
+              <li>
+                Marginal Benefit is the ratio of total additional benefit to total probable additional goods consumed, influenced by your input for Price and Rating importance.
+              </li>
+              <li>
+                For optimal results, input floating-point values for price and rating that sum up to 1.
+              </li>
+            </ul>
+          </div>
           )}
         </div>
       );
