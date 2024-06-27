@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import re
+from requests.exceptions import RequestException, ConnectionError
 from convert_price import (
     convert_price_to_float,
     adjust_price,
@@ -20,7 +21,13 @@ def search_amazon(product_name):
         "Upgrade-Insecure-Requests": "1",
     }
 
-    response = requests.get(url, headers=headers)
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+    except (RequestException, ConnectionError) as e:
+        print(f"An error occurred while searching Alibaba: {e}")
+        return None
+    
     soup = BeautifulSoup(response.content, "html.parser")
     product_cards = soup.find_all("div", {"data-component-type": "s-search-result"})
 
@@ -71,7 +78,6 @@ def search_amazon(product_name):
 
 def search_alibaba(product_name):
     url = f"https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&tab=all&SearchText={product_name}"
-    # url = f"https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText={product_name}"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
         "Accept-Encoding": "gzip, deflate",
@@ -81,7 +87,13 @@ def search_alibaba(product_name):
         "Upgrade-Insecure-Requests": "1",
     }
 
-    response = requests.get(url, headers=headers)
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+    except (RequestException, ConnectionError) as e:
+        print(f"An error occurred while searching Alibaba: {e}")
+        return None
+
     soup = BeautifulSoup(response.content, "html.parser")
 
     product_cards = soup.find_all("div", {"class": "fy23-search-card m-gallery-product-item-v2 J-search-card-wrapper fy23-gallery-card searchx-offer-item"})
@@ -144,7 +156,13 @@ def search_jumia(product_name):
         "Upgrade-Insecure-Requests": "1",
     }
 
-    response = requests.get(url, headers=headers)
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+    except (RequestException, ConnectionError) as e:
+        print(f"An error occurred while searching Alibaba: {e}")
+        return None
+    
     soup = BeautifulSoup(response.content, "html.parser")
 
     product_cards = soup.find_all("article", {"class": "prd _fb col c-prd"})
