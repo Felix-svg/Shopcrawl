@@ -17,13 +17,13 @@ const LandingPage = () => {
       <div className="row">
         <div className="col-md-6 d-flex flex-column justify-content-center">
           <h1>Welcome to Shopcrawl</h1>
-          <p className="lead">Sign in or create an account to start comparing prices!</p>
+          <p className="lead">Sign in or create an account to start comparing products!</p>
           <div className="d-flex justify-content-center">
             <Link to="/login" className="btn btn-dark me-2">Sign In</Link>
             <Link to="/signup" className="btn btn-dark"> Create Account</Link>
           </div>
           <div className="mt-4">
-            <p className="lead">Or explore a range of available products</p>
+            <p className="lead">Or explore a range of products from different ecommerce websites</p>
             <Link to="/products" className="btn btn-outline-dark d-flex justify-content-center">Explore</Link>
           </div>
         </div>
