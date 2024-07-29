@@ -9,6 +9,7 @@ const Login = ({ onLogin }) => {
   const [rememberMe, setRememberMe] = useState(false);
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,7 +27,8 @@ const Login = ({ onLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("https://shopcrawl-server.onrender.com/login", {
+    setIsLoading(true); // Set loading state to true when the form is submitted
+    fetch("http://127.0.0.1:5000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,6 +56,9 @@ const Login = ({ onLogin }) => {
       .catch((error) => {
         console.error(error);
         setMessage("Login failed. Please try again.");
+      })
+      .finally(() => {
+        setIsLoading(false); // Reset loading state when the process is complete
       });
   };
 
@@ -65,18 +70,16 @@ const Login = ({ onLogin }) => {
     <section
       className="d-flex justify-content-center align-items-center"
       style={{
-        backgroundColor:"#90AEAD",
+        backgroundColor: "#90AEAD",
         minHeight: "100vh",
         position: "relative",
       }}
     >
-      <div
-        className="position-absolute w-100 h-100"
-      ></div>
+      <div className="position-absolute w-100 h-100"></div>
       <div className="container py-5">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-8 col-sm-10">
-            <div className="card border" >
+            <div className="card border">
               <div className="card-body">
                 <h1 className="text-center mb-4" style={{ color: "teal" }}>
                   Welcome Back
@@ -162,8 +165,9 @@ const Login = ({ onLogin }) => {
                       type="submit"
                       className="btn btn-primary"
                       style={{ backgroundColor: "teal" }}
+                      disabled={isLoading} // Disable the button when loading
                     >
-                      Sign in
+                      {isLoading ? "Signing in..." : "Sign in"}
                     </button>
                   </div>
                   <div className="text-center mt-3">
