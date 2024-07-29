@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -11,6 +10,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
@@ -47,11 +47,15 @@ const Signup = () => {
     }
 
     if (!validatePassword(password)) {
-      setMessage("Password must be at least 8 characters long and include at least one number, one uppercase letter, one lowercase letter, and one special character.");
+      setMessage(
+        "Password must be at least 8 characters long and include at least one number, one uppercase letter, one lowercase letter, and one special character."
+      );
       return;
     }
 
-    fetch("https://shopcrawl-server.onrender.com/signup", {
+    setIsSubmitting(true);
+
+    fetch("http://127.0.0.1:5000/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -79,6 +83,9 @@ const Signup = () => {
       .catch((error) => {
         console.error(error);
         setMessage(error.message);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
   };
 
@@ -207,8 +214,9 @@ const Signup = () => {
                     type="submit"
                     className="btn btn-primary btn-block"
                     style={{ backgroundColor: "teal", width: "100%" }}
+                    disabled={isSubmitting}
                   >
-                    Sign up
+                    {isSubmitting ? "Signing up..." : "Sign up"}
                   </button>
                   <p className="text-center mt-3" style={{ color: "black" }}>
                     Already have an account?{" "}
