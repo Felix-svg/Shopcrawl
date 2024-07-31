@@ -81,37 +81,49 @@ const RankProduct = () => {
 
   const renderPagination = (totalItems) => {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const maxPageNumbersToShow = windowWidth < 576 ? 5 : 10; // Show fewer pages on small screens
+    const currentBlock = Math.floor((currentPage - 1) / maxPageNumbersToShow);
+
+    const getPageNumbers = () => {
+        const start = currentBlock * maxPageNumbersToShow + 1;
+        const end = Math.min(start + maxPageNumbersToShow - 1, totalPages);
+        const pageNumbers = [];
+        for (let i = start; i <= end; i++) {
+            pageNumbers.push(i);
+        }
+        return pageNumbers;
+    };
+
     return (
-      <div className="d-flex justify-content-center mt-4">
-        <nav>
-          <ul className="pagination">
-            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-              <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
-                Prev
-              </button>
-            </li>
-            {[...Array(totalPages)].map((_, index) => (
-              <li
-                key={index}
-                className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
-                onClick={() => handlePageChange(index + 1)}
-              >
-                <button className="page-link">
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-              <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
+        <div className="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+                <ul className="pagination">
+                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                        <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
+                            Prev
+                        </button>
+                    </li>
+                    {getPageNumbers().map((pageNumber) => (
+                        <li
+                            key={pageNumber}
+                            className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}
+                        >
+                            <button className="page-link" onClick={() => handlePageChange(pageNumber)}>
+                                {pageNumber}
+                            </button>
+                        </li>
+                    ))}
+                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                        <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
+                            Next
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     );
   };
-
+  
   return (
     <section style={{ backgroundColor: "#90AEAD", padding: "4px" }}>
       <div className="container">
