@@ -55,7 +55,7 @@ const Signup = () => {
 
     setIsSubmitting(true);
 
-    fetch("http://127.0.0.1:5000/signup", {
+    fetch("https://shopcrawl-server.onrender.com/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -212,7 +212,7 @@ const Signup = () => {
                   </div>
                   <button
                     type="submit"
-                    className="btn btn-primary btn-block"
+                    className="btn text-white"
                     style={{ backgroundColor: "teal", width: "100%" }}
                     disabled={isSubmitting}
                   >

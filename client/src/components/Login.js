@@ -21,14 +21,14 @@ const Login = ({ onLogin }) => {
     setPassword(e.target.value);
   };
 
-  const handleRememberMeChange = () => {
-    setRememberMe(!rememberMe);
+  const handleRememberMeChange = (e) => {
+    setRememberMe(e.target.checked);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true); // Set loading state to true when the form is submitted
-    fetch("http://127.0.0.1:5000/login", {
+    setIsLoading(true);
+    fetch("https://shopcrawl-server.onrender.com/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,10 @@ const Login = ({ onLogin }) => {
       })
       .then((data) => {
         if (data.access_token) {
-          localStorage.setItem("access_token", data.access_token);
+          const authTokens = {
+            access: data.access_token,
+          };
+          localStorage.setItem("authTokens", JSON.stringify(authTokens));
           setMessage("Login successful!");
           setPassword("");
           setEmail("");
@@ -58,7 +61,7 @@ const Login = ({ onLogin }) => {
         setMessage("Login failed. Please try again.");
       })
       .finally(() => {
-        setIsLoading(false); // Reset loading state when the process is complete
+        setIsLoading(false);
       });
   };
 
@@ -163,9 +166,9 @@ const Login = ({ onLogin }) => {
                   <div className="d-grid">
                     <button
                       type="submit"
-                      className="btn btn-primary"
+                      className="btn text-white"
                       style={{ backgroundColor: "teal" }}
-                      disabled={isLoading} // Disable the button when loading
+                      disabled={isLoading}
                     >
                       {isLoading ? "Signing in..." : "Sign in"}
                     </button>

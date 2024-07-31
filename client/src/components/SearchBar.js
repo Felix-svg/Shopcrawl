@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
+import useAxios from "./useAxios"; // Adjust the import path accordingly
 import { useNavigate } from "react-router-dom";
 import "./SearchBar.css";
 
 const SearchBar = () => {
+  const axiosInstance = useAxios();
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState(null);
@@ -14,16 +15,14 @@ const SearchBar = () => {
     setError(null);
     setIsLoading(true);
     try {
-      const response = await axios.get(
-        `https://shopcrawl-server.onrender.com/search?q=${query}`
-      );
+      const response = await axiosInstance.get(`/search?q=${query}`);
       setIsLoading(false);
       if (response.data) {
         navigate("/results", {
           state: {
             alibaba: response.data.alibaba,
             amazon: response.data.amazon,
-            jumia:response.data.jumia
+            jumia: response.data.jumia
           },
         });
       } else {

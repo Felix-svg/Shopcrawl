@@ -16,6 +16,8 @@ import RankProduct from "./components/RankProduct";
 import LandingPage from "./components/LandingPage";
 import Products from "./components/Products";
 import NotFound from "./components/NotFound";
+import ForgotPassword from "./components/ForgotPassword";
+import PasswordResetForm from "./components/PasswordResetForm";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -56,6 +58,8 @@ function App() {
           <Route path="/rank-products" element={<RankProduct />} />
           <Route path="/products" element={<Products />} />
           <Route path="/about" element={<About />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<PasswordResetForm />}/>
           {/* Not Found route */}
           <Route path="*" element={<NotFound loggedIn={loggedIn} />} />
         </Routes>
