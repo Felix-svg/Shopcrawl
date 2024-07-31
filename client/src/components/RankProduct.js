@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import useAxios from './useAxios'; // Adjust the import path accordingly
+import React, { useState, useEffect } from 'react';
+import useAxios from './useAxios'
+import axios from 'axios';
 import RankProductCard from './RankCard';
 import InformationPanel from './InfoPanel';
 
 const RankProduct = () => {
-  const axiosInstance = useAxios();
+  const axiosInstance = useAxios()
   const [productName, setProductName] = useState('');
   const [priceImportance, setPriceImportance] = useState('');
   const [ratingImportance, setRatingImportance] = useState('');
@@ -14,6 +15,7 @@ const RankProduct = () => {
   const [error, setError] = useState('');
   const [rankingType, setRankingType] = useState('mb');
   const [currentPage, setCurrentPage] = useState(1);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const itemsPerPage = 10;
 
   const handleInputChange = (event) => {
@@ -29,8 +31,10 @@ const RankProduct = () => {
 
   const fetchRankedProducts = async (requestData) => {
     setCalculating(true);
+    // console.log('Request Data:', requestData); // Debugging: log request data
     try {
       const response = await axiosInstance.post('/rank_products', requestData);
+      // console.log('Response Data:', response.data); // Debugging: log response data
       if (response.status === 200) {
         const { ranked_products_mb, ranked_products_cb } = response.data;
         setProductsMb(ranked_products_mb);
@@ -41,6 +45,7 @@ const RankProduct = () => {
       }
       setCalculating(false);
     } catch (error) {
+      console.error('Error fetching ranked products:', error); // Debugging: log error details
       setError('Failed to fetch ranked products. Please try again later.');
       setCalculating(false);
     }
@@ -66,8 +71,9 @@ const RankProduct = () => {
     return (
       <div className="row mt-4" style={{ marginLeft: '50px', marginRight: '50px' }}>  
         {selectedProducts.map((product, index) => (
-          <div key={index} className="col-lg-6 col-md-4 mb-4">
+          <div className="col-lg-6 col-md-6 mb-4">
             <RankProductCard
+              key={index}
               rank={startIndex + index + 1}
               product={product}
               benefitType={rankingType === 'mb' ? 'Marginal Benefit' : 'Cost Benefit'}
@@ -78,6 +84,17 @@ const RankProduct = () => {
     );
     
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize); 
+    };
+  }, []); 
 
   const renderPagination = (totalItems) => {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -123,7 +140,7 @@ const RankProduct = () => {
         </div>
     );
   };
-  
+
   return (
     <section style={{ backgroundColor: "#90AEAD", padding: "4px" }}>
       <div className="container">
