@@ -1,5 +1,5 @@
-from convert_price import convert_price_to_float
-from fetchrankresults import fetch_search_results
+from utils.convert_price import convert_price_to_float
+from utils.fetchrankresults import fetch_search_results
 
 
 class Product:
@@ -59,7 +59,7 @@ def calculate_cb(product, user_weights):
     return round(cb, 1)
 
 def rank_and_display_products(products, user_weights):
-    ranked_products_mb = sorted(products, key=lambda x: calculate_mb(x, user_weights), reverse=False)
+    ranked_products_mb = sorted(products, key=lambda x: calculate_mb(x, user_weights), reverse=True)
     ranked_products_cb = sorted(products, key=lambda x: calculate_cb(x, user_weights), reverse=True)
 
     ranked_products_mb_json = [

@@ -1,14 +1,23 @@
 import requests
 from models.product import Product
 import urllib.parse
+from flask_jwt_extended import get_jwt_identity, create_access_token
 
 def fetch_search_results(product_name):
     # Validate and sanitize product_name
     sanitized_product_name = urllib.parse.quote(product_name)
 
     try:
+        # Get JWT token (assuming user is already logged in)
+        current_user_id = get_jwt_identity()
+        access_token = create_access_token(identity=current_user_id)
+        
+        headers = {
+            "Authorization": f"Bearer {access_token}"
+        }
+
         # Make an HTTP request to the Flask server to fetch search results
-        response = requests.get("https://shopcrawl-server.onrender.com/search", params={"q": sanitized_product_name})
+        response = requests.get("https://shopcrawl-server.onrender.com/search", params={"q": sanitized_product_name}, headers=headers)
 
         # Handle HTTP response
         response.raise_for_status()  # Raise exception for bad status codes (4xx or 5xx)

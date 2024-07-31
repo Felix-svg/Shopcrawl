@@ -1,7 +1,7 @@
-
 from flask import make_response, request
 from flask_restful import Resource
 from flask_jwt_extended import create_access_token
+from datetime import timedelta
 from models.user import User
 
 class Login(Resource):
@@ -64,17 +64,28 @@ class Login(Resource):
                                     type: string
                                     example: "Invalid username or password"
         """
-        
         try:
-            email = request.get_json()["email"]
-            password = request.get_json()["password"]
-        except KeyError:
+            data = request.get_json()
+
+            email = data.get("email")
+            password = data.get("password")
+            remember_me = data.get("rememberMe", False)
+
+            if not email or not password:
+                return make_response({"error": "Email or password not provided"}, 400)
+
+            user = User.query.filter(User.email == email).first()
+            if user and user.check_password(password):
+                expires = timedelta(days=30) if remember_me else timedelta(hours=1)
+                access_token = create_access_token(identity=user.id, expires_delta=expires)
+                response = {
+                    "message": "User Login Success",
+                    "access_token": access_token,
+                }
+                return make_response(response, 200)
+            else:
+                return make_response({"error": "Invalid username or password"}, 401)
+        except KeyError as e:
             return make_response({"error": "Email or password not provided"}, 400)
-
-        user = User.query.filter(User.email == email).first()
-        if user and user.authenticate(password):
-            access_token = create_access_token(identity=user.id)
-            return make_response({"message": "User Login Success", "access_token": access_token}, 200)
-
-        else:
-            return make_response({"error": "Invalid username or password"}, 401)
+        except Exception as e:
+            return make_response({"error": "An unexpected error occurred"}, 500)

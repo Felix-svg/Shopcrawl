@@ -22,6 +22,7 @@ flasgger = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
+flask-mail = "*"
 
 [dev-packages]
 

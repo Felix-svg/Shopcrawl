@@ -9,6 +9,7 @@ const Login = ({ onLogin }) => {
   const [rememberMe, setRememberMe] = useState(false);
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -20,12 +21,13 @@ const Login = ({ onLogin }) => {
     setPassword(e.target.value);
   };
 
-  const handleRememberMeChange = () => {
-    setRememberMe(!rememberMe);
+  const handleRememberMeChange = (e) => {
+    setRememberMe(e.target.checked);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     fetch("https://shopcrawl-server.onrender.com/login", {
       method: "POST",
       headers: {
@@ -41,7 +43,10 @@ const Login = ({ onLogin }) => {
       })
       .then((data) => {
         if (data.access_token) {
-          localStorage.setItem("access_token", data.access_token);
+          const authTokens = {
+            access: data.access_token,
+          };
+          localStorage.setItem("authTokens", JSON.stringify(authTokens));
           setMessage("Login successful!");
           setPassword("");
           setEmail("");
@@ -54,6 +59,9 @@ const Login = ({ onLogin }) => {
       .catch((error) => {
         console.error(error);
         setMessage("Login failed. Please try again.");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -65,18 +73,16 @@ const Login = ({ onLogin }) => {
     <section
       className="d-flex justify-content-center align-items-center"
       style={{
-        backgroundColor:"#90AEAD",
+        backgroundColor: "#90AEAD",
         minHeight: "100vh",
         position: "relative",
       }}
     >
-      <div
-        className="position-absolute w-100 h-100"
-      ></div>
+      <div className="position-absolute w-100 h-100"></div>
       <div className="container py-5">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-8 col-sm-10">
-            <div className="card border" >
+            <div className="card border">
               <div className="card-body">
                 <h1 className="text-center mb-4" style={{ color: "teal" }}>
                   Welcome Back
@@ -160,10 +166,11 @@ const Login = ({ onLogin }) => {
                   <div className="d-grid">
                     <button
                       type="submit"
-                      className="btn btn-primary"
+                      className="btn text-white"
                       style={{ backgroundColor: "teal" }}
+                      disabled={isLoading}
                     >
-                      Sign in
+                      {isLoading ? "Signing in..." : "Sign in"}
                     </button>
                   </div>
                   <div className="text-center mt-3">
