@@ -91,7 +91,7 @@ class Signup(Resource):
         if username and email and password:
             try:
                 new_user = User(username=username, email=email)
-                new_user.password_hash = password
+                new_user.set_password(password)
 
                 db.session.add(new_user)
                 db.session.commit()
