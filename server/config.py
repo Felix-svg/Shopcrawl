@@ -17,7 +17,6 @@ load_dotenv()
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = '9k4c6nO9LF05gq8BAGKbo20BD1sgJGeBF97Tmu7nR20'
-# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.json.compact = False
