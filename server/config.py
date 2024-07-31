@@ -1,4 +1,7 @@
 from dotenv import load_dotenv
+import os
+
+load_dotenv()
 from flask import Flask
 from sqlalchemy import MetaData
 from flask_sqlalchemy import SQLAlchemy
@@ -9,14 +12,11 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_mail import Mail
 from flasgger import Swagger
-import os
-
-load_dotenv()
 
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = "9k4c6nO9LF05gq8BAGKbo20BD1sgJGeBF97Tmu7nR20"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.json.compact = False
@@ -25,7 +25,7 @@ app.config["MAIL_PORT"] = 587
 app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
 app.config["MAIL_USE_TLS"] = True
-app.config["JWT_SECRET_KEY"] = "wzsbrK9wGvOqH6FSYWgv9xCju_ZrU6rbUEIEVuB7fqA"
+app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
 
 metadata = MetaData(
     naming_convention={
