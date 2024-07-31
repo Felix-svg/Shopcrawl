@@ -3,7 +3,6 @@ from flask_restful import Resource
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
 from models.user import User
-import logging
 
 class Login(Resource):
     def post(self):
@@ -77,7 +76,6 @@ class Login(Resource):
 
             user = User.query.filter(User.email == email).first()
             if user and user.check_password(password):
-                logging.debug(f"Creating token for user ID: {user.id}")
                 expires = timedelta(days=30) if remember_me else timedelta(hours=1)
                 access_token = create_access_token(identity=user.id, expires_delta=expires)
                 response = {
