@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import re
 from requests.exceptions import RequestException, ConnectionError
-from convert_price import (
+from utils.convert_price import (
     convert_price_to_float,
     adjust_price,
     convert_price_to_usd,

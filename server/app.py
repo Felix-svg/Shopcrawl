@@ -14,7 +14,7 @@ from routes.categories import Categories, CategoryByID
 from routes.login import Login
 from routes.signup import Signup
 from routes.search import search
-from routes.search_history import SearchHistory
+from routes.search_history import SearchHistoryResource
 from routes.users import Users, UserByID
 from routes.rank_products import RankProducts
 from routes.reset_password import reset_password, forgot_password
@@ -27,7 +27,7 @@ api.add_resource(Categories, "/categories")
 api.add_resource(CategoryByID, "/categories/<int:id>")
 api.add_resource(Login, "/login")
 api.add_resource(Signup, "/signup")
-api.add_resource(SearchHistory, "/search_history")
+api.add_resource(SearchHistoryResource, "/search_history")
 api.add_resource(Users, "/users")
 api.add_resource(UserByID, "/users/<int:id>")
 api.add_resource(RankProducts, "/rank_products")
