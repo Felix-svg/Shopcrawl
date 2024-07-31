@@ -16,7 +16,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = '9k4c6nO9LF05gq8BAGKbo20BD1sgJGeBF97Tmu7nR20'
+app.config["SECRET_KEY"] = "9k4c6nO9LF05gq8BAGKbo20BD1sgJGeBF97Tmu7nR20"
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.json.compact = False
@@ -25,7 +25,7 @@ app.config["MAIL_PORT"] = 587
 app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
 app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
 app.config["MAIL_USE_TLS"] = True
-app.config["JWT_SECRET_KEY"] = 'wzsbrK9wGvOqH6FSYWgv9xCju_ZrU6rbUEIEVuB7fqA'
+app.config["JWT_SECRET_KEY"] = "wzsbrK9wGvOqH6FSYWgv9xCju_ZrU6rbUEIEVuB7fqA"
 
 metadata = MetaData(
     naming_convention={
