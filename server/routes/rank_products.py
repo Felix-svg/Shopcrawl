@@ -1,9 +1,11 @@
 from flask import request, jsonify
 from flask_restful import Resource
-from product_ranking import rank_and_display_products, Product
-from fetchrankresults import fetch_search_results
+from utils.product_ranking import rank_and_display_products, Product
+from utils.fetchrankresults import fetch_search_results
+from flask_jwt_extended import jwt_required
 
 class RankProducts(Resource):
+    @jwt_required()
     def post(self):
         """
         This endpoint ranks products from different e-commerce platforms based on user-provided criteria.
