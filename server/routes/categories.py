@@ -1,7 +1,8 @@
-from flask import jsonify, make_response
+from flask import make_response
 from flask_restful import Resource
 from config import db
 from models.category import Category
+from utils.errors import not_found, deleted, server_error
 
 
 class Categories(Resource):
@@ -18,12 +19,13 @@ class Categories(Resource):
                 examples:
                     application/json: "clothing, electronics"
         """
-
-        categories = [
-            category.to_dict(rules=["-products"]) for category in Category.query.all()
-        ]
-        response = make_response(jsonify({"categories": categories}), 200)
-        return response
+        try:
+            categories = [
+                category.to_dict(rules=["-products"]) for category in Category.query.all()
+            ]
+            return make_response({"categories": categories}, 200)
+        except Exception as e:
+            return server_error(e)
 
 
 class CategoryByID(Resource):
@@ -42,13 +44,16 @@ class CategoryByID(Resource):
             404:
                 description: Category not found
         """
+        try:
+            category = Category.query.filter(Category.id == id).first()
 
-        category = Category.query.filter(Category.id == id).first()
+            if not category:
+                return not_found("Category")
 
-        if category:
             category_dict = category.to_dict(rules=["-products"])
             return make_response({"category": category_dict})
-        return make_response({"error": "Category not found"}, 200)
+        except Exception as e:
+            return server_error(e)
 
     def delete(self, id):
         """
@@ -63,11 +68,15 @@ class CategoryByID(Resource):
             404:
                 description: Category not found
         """
-        
-        category = Category.query.filter(Category.id == id).first()
+        try:
+            category = Category.query.filter(Category.id == id).first()
 
-        if category:
+            if not category:
+                return not_found("Category")
+
             db.session.delete(category)
             db.session.commit()
-            return make_response({"message": "Category deleted successfully"}, 200)
-        return make_response({"error": "Category not found"}, 404)
+            return deleted("Category")
+        except Exception as e:
+            db.session.rollback()
+            return server_error(e)

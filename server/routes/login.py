@@ -3,6 +3,9 @@ from flask_restful import Resource
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
 from models.user import User
+from config import db
+from utils.errors import missing_required_fields, server_error
+
 
 class Login(Resource):
     def post(self):
@@ -72,20 +75,21 @@ class Login(Resource):
             remember_me = data.get("rememberMe", False)
 
             if not email or not password:
-                return make_response({"error": "Email or password not provided"}, 400)
+                return missing_required_fields()
 
             user = User.query.filter(User.email == email).first()
             if user and user.check_password(password):
                 expires = timedelta(days=30) if remember_me else timedelta(hours=1)
-                access_token = create_access_token(identity=user.id, expires_delta=expires)
+                access_token = create_access_token(
+                    identity=user.id, expires_delta=expires
+                )
                 response = {
                     "message": "User Login Success",
                     "access_token": access_token,
                 }
                 return make_response(response, 200)
             else:
-                return make_response({"error": "Invalid username or password"}, 401)
-        except KeyError as e:
-            return make_response({"error": "Email or password not provided"}, 400)
+                return make_response({"error": "Invalid email or password"}, 401)
         except Exception as e:
-            return make_response({"error": "An unexpected error occurred"}, 500)
+            db.session.rollback()
+            return server_error(e)

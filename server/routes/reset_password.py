@@ -3,6 +3,7 @@ from utils.reset_email import send_reset_email
 from config import app, bcrypt, db
 from flask_jwt_extended import decode_token
 from models.user import User
+from utils.errors import server_error, missing_required_fields, no_input
 
 @app.route('/forgot-password', methods=['POST'])
 def forgot_password():
@@ -18,10 +19,12 @@ def forgot_password():
 @app.route('/reset-password/<token>', methods=['POST'])
 def reset_password(token):
     data = request.get_json()
+    if not data:
+        return no_input()
+    
     new_password = data.get('password')
-
     if not new_password:
-        return jsonify({"error": "New password is required"}), 400
+        return missing_required_fields()
     
     try:
         decoded_token = decode_token(token)
@@ -39,4 +42,4 @@ def reset_password(token):
         
         return jsonify({"message": "Password reset successful"}), 200
     except Exception as e:
-        return jsonify({"error": "An internal error occurred. Please try again later."}), 500
+        return server_error(e)

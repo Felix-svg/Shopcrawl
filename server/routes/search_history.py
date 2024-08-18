@@ -5,6 +5,7 @@ from models.search_history import SearchHistory
 from models.user import User
 from config import db
 from sqlalchemy import inspect
+from utils.errors import server_error, not_found, missing_required_fields, no_input
 
 class SearchHistoryResource(Resource):
     @jwt_required()
@@ -14,13 +15,16 @@ class SearchHistoryResource(Resource):
             current_user = User.query.get(current_user_id)
 
             if not current_user:
-                return {"message": "User not found"}, 404
+                return not_found("User")
 
             data = request.get_json()
+            if not data:
+                return no_input()
+            
             query = data.get("query")
 
             if not query:
-                return {"message": "Query is required"}, 400
+                return missing_required_fields()
 
             new_search_history = SearchHistory(query=query, user_id=current_user_id)
             db.session.add(new_search_history)
@@ -29,7 +33,7 @@ class SearchHistoryResource(Resource):
             return {"message": "Search history created successfully", "search_history": new_search_history.to_dict()}, 201
 
         except Exception as e:
-            return {"message": "Internal Server Error"}, 500
+            return server_error(e)
 
     @jwt_required()
     def get(self):
@@ -39,7 +43,7 @@ class SearchHistoryResource(Resource):
             current_user = User.query.get(current_user_id)
 
             if not current_user:
-                return {"message": "User not found"}, 404
+                return not_found("User")
 
             # Inspect the search_history table
             inspector = inspect(db.engine)
@@ -50,4 +54,4 @@ class SearchHistoryResource(Resource):
             return jsonify([history.to_dict(rules=['-user']) for history in search_histories])
 
         except Exception as e:
-            return {"message": "Internal Server Error"}, 500
+            return server_error(e)

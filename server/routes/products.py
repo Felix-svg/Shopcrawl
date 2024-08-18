@@ -1,9 +1,8 @@
-# server/routes/products.py
-
 from flask import make_response
 from flask_restful import Resource
 from models.product import Product
 from random import sample
+from utils.errors import server_error, not_found
 
 
 class Products(Resource):
@@ -20,14 +19,17 @@ class Products(Resource):
                 examples:
                     application/json: "Macbook Air Pro"
         """
-        products = Product.query.all()
-        random_products = sample(products, min(len(products), 30))
+        try:
+            products = Product.query.all()
+            random_products = sample(products, min(len(products), 30))
 
-        products_data = [
-            product.to_dict(rules=["-category"]) for product in random_products
-        ]
+            products_data = [
+                product.to_dict(rules=["-category"]) for product in random_products
+            ]
 
-        return make_response({"products": products_data}, 200)
+            return make_response({"products": products_data}, 200)
+        except Exception as e:
+            return server_error(e)
 
 
 class ProductByID(Resource):
@@ -46,8 +48,12 @@ class ProductByID(Resource):
             404:
                 description: Product not found
         """
-        product = Product.query.filter(Product.id == id).first()
-        if product:
+        try:
+            product = Product.query.filter(Product.id == id).first()
+            if not product:
+                return not_found("Product")
+
             product_dict = product.to_dict(rules=["-category"])
             return make_response({"product": product_dict}, 200)
-        return make_response({"error": "Product not found"}, 404)
+        except Exception as e:
+            return server_error(e)

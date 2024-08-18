@@ -1,64 +1,13 @@
 from flask import make_response, request
 from flask_restful import Resource
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from config import db, api
 from models.user import User
-
-
-class Users(Resource):
-    def get(self):
-        """
-        This endpoint retrieves a list of all users.
-        ---
-        tags:
-            - Users
-        summary: Get all users
-        description: Retrieves a list of all users in the system, excluding their password hashes.
-        responses:
-            200:
-                description: A list of users
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                users:
-                                    type: array
-                                    items:
-                                        type: object
-                                        properties:
-                                            id:
-                                                type: integer
-                                                example: 1
-                                            username:
-                                                type: string
-                                                example: "johndoe"
-                                            email:
-                                                type: string
-                                                example: "johndoe@example.com"
-            500:
-                description: Internal server error
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                error:
-                                    type: string
-                                    example: "An error occurred while retrieving the users"
-        """
-        
-        try:
-            users = []
-            for user in User.query.all():
-                users.append(user.to_dict(rules=["-_password_hash"]))
-            return make_response({"users": users}, 200)
-        except Exception as e:
-            return make_response({"error": str(e)}, 500)
-
+from utils.errors import server_error, not_found, deleted, no_input, updated
 
 
 class UserByID(Resource):
+    @jwt_required()
     def get(self, id):
         """
         This endpoint retrieves a user by their ID.
@@ -103,13 +52,57 @@ class UserByID(Resource):
                                     type: string
                                     example: "User not found"
         """
+        try:
+            user_id = get_jwt_identity()
+            if id != user_id:
+                return not_found("User")
 
-        user = User.query.filter(User.id == id).first()
+            user = User.query.get(user_id)
+            if not user:
+                return not_found("User")
 
-        if user:
-            return make_response(user.to_dict(rules=["-_password_hash"]))
-        return make_response({"error": "User not found"}, 404)
+            return make_response(
+                user.to_dict(rules=["-password_hash", "-search_history"])
+            )
+        except Exception as e:
+            return server_error(e)
 
+    @jwt_required()
+    def patch(self, id):
+        """
+        Updates a user by their ID.
+        """
+        try:
+            user_id = get_jwt_identity()
+            if id != user_id:
+                return not_found("User")
+
+            user = User.query.get(user_id)
+            if not user:
+                return not_found("User")
+
+            data = request.get_json()
+            if not data:
+                return no_input()
+
+            username = data.get("username")
+            email = data.get("email")
+            password = data.get("password")
+
+            if username is not None:
+                user.username = username
+            if email is not None:
+                user.email = email
+            if password is not None:
+                user.set_password(password)
+
+            db.session.commit()
+            return updated("User")
+        except Exception as e:
+            db.session.rollback()
+            return server_error(e)
+
+    @jwt_required()
     def delete(self, id):
         """
         This endpoint deletes a user by their ID.
@@ -148,10 +141,17 @@ class UserByID(Resource):
                                     type: string
                                     example: "User not found"
         """
-        user = User.query.filter(User.id == id).first()
-        if user:
+        try:
+            user_id = get_jwt_identity()
+            if id != user_id:
+                return not_found("User")
+
+            user = User.query.get(user_id)
+            if not user:
+                return not_found("User")
+
             db.session.delete(user)
             db.session.commit()
-            return make_response({"message": "User deleted successfully"})
-        return make_response({"Error": "User not found"})
-
+            return deleted("User")
+        except Exception as e:
+            return server_error(e)

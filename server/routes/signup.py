@@ -1,9 +1,9 @@
-
 from flask import make_response, request
 from flask_restful import Resource
 from flask_jwt_extended import create_access_token
 from config import db
 from models.user import User
+from utils.errors import server_error, no_input, missing_required_fields
 
 
 class Signup(Resource):
@@ -71,38 +71,41 @@ class Signup(Resource):
                                     example: "422 Unprocessable Entity"
         """
         try:
-            username = request.get_json()["username"]
-            email = request.get_json()["email"]
-            password = request.get_json()["password"]
-        except KeyError:
-            return make_response({"error": "User details not provided"}, 400)
+            data = request.get_json()
+            if not data:
+                return no_input()
 
-        # Check if the username already exists
-        existing_user = User.query.filter_by(username=username).first()
-        if existing_user:
-            return make_response({"error": "Username already taken"}, 400)
-        
-        # Check if the email already exists
-        existing_email = User.query.filter_by(email=email).first()
-        if existing_email:
-            return make_response({"error": "Email already taken"}, 400)
+            username = request.get("username")
+            email = request.get("email")
+            password = request.get("password")
+            if not username or not email or not password:
+                return missing_required_fields()
 
+            # Check if the username already exists
+            existing_user = User.query.filter_by(username=username).first()
+            if existing_user:
+                return make_response({"error": "Username already taken"}, 400)
 
-        if username and email and password:
-            try:
-                new_user = User(username=username, email=email)
-                new_user.set_password(password)
+            # Check if the email already exists
+            existing_email = User.query.filter_by(email=email).first()
+            if existing_email:
+                return make_response({"error": "Email already taken"}, 400)
 
-                db.session.add(new_user)
-                db.session.commit()
+            new_user = User(username=username, email=email)
+            new_user.set_password(password)
 
-                access_token = create_access_token(identity=new_user.id)
+            db.session.add(new_user)
+            db.session.commit()
 
-                return make_response( {
+            access_token = create_access_token(identity=new_user.id)
+
+            return make_response(
+                {
                     "message": "User Registration Success",
                     "access_token": access_token,
-                }, 201)
-            except ValueError as e:
-                return make_response({"error": str(e)}, 400)
+                },
+                201,
+            )
 
-        return make_response({"error": "422 Unprocessable Entity"}, 422)
+        except Exception as e:
+            return server_error(e)

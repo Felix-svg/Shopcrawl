@@ -3,6 +3,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 from datetime import datetime
 import re
+from flask_jwt_extended import create_access_token
 
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
@@ -20,6 +21,9 @@ class User(db.Model, SerializerMixin):
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
+    
+    def get_token(self, expires_in=3600):
+        return create_access_token(identity=self.id, expires_delta=expires_in)
 
     @validates("email")
     def validate_email(self, key, email):
